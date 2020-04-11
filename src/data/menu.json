@@ -1,0 +1,25 @@
+{
+  "data": [ 
+        {
+          "path": "/dashboard", 
+          "title": "DashBoard",
+          "icon": "headphones", 
+          "type": "link",
+          "param_type" : "no"
+        },
+        {
+          "path": "/businesses/to-create", 
+          "title": "Create Business",
+          "icon": "headphones", 
+          "type": "link",
+          "param_type" : "no"
+        },
+        {
+          "path": "/businesses/my-businesses", 
+          "title": "My Businesses",
+          "icon": "headphones", 
+          "type": "link",
+          "param_type" : "my_businesses"
+        }
+      ]
+}
