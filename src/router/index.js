@@ -185,6 +185,14 @@ const routes = [
       meta: {
         title: `Business All Vessles | ${system_title}`,
       }
+    },
+    {
+      path: 'all-tests',
+      name: 'all-tests',
+      component: ViewVessles,
+      meta: {
+        title: `Business All Tests | ${system_title}`,
+      }
     }
   ]
 }

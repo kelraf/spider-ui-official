@@ -8,6 +8,7 @@ import VueFeather from 'vue-feather';
 import Toasted from 'vue-toasted';
 import VueJWT from 'vuejs-jwt'
 import SmartTable from 'vuejs-smart-table'
+import VueFormWizard from 'vue-form-wizard';
 
 
 // Import Theme scss
@@ -18,9 +19,10 @@ Vue.use(Toasted,{
   iconPack: 'fontawesome'
 });
 
+Vue.use(VueFormWizard)
 Vue.use(SmartTable)
 Vue.use(VueJWT)
-Vue.use(VueFeather);
+Vue.use(VueFeather)
 Vue.use(BootstrapVue)
 Vue.component('Breadcrumbs', Breadcrumbs)
 

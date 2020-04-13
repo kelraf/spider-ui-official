@@ -13,7 +13,7 @@
                 <div class="row">
 
                     <div class="col-md-6">
-                      <Vehicle />
+                      <Vehicle :businessProfile="business_profile" />
                     </div>
 
                     <div v-for="business_asset in business_profile.business_assets" :key="business_asset.id" class="col-md-6">
