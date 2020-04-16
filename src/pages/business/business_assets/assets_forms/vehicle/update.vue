@@ -231,7 +231,7 @@ export default {
                     setTimeout(function() {
 
                         self.loading = false
-                        self.$emit("vehicle-create-success", resp.data.data)
+                        self.$emit("vehicle-updated-success", resp.data.data)
                         self.$toasted.show(`Vehicle Updated Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
                         Custombox.modal.close()
 

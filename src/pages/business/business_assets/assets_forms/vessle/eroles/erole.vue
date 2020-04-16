@@ -59,7 +59,7 @@ export default {
     data(){
 		return{
             capacity_error: '',
-            vehicle_id: null,
+            vessle_id: null,
             id: null,
             drole_id: null,
             capacity: 0,
@@ -69,20 +69,20 @@ export default {
 		}
     },
     props: {
-        tempVRole: Object
+        tempERole: Object
     },
     watch: {
-        tempVRole: {
+        tempERole: {
             immediate: true,
             handler() {
 
-                this.vehicle_id = this.tempVRole.vehicle_id,
-                this.id = this.tempVRole.id,
-                this.drole_id = this.tempVRole.drole_id,
-                this.capacity = this.tempVRole.capacity,
-                this.set = this.tempVRole.set,
-                this.drole = this.tempVRole.drole,
-                this.capacity_units = this.tempVRole.capacity_units
+                this.vessle_id = this.tempERole.vessle_id,
+                this.id = this.tempERole.id,
+                this.drole_id = this.tempERole.drole_id,
+                this.capacity = this.tempERole.capacity,
+                this.set = this.tempERole.set,
+                this.drole = this.tempERole.drole,
+                this.capacity_units = this.tempERole.capacity_units
 
             }
         }
@@ -107,10 +107,10 @@ export default {
                 this.capacity_error = ''
 
                 let data = {
-                    v_role: {
+                    e_role: {
                         drole_id: this.drole_id,
                         capacity: this.capacity,
-                        vehicle_id: this.vehicle_id
+                        vessle_id: this.vessle_id
                     }
                 }
 
@@ -122,7 +122,7 @@ export default {
                     }
                 }
 
-                axios.post(`${ApiUrl.url}v-roles`, data, headers) 
+                axios.post(`${ApiUrl.url}e-roles`, data, headers) 
                 .then( (resp) => {
                     // setTimeout(function() {
 
@@ -136,12 +136,14 @@ export default {
                         this.id = resp.data.data.id
                         this.set = true
 
-                        this.$toasted.show(`Vehicle Role Created Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
+                        this.$toasted.show(`Flight Role Created Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
 
                     // }, 2000)
                 } )
 
                 .catch( (err) => {
+
+                    console.log(err.response)
 
                     if(err.response) {
 
@@ -193,10 +195,10 @@ export default {
                 this.capacity_error = ''
 
                 let data = {
-                    v_role: {
+                    e_role: {
                         drole_id: this.drole_id,
                         capacity: this.capacity,
-                        vehicle_id: this.vehicle_id
+                        vessle_id: this.vessle_id
                     }
                 }
 
@@ -210,7 +212,7 @@ export default {
 
                 if(this.id !== null || this.id !== undefined) {
     
-                    axios.put(`${ApiUrl.url}v-roles/${this.id}`, data, headers)
+                    axios.put(`${ApiUrl.url}e-roles/${this.id}`, data, headers)
                     .then( (resp) => {
     
                         if(resp.status == 200) {
@@ -220,7 +222,7 @@ export default {
                                 response: resp.data.data
                             })
     
-                            this.$toasted.show(`Successfully Updated Vehicle Role Capacity.`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
+                            this.$toasted.show(`Successfully Updated Flight Role Capacity.`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
     
                         }
     
@@ -262,7 +264,7 @@ export default {
 
             if(this.id !== null || this.id !== undefined) {
 
-                axios.delete(`${ApiUrl.url}v-roles/${this.id}`, {
+                axios.delete(`${ApiUrl.url}e-roles/${this.id}`, {
                     headers: {
                         Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                     }
@@ -283,7 +285,7 @@ export default {
 
                         this.id = null
 
-                        this.$toasted.show(`Successfully Deleted Vehicle Role`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
+                        this.$toasted.show(`Successfully Deleted Flight Role`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
 
                     }
 

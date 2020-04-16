@@ -59,7 +59,7 @@ export default {
     data(){
 		return{
             capacity_error: '',
-            vehicle_id: null,
+            flight_id: null,
             id: null,
             drole_id: null,
             capacity: 0,
@@ -69,20 +69,20 @@ export default {
 		}
     },
     props: {
-        tempVRole: Object
+        tempFRole: Object
     },
     watch: {
-        tempVRole: {
+        tempFRole: {
             immediate: true,
             handler() {
 
-                this.vehicle_id = this.tempVRole.vehicle_id,
-                this.id = this.tempVRole.id,
-                this.drole_id = this.tempVRole.drole_id,
-                this.capacity = this.tempVRole.capacity,
-                this.set = this.tempVRole.set,
-                this.drole = this.tempVRole.drole,
-                this.capacity_units = this.tempVRole.capacity_units
+                this.flight_id = this.tempFRole.flight_id,
+                this.id = this.tempFRole.id,
+                this.drole_id = this.tempFRole.drole_id,
+                this.capacity = this.tempFRole.capacity,
+                this.set = this.tempFRole.set,
+                this.drole = this.tempFRole.drole,
+                this.capacity_units = this.tempFRole.capacity_units
 
             }
         }
@@ -107,10 +107,10 @@ export default {
                 this.capacity_error = ''
 
                 let data = {
-                    v_role: {
+                    frole: {
                         drole_id: this.drole_id,
                         capacity: this.capacity,
-                        vehicle_id: this.vehicle_id
+                        flight_id: this.flight_id
                     }
                 }
 
@@ -122,7 +122,7 @@ export default {
                     }
                 }
 
-                axios.post(`${ApiUrl.url}v-roles`, data, headers) 
+                axios.post(`${ApiUrl.url}f-roles`, data, headers) 
                 .then( (resp) => {
                     // setTimeout(function() {
 
@@ -136,7 +136,7 @@ export default {
                         this.id = resp.data.data.id
                         this.set = true
 
-                        this.$toasted.show(`Vehicle Role Created Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
+                        this.$toasted.show(`Flight Role Created Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
 
                     // }, 2000)
                 } )
@@ -193,10 +193,10 @@ export default {
                 this.capacity_error = ''
 
                 let data = {
-                    v_role: {
+                    frole: {
                         drole_id: this.drole_id,
                         capacity: this.capacity,
-                        vehicle_id: this.vehicle_id
+                        flight_id: this.flight_id
                     }
                 }
 
@@ -210,7 +210,7 @@ export default {
 
                 if(this.id !== null || this.id !== undefined) {
     
-                    axios.put(`${ApiUrl.url}v-roles/${this.id}`, data, headers)
+                    axios.put(`${ApiUrl.url}f-roles/${this.id}`, data, headers)
                     .then( (resp) => {
     
                         if(resp.status == 200) {
@@ -220,7 +220,7 @@ export default {
                                 response: resp.data.data
                             })
     
-                            this.$toasted.show(`Successfully Updated Vehicle Role Capacity.`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
+                            this.$toasted.show(`Successfully Updated Flight Role Capacity.`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
     
                         }
     
@@ -262,7 +262,7 @@ export default {
 
             if(this.id !== null || this.id !== undefined) {
 
-                axios.delete(`${ApiUrl.url}v-roles/${this.id}`, {
+                axios.delete(`${ApiUrl.url}f-roles/${this.id}`, {
                     headers: {
                         Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                     }
@@ -283,7 +283,7 @@ export default {
 
                         this.id = null
 
-                        this.$toasted.show(`Successfully Deleted Vehicle Role`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
+                        this.$toasted.show(`Successfully Deleted Flight Role`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
 
                     }
 

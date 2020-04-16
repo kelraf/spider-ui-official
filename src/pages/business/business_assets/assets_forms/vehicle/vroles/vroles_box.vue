@@ -8,7 +8,7 @@
                         <div class="authentication-box">
                             <div class="card to-shake mt-4 p-4">
 
-                                <VRole v-on:vrole-changed="vehicle_changed" v-for="temp_vrole in tempvroles" :tempVRole="temp_vrole" :key="temp_vrole.drole_id" />
+                                <VRole v-on:action-success="action_success" v-for="temp_vrole in tempvroles" :tempVRole="temp_vrole" :key="temp_vrole.drole_id" />
                                 
                             </div>
                         </div>
@@ -131,21 +131,8 @@ export default {
             } )
 
         },
-        vehicle_changed(data) {
-            if(data.action == "added") {
-
-                // vrole that have been added in the server side
-                // this.vehicleData.vroles.push(data.vrole)
-
-                console.log("New: ",this.vehicleData.vroles)
-
-            } else if(data.action == "edited") {
-
-            } else if(data.action == "deleted") {
-
-                // vrole that have been deleted in the server side
-
-            }
+        action_success(data) {
+            this.$emit("action-success", data)
         }
 	}
 }

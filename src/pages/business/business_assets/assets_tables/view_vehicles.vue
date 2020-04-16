@@ -2,7 +2,7 @@
 	<div>
 
 
-		<Breadcrumbs main="Trains" title="Business Trains"/>
+		<Breadcrumbs main="AutoMotives" title="Business AutoMotives"/>
 
 
 		<!-- Container-fluid starts-->
@@ -15,23 +15,18 @@
 							<div class="datatable-vue m-0">
 
 							<div class="row filter-smart">
-								<div class="col-sm-2">
-									<input class="form-control" v-model="filters.unique_number.value" placeholder="Unique Number"/>
+								<div class="col-sm-4">
+									<input class="form-control" v-model="filters.registration_number.value" placeholder="Registration Number"/>
 								</div>
-								<div class="col-sm-2">
-									<input class="form-control" v-model="filters.role.value" placeholder="Role" />
+								<div class="col-sm-3">
+									<input class="form-control" v-model="filters.type.value" placeholder="Type" />
 								</div>
-								<div class="col-sm-2">
-									<!-- <input class="form-control" v-model="filters.office.value" placeholder="Office" /> -->
+								<div class="col-sm-3">
+									<input class="form-control" v-model="filters.status.value" placeholder="Status" />
 								</div>
+								
 								<div class="col-sm-2">
-									<!-- <input class="form-control" v-model="filters.age.value" placeholder="Age" /> -->
-								</div>
-								<div class="col-sm-2">
-									<!-- <input class="form-control" v-model="filters.startdate.value" placeholder="Start Date" /> -->
-								</div>
-								<div class="col-sm-2">
-									<button id="default-outline-primary" @click="create_train" type="button" class="btn btn-pill btn-outline-primary btn-block">
+									<button id="default-outline-primary" @click="create_vehicle" type="button" class="btn btn-pill btn-outline-primary btn-block">
 										<i class="icon-plus"></i>
 									</button>
 								</div>
@@ -39,7 +34,7 @@
 							<div class="table-responsive vue-smart">
 
 							<v-table
-							:data="trains" class="table"
+							:data="vehicles" class="table"
 							:currentPage.sync="filter.currentPage"
 							:pageSize="10"
 							@totalPagesChanged="filter.totalPages = $event"
@@ -47,23 +42,25 @@
 							>
 
 							<thead slot="head">
-								<v-th sortKey="unique_number">Unique Number</v-th>
-								<v-th sortKey="role">Role</v-th>
+								<v-th sortKey="registration_number">Registration Number</v-th>
+								<v-th sortKey="type">Type</v-th>
+								<v-th sortKey="status">Status</v-th>
 								<v-th sortKey="unique_number"></v-th>
 								<v-th sortKey="unique_number"></v-th>
 								<v-th sortKey="unique_number"></v-th>
 							</thead>
 							<tbody slot="body" slot-scope="{displayData}">
 								<tr v-for="row in displayData" :key="row.id">
-									<td>{{ row.unique_number }}</td>
-									<td>{{ row.role }}</td>
+									<td>{{ row.registration_number }}</td>
+									<td>{{ row.type }}</td>
+									<td>{{ row.status }}</td>
 									<td>
-										<button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary btn-block">
+										<router-link id="default-outline-primary" :to="'/businesses/vehicle-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
-										</button>
+										</router-link>
 									</td>
 									<td>
-										<button id="default-outline-primary" @click="edit_train(row)" type="button" class="btn btn-pill btn-outline-primary btn-block">
+										<button id="default-outline-primary" @click="edit_vehicle(row)" type="button" class="btn btn-pill btn-outline-primary btn-block">
 											<i class="icon-pencil-alt"></i>
 										</button>
 									</td>
@@ -89,9 +86,9 @@
 			</div>
 
 
-			<CreateTrain v-on:train-create-success="action_success" id="create-train" style="display: none;" :businessProfile="businessProfile" />
+			<CreateVehicle v-on:vehicle-create-success="action_success" id="create-vehicle" style="display: none;" :businessProfile="businessProfile" />
 
-        	<UpdateTrain v-on:train-updated-success="action_success" id="update-train" style="display: none;" :trainData="train_data" />
+        	<UpdateVehicle v-on:vehicle-updated-success="action_success" id="update-vehicle" style="display: none;" :vehicleData="vehicle_data" />
 
 
 		</div>
@@ -105,16 +102,16 @@ import users from '../../../../data/users'
 import axios from "axios"
 import { ApiUrl } from "../../../../api/apiurl"
 import Auth from "../../../../auth/js/spider_auth"
-import UpdateTrain from "../assets_forms/train/update"
-import CreateTrain from "../assets_forms/train/create"
+import UpdateVehicle from "../assets_forms/vehicle/update"
+import CreateVehicle from "../assets_forms/vehicle/create"
 
 export default {
 	data(){
 		return{
 			users,
 			businessProfile: {},
-			train_data: {},
-			trains: [],
+			vehicle_data: {},
+			vehicles: [],
 			basic: {
 				currentPage: 1,
 				totalPages: 0,
@@ -126,18 +123,19 @@ export default {
 			},
 
 			filters: {
-				unique_number: { value: '', keys: ['unique_number'] },
-				role: { value: '', keys: ['role'] }
+				registration_number: { value: '', keys: ['registration_number'] },
+				type: { value: '', keys: ['type'] },
+				status: { value: '', keys: ['status'] }
 			}
 		}
 	},
 	components: {
-		CreateTrain,
-		UpdateTrain
+		CreateVehicle,
+		UpdateVehicle
 	},
 	created() {
 
-		this.get_all_business_trains()
+		this.get_all_business_vehicles()
 		this.get_business_profile()	
 
 	},
@@ -170,7 +168,7 @@ export default {
 			} )
 
 		},
-		get_all_business_trains: function() {
+		get_all_business_vehicles: function() {
 
 			axios.get(`${ApiUrl.url}vehicles/business/${this.$route.params.id}`, {
 				headers: {
@@ -179,7 +177,7 @@ export default {
 			})
 			.then( (resp) => {
 
-				this.trains = resp.data.data
+				this.vehicles = resp.data.data
 
 			} )
 			.catch( (err) => {
@@ -198,14 +196,14 @@ export default {
 			} )
 
 		},
-		create_train: function() {
+		create_vehicle: function() {
 			
 			if(Object.keys(this.businessProfile).length > 0) {
 
 				let modal = new Custombox.modal({
 				content: {
 						effect: 'slip',
-						target: '#create-train'
+						target: '#create-vehicle'
 					}
 				})
 
@@ -218,16 +216,16 @@ export default {
 			}
 
         },
-        edit_train: function(row) {
+        edit_vehicle: function(row) {
 
-			this.train_data = row
+			this.vehicle_data = row
 
-			if(Object.keys(this.train_data).length > 0) {
+			if(Object.keys(this.vehicle_data).length > 0) {
 
 				let modal = new Custombox.modal({
                 content: {
                     effect: 'slip',
-                    target: '#update-train'
+                    target: '#update-vehicle'
                     }
                 })
 
@@ -239,7 +237,7 @@ export default {
 
 		},
 		action_success: function(data) {
-			this.get_all_business_trains()
+			this.get_all_business_vehicles()
 		}
 	}
 }

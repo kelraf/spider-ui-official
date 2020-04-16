@@ -15,14 +15,11 @@
 							<div class="datatable-vue m-0">
 
 							<div class="row filter-smart">
-								<div class="col-sm-2">
+								<div class="col-sm-4">
 									<input class="form-control" v-model="filters.unique_number.value" placeholder="Unique Number"/>
 								</div>
 								<div class="col-sm-2">
-									<input class="form-control" v-model="filters.role.value" placeholder="Role" />
-								</div>
-								<div class="col-sm-2">
-									<!-- <input class="form-control" v-model="filters.office.value" placeholder="Office" /> -->
+									<input class="form-control" v-model="filters.status.value" placeholder="Status" />
 								</div>
 								<div class="col-sm-2">
 									<!-- <input class="form-control" v-model="filters.age.value" placeholder="Age" /> -->
@@ -48,7 +45,7 @@
 
 							<thead slot="head">
 								<v-th sortKey="unique_number">Unique Number</v-th>
-								<v-th sortKey="role">Role</v-th>
+								<v-th sortKey="status">Status</v-th>
 								<v-th sortKey="unique_number"></v-th>
 								<v-th sortKey="unique_number"></v-th>
 								<v-th sortKey="unique_number"></v-th>
@@ -56,11 +53,11 @@
 							<tbody slot="body" slot-scope="{displayData}">
 								<tr v-for="row in displayData" :key="row.id">
 									<td>{{ row.unique_number }}</td>
-									<td>{{ row.role }}</td>
+									<td>{{ row.status }}</td>
 									<td>
-										<button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary btn-block">
+										<router-link id="default-outline-primary" :to="'/businesses/train-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
-										</button>
+										</router-link>
 									</td>
 									<td>
 										<button id="default-outline-primary" @click="edit_train(row)" type="button" class="btn btn-pill btn-outline-primary btn-block">
@@ -127,7 +124,7 @@ export default {
 
 			filters: {
 				unique_number: { value: '', keys: ['unique_number'] },
-				role: { value: '', keys: ['role'] }
+				status: { value: '', keys: ['status'] }
 			}
 		}
 	},

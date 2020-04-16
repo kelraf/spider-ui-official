@@ -16,8 +16,8 @@
                                     </div>
 
                                     <div class="mb-2">
-                                        <div class="col-form-label"> Flight Role </div>
-                                        <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.role.error ? 'form-error' : ''" v-model="form.role.value" :options="form.role.options"></b-form-select>
+                                        <div class="col-form-label"> Flight Type </div>
+                                        <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.type.error ? 'form-error' : ''" v-model="form.type.value" :options="form.type.options"></b-form-select>
                                     </div>
 
                                     <div class="form-group form-row mb-0">
@@ -63,15 +63,13 @@ export default {
                     error: '',
                     value: ''
                 },
-                role: {
+                type: {
                     error: '',
                     value: '',
                     options : [
-                        { value: '', text:'Select Flight Role' },
-                        { value: 'meat-transporter', text:'Meat Transporter' },
-                        { value: 'livestock-transporter', text:'Livestock Transporter' },
-                        { value: 'poutry-transporter', text:'Poutry Transporter' },
-                        { value: 'products-transporter', text:'Products Transporter' }
+                        { value: '', text:'Select Flight Type' },
+                        { value: 'plane', text:'Plane' },
+                        { value: 'helicopter', text:'Helicopter' }
                     ]
                 },
                 business_id: null,
@@ -93,7 +91,7 @@ export default {
                 this.plane_data = this.planeData
 
                 this.form.unique_number.value = this.plane_data.unique_number != null ? this.plane_data.unique_number: ''
-                this.form.role.value = this.plane_data.role != null ? this.plane_data.role: ''
+                this.form.type.value = this.plane_data.type != null ? this.plane_data.type: ''
             }
         }
     },
@@ -118,7 +116,7 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.unique_number.error = 'field can\'t be empty'
-                this.form.role.error = ''
+                this.form.type.error = ''
 
                 this.$toasted.show(`Unique Number : ${this.form.unique_number.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -131,7 +129,7 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.unique_number.error = 'is too short'
-                this.form.role.error = ''
+                this.form.type.error = ''
 
                 this.$toasted.show(`Unique Number : ${this.form.unique_number.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -139,14 +137,14 @@ export default {
                     $(".to-shake").removeClass("animated").removeClass("shake");
                 }, 500)
 
-            } else if(this.form.role.value == '') {
+            } else if(this.form.type.value == '') {
 
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.unique_number.error = ''
-                this.form.role.error = 'can\'t be empty'
+                this.form.type.error = 'can\'t be empty'
 
-                this.$toasted.show(`Flight Role : ${this.form.role.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
+                this.$toasted.show(`Flight Type : ${this.form.type.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
                     $(".to-shake").removeClass("animated").removeClass("shake");
@@ -157,7 +155,7 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 his.form.unique_number.error = ''
-                this.form.role.error = ''
+                this.form.type.error = ''
 
                 this.$toasted.show(` Oops!! An Error Occured. Please Try Again. : 001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -168,7 +166,7 @@ export default {
             } else {
 
                 this.form.unique_number.error = ''
-                this.form.role.error = ''
+                this.form.type.error = ''
 
                 this.loading = true
 
@@ -176,7 +174,7 @@ export default {
                 let data = {
                     flight : {
                         unique_number : this.form.unique_number.value,
-                        role : this.form.role.value,
+                        type : this.form.type.value,
                         user_id: this.plane_data.user_id,
                         business_id: this.plane_data.business_id
                     }
@@ -189,8 +187,6 @@ export default {
                         Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                     }
                 }
-
-                console.log(this.plane_data.id)
 
                 axios.put(`${ApiUrl.url}flights/${this.plane_data.id}`, data, headers) 
                 .then( (resp) => {
@@ -219,9 +215,9 @@ export default {
                                     if(key == "unique_number") {
                                         self.form.unique_number.error = err.response.data.errors.unique_number[0]
                                         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.unique_number[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                    } else if(key == "role") {
-                                        self.form.role.error = err.response.data.errors.role[0]
-                                        self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.role[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                    } else if(key == "type") {
+                                        self.form.type.error = err.response.data.errors.type[0]
+                                        self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.type[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "business_id") {
                                         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "user_id") {

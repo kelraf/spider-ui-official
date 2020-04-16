@@ -15,11 +15,6 @@
                                         <input v-model="form.unique_number.value" :class="form.unique_number.error ? 'form-error' : ''" class="form-control" type="text" placeholder="Flight Unique Number">
                                     </div>
 
-                                    <div class="mb-2">
-                                        <div class="col-form-label"> Vessle Role </div>
-                                        <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.role.error ? 'form-error' : ''" v-model="form.role.value" :options="form.role.options"></b-form-select>
-                                    </div>
-
                                     <div class="form-group form-row mb-0">
                                         <div class="col-md-12 btn-c">
                                             <div class="btn-container">
@@ -63,17 +58,6 @@ export default {
                     error: '',
                     value: ''
                 },
-                role: {
-                    error: '',
-                    value: '',
-                    options : [
-                        { value: '', text:'Select Vessle Role' },
-                        { value: 'meat-transporter', text:'Meat Transporter' },
-                        { value: 'livestock-transporter', text:'Livestock Transporter' },
-                        { value: 'poutry-transporter', text:'Poutry Transporter' },
-                        { value: 'products-transporter', text:'Products Transporter' }
-                    ]
-                },
                 business_id: null,
                 user_id: parseInt(Auth.isAuthenticatedUser().sub),
             }
@@ -91,9 +75,8 @@ export default {
             handler() {
 
                 this.vessle_data = this.vessleData
-
                 this.form.unique_number.value = this.vessle_data.unique_number != null ? this.vessle_data.unique_number: ''
-                this.form.role.value = this.vessle_data.role != null ? this.vessle_data.role: ''
+
             }
         }
     },
@@ -118,8 +101,6 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.unique_number.error = 'field can\'t be empty'
-                this.form.role.error = ''
-
                 this.$toasted.show(`Unique Number : ${this.form.unique_number.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
@@ -131,22 +112,7 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.unique_number.error = 'is too short'
-                this.form.role.error = ''
-
                 this.$toasted.show(`Unique Number : ${this.form.unique_number.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
-
-                setTimeout(function() {
-                    $(".to-shake").removeClass("animated").removeClass("shake");
-                }, 500)
-
-            } else if(this.form.role.value == '') {
-
-                $(".to-shake").addClass("animated").addClass("shake");
-
-                this.form.unique_number.error = ''
-                this.form.role.error = 'can\'t be empty'
-
-                this.$toasted.show(`Vessle Role : ${this.form.role.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
                     $(".to-shake").removeClass("animated").removeClass("shake");
@@ -157,8 +123,6 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 his.form.unique_number.error = ''
-                this.form.role.error = ''
-
                 this.$toasted.show(` Oops!! An Error Occured. Please Try Again. : 001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
@@ -168,15 +132,11 @@ export default {
             } else {
 
                 this.form.unique_number.error = ''
-                this.form.role.error = ''
-
                 this.loading = true
-
 
                 let data = {
                     vessle : {
                         unique_number : this.form.unique_number.value,
-                        role : this.form.role.value,
                         user_id: this.vessle_data.user_id,
                         business_id: this.vessle_data.business_id
                     }
@@ -217,9 +177,6 @@ export default {
                                     if(key == "unique_number") {
                                         self.form.unique_number.error = err.response.data.errors.unique_number[0]
                                         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.unique_number[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                    } else if(key == "role") {
-                                        self.form.role.error = err.response.data.errors.role[0]
-                                        self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.role[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "business_id") {
                                         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "user_id") {

@@ -13,8 +13,12 @@ import Register from '../auth/register'
 import VerifyCode from '../auth/verify_code'
 import NotVerified from "../auth/not_verified"
 
-//User Profile
+// Profile
 import EditProfile from "../pages/users/user_profile"
+import ViewVehicle from "../pages/business/business_assets/profiles/vehicle"
+import ViewTrain from "../pages/business/business_assets/profiles/train"
+import ViewFlight from "../pages/business/business_assets/profiles/flight"
+import ViewVessle from "../pages/business/business_assets/profiles/vessle"
 
 //Business Profile
 import EditBusinessProfile from "../pages/business/editprofile"
@@ -24,6 +28,7 @@ import MyBusinesses from "../pages/business/my_businesses"
 import ViewTrains from "../pages/business/business_assets/assets_tables/view_trains"
 import ViewFlights from "../pages/business/business_assets/assets_tables/view_planes"
 import ViewVessles from "../pages/business/business_assets/assets_tables/view_vessles"
+import ViewVehicles from "../pages/business/business_assets/assets_tables/view_vehicles"
 
 // Dashboards
 import Home from "../pages/dashboard/home"
@@ -187,7 +192,47 @@ const routes = [
       }
     },
     {
-      path: 'all-tests',
+      path: 'all-vehicles/:id',
+      name: 'all-vehicles',
+      component: ViewVehicles,
+      meta: {
+        title: `Business All Vehicles | ${system_title}`,
+      }
+    },
+    {
+      path: 'vehicle-profile/:id',
+      name: 'vehicle-profile',
+      component: ViewVehicle,
+      meta: {
+        title: `Business Vehicle Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'train-profile/:id',
+      name: 'train-profile',
+      component: ViewTrain,
+      meta: {
+        title: `Business Train Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'flight-profile/:id',
+      name: 'flight-profile',
+      component: ViewFlight,
+      meta: {
+        title: `Business Flight Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'vessle-profile/:id',
+      name: 'vessle-profile',
+      component: ViewVessle,
+      meta: {
+        title: `Business Vessle Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'all-tests/:id',
       name: 'all-tests',
       component: ViewVessles,
       meta: {

@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="col-4">
-                    <button @click="vehicle_roles" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> View </button>
+                    <router-link id="default-outline-primary" :to="'/businesses/all-vehicles/'+businessProfile.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> View </router-link>
                 </div>
 
                 <div class="col-4">
