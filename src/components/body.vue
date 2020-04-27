@@ -8,7 +8,7 @@
         </div>
         <div class="page-body">
           <transition name="fadeIn" enter-active-class="animated fadeIn">
-           <router-view class="view"></router-view>
+            <router-view class="view"></router-view>
           </transition>
         </div>
         <Footer/>
@@ -25,13 +25,19 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import Customizer from './customizer'
 
+import axios from "axios"
+import { ApiUrl } from "../api/apiurl"
+import Auth from "../auth/js/spider_auth"
+
 export default {
   name: 'mainpage',
   data(){
     return{
       mobileheader_toggle_var: false,
       sidebar_toggle_var: false,
-      resized:false
+      resized:false,
+      avatar_url: "",
+      user_profile: {}
     }
   },
   // props:['sidebar_toggle_var'],
@@ -44,7 +50,8 @@ export default {
   computed: {
     ...mapState({
       menuItems: state => state.menu.data,
-      layout: state => state.layout.layout
+      layout: state => state.layout.layout,
+      userProfile: state => state.userProfile.userProfile
     })
   },
   created(){
@@ -52,6 +59,7 @@ export default {
     this.handleResize();
     this.resized = this.sidebar_toggle_var;
     this.$store.dispatch('layout/set')
+    this.loadUserProfile()
   },
   watch:{
     '$route' (){
@@ -75,6 +83,41 @@ export default {
     }
   },
   methods:{
+    loadUserProfile: function() {
+
+      let headers = {
+          headers: {
+              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+          }
+      }
+
+      axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
+      .then( (resp) => {
+
+        this.user_profile = resp.data.data
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
+
+        delete this.user_profile.pin
+        delete this.user_profile.national_id_number
+        this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+
+      } )
+      .catch( (err) => {
+
+        if(err.response) {
+
+          if (err.response.status == 401) {
+            
+            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+            this.$router.replace("/auth/login")
+
+          }
+
+        }
+
+      } )
+
+    },
     sidebar_toggle(value) {
       this.sidebar_toggle_var = !value
     },

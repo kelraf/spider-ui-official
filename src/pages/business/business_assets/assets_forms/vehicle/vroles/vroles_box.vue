@@ -48,52 +48,55 @@ export default {
 
                 this.tempvroles = []
 
-                let available_count = this.vehicle_data.vroles.length
+                if(Object.keys(this.vehicle_data).length > 0) {
 
-                for (const drole of this.droles) {
+                    let available_count = this.vehicle_data.vroles.length
 
-                    if(available_count <= 0) {
-                        
-                        let tempvrole = {
-                            set: false,
-                            capacity: 0,
-                            capacity_units: drole.capacity_units,
-                            vehicle_id: this.vehicle_data.id,
-                            drole_id: drole.id,
-                            drole: drole.role,
-                            id: null
-                        }
+                    for (const drole of this.droles) {
 
-                        this.tempvroles.push(tempvrole)
-
-                    } else {
-
-                        for (const vrole of this.vehicle_data.vroles) {
-
-                            if(vrole.drole_id == drole.id) {
-
-                                let tempvrole = vrole
-
-                                tempvrole.set = true
-                                tempvrole.drole = drole.role
-                                tempvrole.capacity_units = drole.capacity_units
-
-                                this.tempvroles.push(tempvrole)
-
-                                available_count--
-
+                        if(available_count <= 0) {
+                            
+                            let tempvrole = {
+                                set: false,
+                                capacity: 0,
+                                capacity_units: drole.capacity_units,
+                                vehicle_id: this.vehicle_data.id,
+                                drole_id: drole.id,
+                                drole: drole.role,
+                                id: null
                             }
-                    
+
+                            this.tempvroles.push(tempvrole)
+
+                        } else {
+
+                            for (const vrole of this.vehicle_data.vroles) {
+
+                                if(vrole.drole_id == drole.id) {
+
+                                    let tempvrole = vrole
+
+                                    tempvrole.set = true
+                                    tempvrole.drole = drole.role
+                                    tempvrole.capacity_units = drole.capacity_units
+
+                                    this.tempvroles.push(tempvrole)
+
+                                    available_count--
+
+                                }
+                        
+                            }
+
                         }
 
-                    }
-
-                }                
+                    }  
+                }
 
             }
         }
     },
-    mounted() {
+    mounted() { 
 
         this.vehicle_data = this.vehicleData
         this.get_droles()

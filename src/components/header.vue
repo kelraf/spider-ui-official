@@ -86,7 +86,7 @@
           </li>
           <li><a href="#"><feather type="message-circle"></feather><span class="dot"></span></a></li>
           <li class="onhover-dropdown">
-            <div class="media align-items-center"><img class="align-self-center pull-right img-50 rounded-circle" src="../assets/images/dashboard/user.png" alt="header-user">
+            <div class="media align-items-center"><img class="align-self-center pull-right img-50 rounded-circle" :src="avatar_url" alt="header-user">
               <div class="dotted-animation"><span class="animate-circle"></span><span class="main-circle"></span></div>
             </div>
             <ul class="profile-dropdown onhover-show-div p-20">
@@ -115,6 +115,8 @@ import { mapState } from "vuex";
 import Auth from "../auth/js/spider_auth"
 import logoutModal from "./logout_modal"
 
+import { ApiUrl } from "../api/apiurl"
+
 export default {
   name: 'Search',
   data() {
@@ -126,15 +128,20 @@ export default {
       clicked:false,
       mobile_toggle:false,
       mobile_search: false,
-      loading: true
+      loading: true,
+      avatar_url: ""
     }
   },
   components: {
     logoutModal
   },
+  created() {
+    console.log("HEADER", this.userProfile)
+  },
   computed: {
     ...mapState({
-      menuItems: state => state.menu.searchData
+      menuItems: state => state.menu.searchData,
+      userProfile: state => state.userProfile.userProfile
     })
   },
   methods: {
@@ -195,6 +202,21 @@ export default {
         this.searchResultEmpty = true;
       else
         this.searchResultEmpty = false;
+    },
+    userProfile: function(data) {
+
+      if(Object.keys(data.avatar).length > 0) {
+
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.avatar.file_name}`
+
+      } else {
+
+        this.avatar_url = ""
+        
+      }
+
+
+
     }
   }
 }

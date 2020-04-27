@@ -297,7 +297,6 @@ import Auth from "../../auth/js/spider_auth"
         .then( (resp) => {
 
           this.business_profile = resp.data.data
-          console.log(resp)
 
         } )
         .catch( (err) => {

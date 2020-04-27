@@ -10,7 +10,7 @@
     <div class="sidebar custom-scrollbar">
       <div class="sidebar-user text-center">
         <div>
-          <img class="img-60 rounded-circle" src="../assets/images/user/1.jpg" alt="#" />
+          <img class="img-60 rounded-circle" src="http://0.0.0.0:4000/api/uploads/user/avatars/spider_1.jpg" alt="#" />
           <div class="profile-edit">
             <router-link :to="'/users/profile/'+user_id">
               <feather type="edit"></feather>

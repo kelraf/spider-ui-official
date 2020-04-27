@@ -6,31 +6,23 @@
             <div class="edit-profile">
               <div class="row">
 
-                  <div class="col-md-6 col-lg-6 col-xl-4">
+                  <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
                     <div class="card custom-card">
 
                       <div class="card-header"><img class="img-fluid" src="../../assets/images/user-card/1.jpg" alt=""></div>
 
-                      <div class="card-profile"><img class="rounded-circle" src="../../assets/images/avtar/3.jpg" alt=""></div>
+                      <div class="card-profile">
+
+                        <img @click="profile_image" title="Click To Update The Image." class="rounded-circle profile-image" :src="avatar_url" alt="">
+                        <div class="profile-edit">
+                          <feather @click="profile_image" class="edit-image" type="edit"></feather>
+                        </div>
+
+                      </div>
 
                       <div class="text-center profile-details">
                         <h4>Mark Jecno</h4>
                         <h6>Manager</h6>
-                      </div>
-
-                      <div class="card-footer row">
-                        <div class="col-4 col-sm-4">
-                          <h6>Follower</h6>
-                          <h3 class="counter">9564</h3>
-                        </div>
-                        <div class="col-4 col-sm-4">
-                          <h6>Following</h6>
-                          <h3><span class="counter">49</span>K</h3>
-                        </div>
-                        <div class="col-4 col-sm-4">
-                          <h6>Total Post</h6>
-                          <h3><span class="counter">96</span>M</h3>
-                        </div>
                       </div>
 
                       <div>
@@ -42,7 +34,7 @@
                     </div>
                   </div>
 
-                <div class="col-xl-8">
+                <div class="col-xl-8 col-md-8 col-sm-8">
 
                   <form class="card">
 
@@ -163,46 +155,10 @@
                 <EditProfile :userProfile="user_profile" v-on:close-modal="close_model" style="display: none;" id="model-edit-profile" />
                 <ShowMap v-on:close-modal="close_model" style="display: none;" id="model-show-map" />
                 <EditPassword  :userProfile="user_profile" v-on:close-modal="close_model" style="display: none;" id="model-edit-password" />
+                <ProfileImageEditor v-on:avatar-changed="profile_image_changed" :userProfileProp="user_profile" id="model-profile-image" style="display: none;" />
 
                 <!-- Model Ends -->
-
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title mb-0">My Businesses</h4>
-                      <div class="card-options"><a class="card-options-collapse" href="#" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-toggle="card-remove"><i class="fe fe-x"></i></a></div>
-                    </div>
-                    <div class="table-responsive mb-0">
-                      <table class="table card-table table-vcenter text-nowrap">
-                        <thead>
-                          <tr>
-                            <th>Project Name</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Price</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><a class="text-inherit" href="#">Untrammelled prevents</a></td>
-                            <td>14 June 2018</td>
-                            <td><span class="status-icon bg-warning"></span> Pending</td>
-                            <td>$70,435</td>
-                            <td class="text-right"><a class="icon" href="javascript:void(0)"></a><a class="btn btn-primary btn-sm" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-transparent btn-sm" href="javascript:void(0)"><i class="fa fa-link"></i> Update</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-danger btn-sm" href="javascript:void(0)"><i class="fa fa-trash"></i> Delete</a></td>
-                          </tr>
-                          <tr>
-                            <td><a class="text-inherit" href="#">Untrammelled prevents</a></td>
-                            <td>25 June 2018</td>
-                            <td><span class="status-icon bg-success"></span> Completed</td>
-                            <td>$15,987</td>
-                            <td class="text-right"><a class="icon" href="javascript:void(0)"></a><a class="btn btn-primary btn-sm" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-transparent btn-sm" href="javascript:void(0)"><i class="fa fa-link"></i> Update</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-danger btn-sm" href="javascript:void(0)"><i class="fa fa-trash"></i> Delete</a></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -214,6 +170,8 @@
 import EditProfile from "./edit_profile"
 import ShowMap from "./show_map"
 import EditPassword from "./edit_password"
+import ImageUploader from "../../components/image_upload"
+import ProfileImageEditor from "./profile_image"
 
 import axios from "axios"
 import { ApiUrl } from "../../api/apiurl"
@@ -222,7 +180,8 @@ import Auth from "../../auth/js/spider_auth"
 export default {
   data() {
     return {
-      user_profile : {}
+      user_profile : {},
+      avatar_url: ""
     }
   },
   created() {
@@ -236,10 +195,10 @@ export default {
     axios.get(`${ApiUrl.url}users/${this.$route.params.id}`, headers)
     .then( (resp) => {
       this.user_profile = resp.data.data
+      this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
     } )
     .catch( (err) => {
 
-      console.log(err.response)
       if(err.response) {
 
         if (err.response.status == 401) {
@@ -257,9 +216,34 @@ export default {
   components: {
     EditProfile,
     ShowMap,
-    EditPassword
+    EditPassword,
+    ImageUploader,
+    ProfileImageEditor
   },
   methods: {
+    profile_image_changed(data) {
+
+      this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.file_name}`
+
+    },
+    profile_image: function() {
+
+      this.options = {
+        url: `${ApiUrl.url}avatars/${Auth.isAuthenticatedUser().sub}`,
+        paramName: "avatars",
+        uploadMultiple: false,
+        imageFor: "Profile Image"
+      }
+
+      let modal = new Custombox.modal({
+        content: {
+          effect: 'slip',
+          target: '#model-profile-image'
+        }
+      })
+
+      modal.open()
+    },
     edit: function() {
 
       let modal = new Custombox.modal({
@@ -327,6 +311,7 @@ export default {
     height: auto;
   }
 
-  .pass-update {
+  .profile-image:hover {
+    cursor: pointer;
   }
 </style>

@@ -73,9 +73,6 @@ export default {
   components: {
     
   },
-  mounted(){
-    console.log("Mounted")
-  },
   created() {
 
     axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, {

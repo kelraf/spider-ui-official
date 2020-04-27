@@ -4,6 +4,7 @@ import 'es6-promise/auto'
 import layout from './modules/layout'
 import menu from './modules/menu'
 import spiderverify from "./modules/spider_verify"
+import userProfile from "./modules/userProfile"
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ export const store = new Vuex.Store({
     modules: {
         layout,
         menu,
-        spiderverify
+        spiderverify,
+        userProfile
     },
     strict: false
 });

@@ -17,11 +17,15 @@
                 </div>
 
                 <div class="col-4">
-                    <router-link id="default-outline-primary" :to="'/businesses/all-flights/'+businessProfile.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> View </router-link>
+                    <router-link id="default-outline-primary" :to="'/businesses/all-flights/'+businessProfile.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+                        <i class="icon-eye"></i>
+                    </router-link>
                 </div>
 
                 <div class="col-4">
-                    <button id="default-outline-primary" @click="create_plane" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Add </button>
+                    <button id="default-outline-primary" @click="create_plane" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+                        <i class="icon-plus"></i>
+                    </button>
                 </div>
 
             </div>

@@ -7,7 +7,25 @@
 
 		<!-- Container-fluid starts-->
 		<div class="container-fluid">
-			<div class="row">
+
+			<div v-if="message !== '' && vessles.length <= 0" class="row pt-5">
+				<div class="col-md-6 text-center offset-md-3 pt-5">
+					<h2> {{ message }} </h2>
+
+					<div class="container pt-5">
+						<div class="row">
+							<div class="col-6 offset-3">
+								<button id="default-outline-primary" @click="create_vessle" type="button" class="btn btn-pill btn-outline-primary btn-block">
+									<i class="icon-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div v-if="vessles.length > 0" class="row">
 
 				<div class="col-md-12">
 					<div class="card">
@@ -112,6 +130,7 @@ export default {
 			businessProfile: {},
 			vessle_data: {},
 			vessles: [],
+			message: '',
 			basic: {
 				currentPage: 1,
 				totalPages: 0,
@@ -176,6 +195,10 @@ export default {
 			.then( (resp) => {
 
 				this.vessles = resp.data.data
+
+				if(this.vessles.length <= 0) {
+					this.message = resp.data.message
+				}
 
 			} )
 			.catch( (err) => {

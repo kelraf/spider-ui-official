@@ -19,6 +19,9 @@ import ViewVehicle from "../pages/business/business_assets/profiles/vehicle"
 import ViewTrain from "../pages/business/business_assets/profiles/train"
 import ViewFlight from "../pages/business/business_assets/profiles/flight"
 import ViewVessle from "../pages/business/business_assets/profiles/vessle"
+import ViewLivestock from "../pages/business/business_assets/profiles/livestock"
+import ViewProduce from "../pages/business/business_assets/profiles/produce"
+import ViewProduct from "../pages/business/business_assets/profiles/product/product"
 
 //Business Profile
 import EditBusinessProfile from "../pages/business/editprofile"
@@ -29,6 +32,9 @@ import ViewTrains from "../pages/business/business_assets/assets_tables/view_tra
 import ViewFlights from "../pages/business/business_assets/assets_tables/view_planes"
 import ViewVessles from "../pages/business/business_assets/assets_tables/view_vessles"
 import ViewVehicles from "../pages/business/business_assets/assets_tables/view_vehicles"
+import ViewLivestocks from "../pages/business/business_assets/assets_tables/view_livestock"
+import ViewProduces from "../pages/business/business_assets/assets_tables/view_produce"
+import ViewProducts from "../pages/business/business_assets/assets_tables/view_products"
 
 // Dashboards
 import Home from "../pages/dashboard/home"
@@ -200,6 +206,30 @@ const routes = [
       }
     },
     {
+      path: 'all-livestocks/:id',
+      name: 'all-livestocks',
+      component: ViewLivestocks,
+      meta: {
+        title: `Business All Livestocks | ${system_title}`,
+      }
+    },
+    {
+      path: 'all-produce/:id',
+      name: 'all-produce',
+      component: ViewProduces,
+      meta: {
+        title: `Business All Produce | ${system_title}`,
+      }
+    },
+    {
+      path: 'all-products/:id',
+      name: 'all-products',
+      component: ViewProducts,
+      meta: {
+        title: `Business All Products | ${system_title}`,
+      }
+    },
+    {
       path: 'vehicle-profile/:id',
       name: 'vehicle-profile',
       component: ViewVehicle,
@@ -229,6 +259,30 @@ const routes = [
       component: ViewVessle,
       meta: {
         title: `Business Vessle Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'livestock-profile/:id',
+      name: 'livestock-profile',
+      component: ViewLivestock,
+      meta: {
+        title: `Business Livestock Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'produce-profile/:id',
+      name: 'produce-profile',
+      component: ViewProduce,
+      meta: {
+        title: `Business Produce Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'product-profile/:id',
+      name: 'product-profile',
+      component: ViewProduct,
+      meta: {
+        title: `Business Product Profile | ${system_title}`,
       }
     },
     {

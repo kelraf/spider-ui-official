@@ -26,11 +26,11 @@
 
                       <Trains :businessProfile="business_profile" v-if="business_asset.asset_name == 'train'" />
                       
-                      <Produce v-if="business_asset.asset_name == 'produce'" />
+                      <Produce :businessProfile="business_profile" v-if="business_asset.asset_name == 'produce'" />
 
-                      <Products v-if="business_asset.asset_name == 'product'" />
+                      <Products :businessProfile="business_profile" v-if="business_asset.asset_name == 'product'" />
 
-                      <Livestock v-if="business_asset.asset_name == 'livestock'" />
+                      <Livestock :businessProfile="business_profile" v-if="business_asset.asset_name == 'livestock'" />
 
                     </div>
 
