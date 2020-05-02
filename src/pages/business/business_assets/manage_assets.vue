@@ -13,24 +13,24 @@
                 <div class="row">
 
                     <div class="col-md-6">
-                      <Vehicle :businessProfile="business_profile" />
+                      <Manage v-on:action-success="action_success" :businessProfile="business_profile" />
                     </div>
 
-                    <div v-for="business_asset in business_profile.business_assets" :key="business_asset.id" class="col-md-6">
+                    <div v-for="business_asset in business_assets" :key="business_asset.id" class="col-md-6">
 
-                      <!-- <Manage :businessProfile="business_profile" v-if="business_asset.asset_name == 'manage'" /> -->
+                      <Vehicle v-if="business_asset.asset_name == 'vehicles' && business_asset.status == 2 " :businessProfile="business_profile" />
 
-                      <Plane v-if="business_asset.asset_name == 'plane'" :businessProfile="business_profile" />
+                      <Plane v-if="business_asset.asset_name == 'plane' && business_asset.status == 2" :businessProfile="business_profile" />
 
-                      <Vessle v-if="business_asset.asset_name == 'vessle'" :businessProfile="business_profile" />
+                      <Vessle v-if="business_asset.asset_name == 'vessles' && business_asset.status == 2" :businessProfile="business_profile" />
 
-                      <Trains :businessProfile="business_profile" v-if="business_asset.asset_name == 'train'" />
+                      <Trains :businessProfile="business_profile" v-if="business_asset.asset_name == 'train' && business_asset.status == 2" />
                       
-                      <Produce :businessProfile="business_profile" v-if="business_asset.asset_name == 'produce'" />
+                      <Produce :businessProfile="business_profile" v-if="business_asset.asset_name == 'produce' && business_asset.status == 2" />
 
-                      <Products :businessProfile="business_profile" v-if="business_asset.asset_name == 'product'" />
+                      <Products :businessProfile="business_profile" v-if="business_asset.asset_name == 'products' && business_asset.status == 2" />
 
-                      <Livestock :businessProfile="business_profile" v-if="business_asset.asset_name == 'livestock'" />
+                      <Livestock :businessProfile="business_profile" v-if="business_asset.asset_name == 'livestocks' && business_asset.status == 2" />
 
                     </div>
 
@@ -56,12 +56,13 @@ import Plane from "./plane"
 import Livestock from "./livestock"
 import Vehicle from "./vehicle"
 import Vessle from "./vessle"
-import Manage from "./manage"
+import Manage from "./assets_management_box/manage"
 
 export default {
     data() {
         return {
-            business_profile: {}
+            business_profile: {},
+            business_assets: []
         }
     },
     components: {
@@ -84,6 +85,7 @@ export default {
       .then( (resp) => {
 
         this.business_profile = resp.data.data
+        this.business_assets = this.business_profile.business_assets
 
       } )
       .catch( (err) => {
@@ -101,6 +103,14 @@ export default {
 
       } )
 
+      },
+      methods: {
+        action_success(data) {
+
+          this.business_profile.business_assets = data
+          this.business_assets = this.business_profile.business_assets
+
+        }
       }
 
 }

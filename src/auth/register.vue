@@ -105,8 +105,16 @@ export default {
     },
     computed: {
         ...mapState({
-            phone_number: state => state.spiderverify.phone_number
+            phone_number: state => state.spiderverify.phone_number,
+            role: state => state.selectedRole.role,
         })
+    },
+    created() {
+        console.log(this.role)
+        if(this.role == "") {
+            this.$router.replace("/auth/register-as")
+            this.$toasted.show("Register As", {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+        }
     },
     methods: {
         
@@ -264,7 +272,7 @@ export default {
                         phone_number: this.form.phone_number.value,
                         raw_password: this.form.password.value,
                         confirm_password: this.form.confirm_password.value,
-                        role: "spider-010-norm"
+                        role: this.role
                     }
                 }
 
@@ -317,8 +325,8 @@ export default {
                                         self.form.confirm_password.error = err.response.data.errors.confirm_password[0]
                                         self.$toasted.show(`${key.split("_").join(" ")} : ${err.response.data.errors.confirm_password[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "role") {
-                                        self.form.role.error = err.response.data.errors.role[0]
-                                        self.$toasted.show(`${key} : ${err.response.data.errors.role[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                        self.form.role.error = "Oops!! Something Went Wrong. Please Try Again."
+                                        self.$toasted.show(`${self.form.role.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else {
                                         console.log("Oops!! Error Occured")
                                     }

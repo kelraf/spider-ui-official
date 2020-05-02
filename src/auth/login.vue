@@ -8,7 +8,7 @@
                     <div class="col-md-12">
                         <div class="auth-innerright">
                             <div class="authentication-box">
-                                <div class="text-center"><img alt="" src="../assets/images/endless-logo.png"></div>
+                                <!-- <div class="text-center"><img alt="" src="../assets/images/endless-logo.png"></div> -->
                                 <div class="card mt-4 to-shake">
                                     <div class="card-body">
                                         <div class="text-center">
@@ -35,6 +35,10 @@
                                                         <img style="width: 20px; margin-left: 20px; margin-right: 20px;" v-if="loading" src="../assets/images/loader.gif" alt="">
                                                     </button>
                                                 </span>
+                                            </div>
+
+                                            <div class="col-sm-8">
+                                                <div class="text-left mt-2 m-l-5">Don't Have an Account ?  <router-link class="btn-link text-capitalize" to="/auth/register">Register</router-link ></div>
                                             </div>
                                             
                                         </form>

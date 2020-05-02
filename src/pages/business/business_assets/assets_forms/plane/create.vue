@@ -205,7 +205,7 @@ export default {
 
                             if(err.response.status == 422) {
 
-                                console.log(err.response)
+                                // console.log(err.response)
 
                                 for (const key of Object.keys(err.response.data.errors)) {
 

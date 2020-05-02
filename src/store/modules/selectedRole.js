@@ -1,6 +1,6 @@
 
 const state = {
-    userProfile: {}
+    role: ""
 }
 
 // getters
@@ -11,9 +11,9 @@ const getters = {
 // mutations
 const mutations = {
 
-    updateUserProfile: (state, user_profile) => {
+    setRole: (state, role) => {
 
-      state.userProfile = user_profile;
+      state.role = role;
 
     }
    
@@ -22,8 +22,8 @@ const mutations = {
 // actions
 const actions = {
 
-  updateUserProfile: (context, user_profile) => {
-    context.commit('updateUserProfile', user_profile)
+  setRole: (context, role) => {
+    context.commit('setRole', role)
   }
 
 }

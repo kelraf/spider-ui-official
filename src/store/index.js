@@ -5,6 +5,7 @@ import layout from './modules/layout'
 import menu from './modules/menu'
 import spiderverify from "./modules/spider_verify"
 import userProfile from "./modules/userProfile"
+import selectedRole from "./modules/selectedRole"
 
 Vue.use(Vuex);
 
@@ -15,7 +16,8 @@ export const store = new Vuex.Store({
         layout,
         menu,
         spiderverify,
-        userProfile
+        userProfile,
+        selectedRole
     },
     strict: false
 });

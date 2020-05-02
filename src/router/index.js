@@ -8,6 +8,7 @@ import CreateBusiness from "../pages/business/createbusiness"
 
 /* Auth */
 import Auth from '../auth/auth'
+import RegisterAsSelect from "../auth/register_as_select"
 import login from '../auth/login'
 import Register from '../auth/register'
 import VerifyCode from '../auth/verify_code'
@@ -38,7 +39,7 @@ import ViewProducts from "../pages/business/business_assets/assets_tables/view_p
 
 // Dashboards
 import Home from "../pages/dashboard/home"
-import Business from "../pages/dashboard/business"
+// import Business from "../pages/dashboard/business"
 import Manage from "../pages/business/business_assets/manage_assets"
 
 
@@ -46,7 +47,7 @@ import Manage from "../pages/business/business_assets/manage_assets"
 
 Vue.use(Router)
 
-let system_title = "Spider - Concurrent API"
+let system_title = "Spider - API"
 
 const routes = [
 { path: '', redirect: { name: 'home' }},
@@ -54,6 +55,14 @@ const routes = [
   path: '/auth',
   component: Auth,
   children: [
+  {
+    path: 'register-as',
+    name: 'register-as',
+    component: RegisterAsSelect,
+    meta: {
+      title: `Register As Select | ${system_title}`,
+    }
+  },
   {
     path: 'login',
     name: 'Login',
@@ -67,7 +76,7 @@ const routes = [
     name: 'register',
     component: Register,
     meta: {
-      title: `Register | ${system_title}I`,
+      title: `Register | ${system_title}`,
     }
   },
   {
@@ -96,7 +105,7 @@ const routes = [
   },
   children: [
     {
-      path: '',
+      path: '/',
       name: 'home',
       component: Home,
       meta: {
@@ -157,14 +166,14 @@ const routes = [
         title: `Business Profile | ${system_title}`,
       }
     },
-    {
-      path: 'overview/:id',
-      name: 'overview',
-      component: Business,
-      meta: {
-        title: `Business OverView | ${system_title}`,
-      }
-    },
+    // {
+    //   path: 'overview/:id',
+    //   name: 'overview',
+    //   component: Business,
+    //   meta: {
+    //     title: `Business OverView | ${system_title}`,
+    //   }
+    // },
     {
       path: 'assets/:id',
       name: 'assets',

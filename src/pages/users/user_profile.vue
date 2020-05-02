@@ -13,7 +13,9 @@
 
                       <div class="card-profile">
 
-                        <img @click="profile_image" title="Click To Update The Image." class="rounded-circle profile-image" :src="avatar_url" alt="">
+                        <img @click="profile_image" v-if="avatar_url == ''" title="Click To Update The Image." class="rounded-circle profile-image" src="../../assets/images/default_avatars/default_avatar.svg" alt="Profile Image Placeholder" />
+                        <img @click="profile_image" v-if="avatar_url !== ''" title="Click To Update The Image." class="rounded-circle profile-image" :src="avatar_url" alt="Profile Image" />
+
                         <div class="profile-edit">
                           <feather @click="profile_image" class="edit-image" type="edit"></feather>
                         </div>
@@ -21,7 +23,7 @@
                       </div>
 
                       <div class="text-center profile-details">
-                        <h4>Mark Jecno</h4>
+                        <h4> {{ user_profile.first_name }} {{ user_profile.last_name }} </h4>
                         <h6>Manager</h6>
                       </div>
 
@@ -193,9 +195,23 @@ export default {
     }
 
     axios.get(`${ApiUrl.url}users/${this.$route.params.id}`, headers)
+
     .then( (resp) => {
+
       this.user_profile = resp.data.data
-      this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
+
+      console.log(this.user_profile)
+
+      if(Object.keys(this.user_profile.avatar).length > 0) {
+
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
+
+      } else {
+
+        this.avatar_url = ""
+
+      }
+
     } )
     .catch( (err) => {
 
@@ -223,7 +239,14 @@ export default {
   methods: {
     profile_image_changed(data) {
 
-      this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.file_name}`
+      if(Object.keys(data).length > 0) {
+
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.file_name}`
+
+      } else {
+        this.avatar_url = ""
+      }
+
 
     },
     profile_image: function() {

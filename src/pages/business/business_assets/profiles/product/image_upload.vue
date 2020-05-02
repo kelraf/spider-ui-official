@@ -5,7 +5,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body p-0">
-                        <vue-dropzone name="image-upload" :data="data" v-on:vdropzone-error="handleUploadError" id="validationdropzone" :options="options" class="dropzone digits">                                
+                        <vue-dropzone name="image-upload" v-on:vdropzone-success="handleSuccess" v-on:vdropzone-error="handleUploadError" id="validationdropzone" :options="options" class="dropzone digits">                                
                         </vue-dropzone>
                     </div>
                 </div>
@@ -19,27 +19,30 @@
 <script>
 
 import vue2Dropzone from 'vue2-dropzone'
+import { ApiUrl } from "../../../../../api/apiurl"
+import Auth from "../../../../../auth/js/spider_auth"
 
 export default {
     data(){
         return {
-            paramName: "paramName",
-            imageFor: "",
+            product_images_container_id: "",
+            product_id: "",
             options:{
-                url:"http://0.0.0.0:4000/api/avatars/1",
+                url:`${ApiUrl.url}products-images`,
+                headers: {
+                    Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+                },
                 thumbnailWidth: 100,
                 thumbnailHeight: 100,
+                params: {},
                 paramName: function(n) {
-                    return `${this.paramName}[]`;
+                    return `product_image[]`;
                 },
                 uploadMultiple: false,
-                //   acceptedFiles:['image/jpeg','image/png'],
+                //acceptedFiles:['image/jpeg','image/png'],
                 maxFilesize: 1,
                 addRemoveLinks: true,
-                dictDefaultMessage:`<i class='icon-cloud-up'></i><h6>Drop ${imageFor}  here or click to upload.</h6>`
-            },
-            data: {
-                id: 1
+                dictDefaultMessage:`<i class='icon-cloud-up'></i><h6>Drop Profile Image here or click to upload.</h6>`
             }
         }
     },
@@ -47,29 +50,27 @@ export default {
         vueDropzone: vue2Dropzone
     },
     props: {
-        definedOptions: Object
+        modalPayload: Object
     },
     watch: {
-        definedOptions: {
+        modalPayload: {
             immediate: true,
             handler() {
-                this.options.url = this.definedOptions.url
-                this.paramName = this.definedOptions.paramName
-                this.options.uploadMultiple = this.definedOptions.uploadMultiple
-                this.imageFor= this.definedOptions.imageFor
-            }
+                this.options.params.product_images_container_id = this.modalPayload.id
+                this.options.params.product_id= this.modalPayload.product_id
+            },
+            deep: true
         }
     },
     methods: {
         handleUploadError: function(file, message, xhr) {
-            // console.log("file: ", file, "message: ", message, "server-response: ", xhr)
+
             if(xhr.status == 422) {
-                console.log(JSON.parse(xhr.response).errors)
 
                 for (const key of Object.keys(JSON.parse(xhr.response).errors)) {
 
-                    if(key == "user_id") {
-                        this.$toasted.show(`${JSON.parse(xhr.response).errors.user_id[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 3000})
+                    if(key == "image_limit") {
+                        this.$toasted.show(`${JSON.parse(xhr.response).errors.image_limit[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 3000})
                     } 
                 }
 
@@ -86,6 +87,13 @@ export default {
                 Custombox.modal.close()
                 this.$toasted.show(`Oops!! An Error Occured, Please Try Again. :500`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 3000})
             }
+        },
+        handleSuccess(file, response) {
+
+            this.$emit("upload-success", response.data)
+            console.log("XXXXXX-------ZZZZZZZ", response.data)
+            
+
         }
     }
 }

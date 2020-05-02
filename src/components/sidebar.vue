@@ -10,14 +10,15 @@
     <div class="sidebar custom-scrollbar">
       <div class="sidebar-user text-center">
         <div>
-          <img class="img-60 rounded-circle" src="http://0.0.0.0:4000/api/uploads/user/avatars/spider_1.jpg" alt="#" />
+          <img v-if="avatar_url == ''" class="img-60 rounded-circle" src="../assets/images/default_avatars/default_avatar.svg" alt="#" />
+          <img v-if="avatar_url !== ''" class="img-60 rounded-circle" :src="avatar_url" alt="#" />
           <div class="profile-edit">
             <router-link :to="'/users/profile/'+user_id">
               <feather type="edit"></feather>
             </router-link>
           </div>
         </div>
-        <h6 class="mt-3 f-14">ELANA</h6>
+        <h6 class="mt-3 f-14"> {{ user_profile.first_name }} </h6>
         <p>general manager.</p>
       </div>
       <ul
@@ -221,6 +222,8 @@
 <script>
 import { mapState } from "vuex";
 import Auth from "../auth/js/spider_auth"
+import { ApiUrl } from "../api/apiurl"
+
 export default {
   name: "Sidebar",
   data() {
@@ -228,11 +231,13 @@ export default {
       width: 0,
       height: 0,
       margin: 0,
+      user_profile: {},
       hideRightArrowRTL: true,
       hideLeftArrowRTL: true,
       hideRightArrow: true,
       hideLeftArrow: true,
       menuWidth: 0,
+      avatar_url: "",
       user_id: parseInt(Auth.isAuthenticatedUser().sub)
     };
   },
@@ -240,8 +245,37 @@ export default {
     ...mapState({
       menuItems: state => state.menu.data,
       layout: state => state.layout.layout,
-      sidebar: state => state.layout.sidebarType
+      sidebar: state => state.layout.sidebarType,
+      userProfile: state => state.userProfile.userProfile
     })
+  },
+  watch: {
+    userProfile: function(data) {
+
+     if(Object.keys(data.avatar).length > 0) {
+
+       this.user_profile = this.userProfile
+
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.avatar.file_name}`
+
+      } else {
+
+        this.avatar_url =  ""
+        
+      }
+    },
+    "userProfile.avatar": function(data) {
+
+     if(Object.keys(this.userProfile.avatar).length > 0) {
+
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.userProfile.avatar.avatar.file_name}`
+
+      } else {
+
+        this.avatar_url = ""
+        
+      }
+    }
   },
   created() { 
 

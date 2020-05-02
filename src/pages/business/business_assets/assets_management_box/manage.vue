@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <button @click="open_assets" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </button>
+                    <button @click="open_assets_management_tool_modal" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </button>
                 </div>
 
                 </div>
@@ -31,7 +31,7 @@
 
         </div>
 
-        <Assets :businessProfile="business_profile" style="display: none;" id="assets" />
+        <AssetsBox v-on:action-success="action_success" :businessProfile="business_profile" style="display: none;" id="assets" />
 
     </div>
 
@@ -39,7 +39,7 @@
 
 <script>
 
-import Assets from "./assets"
+import AssetsBox from "./asset_manage_tool/assets_box"
 
 export default {
     data() {
@@ -48,27 +48,36 @@ export default {
         }
     },
     components: {
-        Assets
+        AssetsBox
     },
     props: {
         businessProfile: Object
     },
     mounted() {
+
         this.business_profile = this.businessProfile
+        delete this.business_profile.user
+        delete this.business_profile.business_pin
+        delete this.business_profile.registration_number
+
     },
     watch: {
         businessProfile: {
             immediate: true,
             handler() {
+
                 this.business_profile = this.businessProfile
 
-                console.log("From Manage :", this.business_profile)
+                delete this.business_profile.user
+                delete this.business_profile.business_pin
+                delete this.business_profile.registration_number
 
-            }
+            },
+            deep: true
         }
     },
     methods: {
-        open_assets: function() {
+        open_assets_management_tool_modal: function() {
 
             let modal = new Custombox.modal({
                 content: {
@@ -79,6 +88,9 @@ export default {
 
             modal.open()
 
+        },
+        action_success: function(data) {
+            this.$emit("action-success", data)
         }
     }
 }

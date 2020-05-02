@@ -21,8 +21,8 @@
                                         </div>
 
                                         <div class="mb-2">
-                                            <div class="col-form-label"> Business Category </div>
-                                            <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.business_category.error ? 'form-error' : ''" v-model="form.business_category.value" :options="form.business_category.options"></b-form-select>
+                                            <div class="col-form-label"> Business Type </div>
+                                            <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.business_type.error ? 'form-error' : ''" v-model="form.business_type.value" :options="form.business_type.options"></b-form-select>
                                         </div>
 
                                         <div class="form-group form-row mb-0">
@@ -73,18 +73,19 @@ export default {
                     error: '',
                     value: ''
                 },
-                business_category: {
+                business_type: {
                     error: '',
                     value: '',
                     options : [
-                        { value: '', text:'Select Business Category' },
+                        { value: '', text:'Select Business Type' },
                         { value: 'sole_proprietor', text:'Sole Proprietor' },
                         { value: 'co-oparative', text:'Co-oparative' },
                         { value: 'group_ranch', text:'Group Ranch' },
                         { value: 'association', text:'Association' }
                     ]
                 },
-                business_type: '',
+                category: '',
+                sub_category: '',
                 user_id: parseInt(Auth.isAuthenticatedUser().sub)
             }
         }
@@ -93,13 +94,14 @@ export default {
         Loader
     },
     props: {
-        businessType: String
+        data: Object
     },
     watch: {
-        businessType: {
+        data: {
             immediate: true,
             handler() {
-                this.form.business_type = this.businessType
+                this.form.category = this.data.category,
+                this.form.sub_category = this.data.sub_category
             }
         }
     },
@@ -125,7 +127,7 @@ export default {
 
                 this.form.business_name.error = 'field can\'t be empty'
                 this.form.registration_number.error = ''
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(`Business Name : ${this.form.business_name.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -139,7 +141,7 @@ export default {
 
                 this.form.business_name.error = 'is invalid'
                 this.form.registration_number.error = ''
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(`Business Name : ${this.form.business_name.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -153,7 +155,7 @@ export default {
 
                 this.form.business_name.error = 'is too short'
                 this.form.registration_number.error = ''
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(`Business Name : ${this.form.business_name.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -167,7 +169,7 @@ export default {
 
                 this.form.business_name.error = ''
                 this.form.registration_number.error = 'can\'t be empty'
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(`Registration Number : ${this.form.registration_number.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -181,7 +183,7 @@ export default {
 
                 this.form.business_name.error = ''
                 this.form.registration_number.error = 'is invalid'
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(`Registration Number : ${this.form.registration_number.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -189,15 +191,15 @@ export default {
                     $(".to-shake").removeClass("animated").removeClass("shake");
                 }, 500)
 
-            } else if(this.form.business_category.value == '') {
+            } else if(this.form.business_type.value == '') {
 
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.business_name.error = ''
                 this.form.registration_number.error = ''
-                this.form.business_category.error = 'Not Selected'
+                this.form.business_type.error = 'Not Selected'
 
-                this.$toasted.show(` Business Category : ${this.form.business_category.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
+                this.$toasted.show(` Business Type : ${this.form.business_type.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
                     $(".to-shake").removeClass("animated").removeClass("shake");
@@ -209,7 +211,7 @@ export default {
 
                 this.form.business_name.error = ''
                 this.form.registration_number.error = ''
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(` Oops!! An Error Occured. Please Try Again. : 001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -223,7 +225,7 @@ export default {
 
                 this.form.business_name.error = ''
                 this.form.registration_number.error = ''
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.$toasted.show(` Oops!! An Error Occured. Please Try Again. : 002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -235,7 +237,7 @@ export default {
 
                 this.form.business_name.error = ''
                 this.form.registration_number.error = ''
-                this.form.business_category.error = ''
+                this.form.business_type.error = ''
 
                 this.loading = true
 
@@ -244,8 +246,9 @@ export default {
                     business : {
                         business_name : this.form.business_name.value,
                         registration_number : this.form.registration_number.value,
-                        business_type: this.form.business_type,
-                        category: this.form.business_category.value,
+                        business_type: this.form.business_type.value,
+                        category: this.form.category,
+                        sub_category: this.form.sub_category,
                         user_id: this.form.user_id
                     }
                 }                
@@ -287,6 +290,8 @@ export default {
                                     } else if(key == "registration_number") {
                                         self.form.registration_number.error = err.response.data.errors.registration_number[0]
                                         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.registration_number[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                    } else if(key == "sub_category") {
+                                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "business_type") {
                                         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "category") {

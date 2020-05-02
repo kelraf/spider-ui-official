@@ -86,7 +86,11 @@
           </li>
           <li><a href="#"><feather type="message-circle"></feather><span class="dot"></span></a></li>
           <li class="onhover-dropdown">
-            <div class="media align-items-center"><img class="align-self-center pull-right img-50 rounded-circle" :src="avatar_url" alt="header-user">
+            <div class="media align-items-center">
+
+              <img v-if="avatar_url == ''" class="align-self-center pull-right img-50 rounded-circle" src="../assets/images/default_avatars/default_avatar.svg" alt="Profile Image Placeholder" />
+              <img v-if="avatar_url !== ''" class="align-self-center pull-right img-50 rounded-circle" :src="avatar_url" alt="Profile Image" />
+
               <div class="dotted-animation"><span class="animate-circle"></span><span class="main-circle"></span></div>
             </div>
             <ul class="profile-dropdown onhover-show-div p-20">
@@ -135,9 +139,6 @@ export default {
   components: {
     logoutModal
   },
-  created() {
-    console.log("HEADER", this.userProfile)
-  },
   computed: {
     ...mapState({
       menuItems: state => state.menu.searchData,
@@ -175,6 +176,7 @@ export default {
       this.$emit('clicked',this.clicked)
     },
     toggle_fullscreen() {
+
       if ((document.fullScreenElement && document.fullScreenElement !== null) ||
         (!document.mozFullScreen && !document.webkitIsFullScreen)) {
         if (document.documentElement.requestFullScreen) {
@@ -203,11 +205,11 @@ export default {
       else
         this.searchResultEmpty = false;
     },
-    userProfile: function(data) {
+    userProfile: function() {
 
-      if(Object.keys(data.avatar).length > 0) {
+      if(Object.keys(this.userProfile.avatar).length > 0) {
 
-        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.avatar.file_name}`
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.userProfile.avatar.avatar.file_name}`
 
       } else {
 
@@ -215,8 +217,18 @@ export default {
         
       }
 
+    },
+    "userProfile.avatar": function(data) {
 
+     if(Object.keys(this.userProfile.avatar).length > 0) {
 
+        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.userProfile.avatar.avatar.file_name}`
+
+      } else {
+
+        this.avatar_url = ""
+        
+      }
     }
   }
 }
