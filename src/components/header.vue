@@ -6,7 +6,7 @@
       <div class="page-main-header" :class="{ open:toggle_sidebar_var }">
         <div class="main-header-right row">
           <div class="main-header-left d-lg-none">
-            <div class="logo-wrapper"><router-link :to="{ name: 'default'}" ><img src="../assets/images/endless-logo.png" alt=""></router-link></div>
+            <div class="logo-wrapper"><router-link :to="{ name: 'home'}" ><img src="../assets/images/endless-logo.png" alt=""></router-link></div>
           </div>
           <div class="mobile-sidebar">
             <div class="media-body text-right switch-sm">
@@ -54,7 +54,9 @@
               <li><a href="#" data-lng="fr"><i class="flag-icon flag-icon-nz"></i> French</a></li>
             </ul>
           </li>
-          <li class="onhover-dropdown"><feather type="bell"></feather><span class="dot"></span>
+          <li class="onhover-dropdown"><feather type="bell">
+            </feather>
+            <!-- <span class="dot"></span> -->
             <ul class="notification-dropdown onhover-show-div">
               <li>Notification <span class="badge badge-pill badge-primary pull-right">3</span></li>
               <li>
@@ -84,7 +86,12 @@
               <li class="bg-light txt-dark"><a href="#">All</a> notification</li>
             </ul>
           </li>
-          <li><a href="#"><feather type="message-circle"></feather><span class="dot"></span></a></li>
+          <li>
+            <a href="#">
+              <feather type="shopping-cart"></feather>
+              <!-- <span class="dot"></span> -->
+            </a>
+          </li>
           <li class="onhover-dropdown">
             <div class="media align-items-center">
 

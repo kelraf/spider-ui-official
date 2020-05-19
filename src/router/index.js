@@ -23,6 +23,7 @@ import ViewVessle from "../pages/business/business_assets/profiles/vessle"
 import ViewLivestock from "../pages/business/business_assets/profiles/livestock"
 import ViewProduce from "../pages/business/business_assets/profiles/produce"
 import ViewProduct from "../pages/business/business_assets/profiles/product/product"
+import ViewDLivestock from "../pages/management/dlivestocks/dlivestock"
 
 //Business Profile
 import EditBusinessProfile from "../pages/business/editprofile"
@@ -36,6 +37,16 @@ import ViewVehicles from "../pages/business/business_assets/assets_tables/view_v
 import ViewLivestocks from "../pages/business/business_assets/assets_tables/view_livestock"
 import ViewProduces from "../pages/business/business_assets/assets_tables/view_produce"
 import ViewProducts from "../pages/business/business_assets/assets_tables/view_products"
+import ViewDLivestocks from "../pages/management/dlivestocks/dlivestocks"
+
+// Orders
+import Orders from "../pages/orders/orders"
+import LivestocksOrdersContainers from "../pages/orders/livestock_orders/manage/livestocks_orders_containers"
+import LivestockOrderContainer from "../pages/orders/livestock_orders/manage/livestock_order_container/livestock_order_container"
+import LivestockOrder from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order"
+import Livestocks from "../pages/ecommerce/livestocks"
+import Cart from "../pages/ecommerce/cart"
+
 
 // Dashboards
 import Home from "../pages/dashboard/home"
@@ -166,14 +177,6 @@ const routes = [
         title: `Business Profile | ${system_title}`,
       }
     },
-    // {
-    //   path: 'overview/:id',
-    //   name: 'overview',
-    //   component: Business,
-    //   meta: {
-    //     title: `Business OverView | ${system_title}`,
-    //   }
-    // },
     {
       path: 'assets/:id',
       name: 'assets',
@@ -239,6 +242,14 @@ const routes = [
       }
     },
     {
+      path: 'all-d-livestock',
+      name: 'all-d-livestock',
+      component: ViewDLivestocks,
+      meta: {
+        title: `Business All Defined Livestocks | ${system_title}`,
+      }
+    },
+    {
       path: 'vehicle-profile/:id',
       name: 'vehicle-profile',
       component: ViewVehicle,
@@ -295,11 +306,102 @@ const routes = [
       }
     },
     {
+      path: 'dlivestock-profile/:id',
+      name: 'dlivestock-profile',
+      component: ViewDLivestock,
+      meta: {
+        title: `DLivestock Profile | ${system_title}`,
+      }
+    },
+    {
       path: 'all-tests/:id',
       name: 'all-tests',
       component: ViewVessles,
       meta: {
         title: `Business All Tests | ${system_title}`,
+      }
+    }
+  ]
+},
+{
+  path: "/orders",
+  component: Body,
+  name: "orders",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'root',
+      component: Orders,
+      meta: {
+        title: `Orders | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'livestocks-orders',
+      name: 'livestocks-orders',
+      component: LivestocksOrdersContainers,
+      meta: {
+        title: `Manage Livestocks | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'livestock-order-container/:id',
+      name: 'livestock-order-container',
+      component: LivestockOrderContainer,
+      meta: {
+        title: `Manage Livestocks | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'livestock-order/:id',
+      name: 'livestock-order',
+      component: LivestockOrder,
+      meta: {
+        title: `Livestock Order | ${system_title}`,
+
+      }
+    }
+  ]
+},
+{
+  path: "/shop",
+  component: Body,
+  name: "shop",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'shop-index',
+      component: LivestockOrder,
+      meta: {
+        title: `Shop Index | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'livestocks',
+      name: 'livestocks',
+      component: Livestocks,
+      meta: {
+        title: ` Livestocks | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'cart',
+      name: 'cart',
+      component: Cart,
+      meta: {
+        title: ` Cart | ${system_title}`,
+
       }
     }
   ]

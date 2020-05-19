@@ -32,6 +32,8 @@
 
                       <Livestock :businessProfile="business_profile" v-if="business_asset.asset_name == 'livestocks' && business_asset.status == 2" />
 
+                      <DLivestocks :businessProfile="business_profile" v-if="business_asset.asset_name == 'dlivestocks' && business_asset.status == 2" />
+
                     </div>
 
                 </div>
@@ -56,6 +58,7 @@ import Plane from "./plane"
 import Livestock from "./livestock"
 import Vehicle from "./vehicle"
 import Vessle from "./vessle"
+import DLivestocks from "./dlivestocks"
 import Manage from "./assets_management_box/manage"
 
 export default {
@@ -73,7 +76,8 @@ export default {
       Livestock,
       Vehicle,
       Vessle,
-      Manage
+      Manage,
+      DLivestocks
     },
     mounted () {
 

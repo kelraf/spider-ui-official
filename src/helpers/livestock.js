@@ -17,6 +17,7 @@ export const DLivestockProcessor = {
                             reference: dlivestock_object.reference,
                             type: dlivestock_object.type,
                             breed: dlivestock_object.breed,
+                            price: business_livestock_object.price,
                             quantity: business_livestock_object.quantity,
                             id: business_livestock_object.id,
                             dlivestock_id: dlivestock_object.id,

@@ -22,7 +22,7 @@
 
                                     <div class="form-group mb-2">
                                         <div class="col-form-label"> Product Category </div>
-                                        <input v-model="form.category.value" :class="form.category.error ? 'form-error' : ''" class="form-control" type="text" placeholder="Product Category">
+                                        <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.category.error ? 'form-error' : ''" v-model="form.category.value" :options="form.category.options"></b-form-select>
                                     </div>
 
                                     <div class="form-row">
@@ -41,10 +41,9 @@
 
                                     <div class="form-group mb-2">
                                         <div class="col-form-label"> Price Per Product </div>
-                                        <b-input-group prepend="$" append=".00">
+                                        <b-input-group :prepend="businessProfile.currency" append=".00">
                                             <b-form-input v-model="form.price.value" :class="form.price.error ? 'form-error' : ''" type="number" placeholder="Price Per Product"></b-form-input>
                                         </b-input-group>
-                                        <!-- <input v-model="form.price.value" :class="form.price.error ? 'form-error' : ''" class="form-control" type="number" placeholder="Price Per Product"> -->
                                     </div>
 
                                     <div class="form-group form-row mb-0">
@@ -95,7 +94,15 @@ export default {
                 },
                 category: {
                     error: '',
-                    value: ''
+                    value: '',
+                    options : [
+                        { value: '', text:'Select Product Category' },
+                        { value: 'pasture-and-feeds', text:'pasture and feeds' },
+                        { value: 'accesories-and-equipments', text:'accesories and equipments' },
+                        { value: 'vetcare', text:'vetcare' },
+                        { value: 'agrovet', text:'agrovet' },
+                        { value: 'processed', text:'processed' }
+                    ]
                 },
                 quantity: {
                     error: '',
@@ -112,9 +119,10 @@ export default {
                         { value: '', text:'Select Units' },
                         { value: 'kgs', text:'kgs' },
                         { value: 'ltrs', text:'ltrs' },
-                        { value: 'ltrs', text:'ltrs' }
+                        { value: 'no-units', text:'No Units' }
                     ]
                 },
+                currency: "",
                 business_id: null,
                 user_id: parseInt(Auth.isAuthenticatedUser().sub)
             }
@@ -131,12 +139,21 @@ export default {
             immediate: true,
             handler() {
                 this.business_id = this.businessProfile.id
+                this.form.currency = this.businessProfile.currency
             }
         }
     },
     methods: {
         close: function() {
+
+            this.form.product_name.error = ''
+            this.form.type.error = ''
+            this.form.category.error = ''
+            this.form.quantity.error = ''
+            this.form.units.error = ''
+            this.form.price.error = ''
             Custombox.modal.close()
+
         },
         isAlphanumeric(value) {
 
@@ -159,6 +176,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = ''
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Name : ${this.form.product_name.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -175,6 +193,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = ''
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Name : ${this.form.product_name.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -191,6 +210,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = ''
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Type : ${this.form.type.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -207,6 +227,7 @@ export default {
                 this.form.category.error = 'can\'t be empty'
                 this.form.quantity.error = ''
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Category : ${this.form.category.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -223,6 +244,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = 'can\'t be empty'
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Quantity : ${this.form.quantity.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -239,6 +261,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = 'invalid quantity'
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Quantity : ${this.form.quantity.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -255,8 +278,26 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = ''
                 this.form.units.error = 'field can\'t be empty'
+                this.form.price.error = ''
 
                 this.$toasted.show(`Product Quantity : ${this.form.quantity.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
+
+                setTimeout(function() {
+                    $(".to-shake").removeClass("animated").removeClass("shake");
+                }, 500)
+
+            } else if(this.form.price.value == "") {
+
+                $(".to-shake").addClass("animated").addClass("shake");
+
+                this.form.product_name.error = ''
+                this.form.type.error = ''
+                this.form.category.error = ''
+                this.form.quantity.error = ''
+                this.form.units.error = ''
+                this.form.price.error = 'field can\'t be empty'
+
+                this.$toasted.show(`Product Price : ${this.form.price.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
                     $(".to-shake").removeClass("animated").removeClass("shake");
@@ -271,6 +312,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = ''
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(` Oops!! An Error Occured. Please Try Again. : 001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -285,6 +327,7 @@ export default {
                 this.form.category.error = ''
                 this.form.quantity.error = ''
                 this.form.units.error = ''
+                this.form.price.error = ''
 
                 this.loading = true
 
@@ -296,6 +339,7 @@ export default {
                         category : this.form.category.value,
                         quantity: this.form.quantity.value,
                         units: this.form.units.value,
+                        price: this.form.price.value,
                         user_id: this.form.user_id,
                         business_id: this.business_id
                     }
@@ -345,6 +389,9 @@ export default {
                                     } else if(key == "units") {
                                         self.form.units.error = err.response.data.errors.units[0]
                                         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.units[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                    }  else if(key == "price") {
+                                        self.form.price.error = err.response.data.errors.price[0]
+                                        self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.price[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "business_id") {
                                         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                     } else if(key == "user_id") {
@@ -366,7 +413,7 @@ export default {
 
                             }
 
-                        }, 3000)
+                        }, 2000)
 
                     }
 

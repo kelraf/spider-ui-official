@@ -67,7 +67,7 @@ export default {
                 for (const item of tlivestocks) {
                     
                     numbers.push(item.quantity)
-
+                    
                     let exploded_date_time = item.inserted_at.split("T")
                     let time = exploded_date_time[1].split(".")[0]
                     let date = exploded_date_time[0]
@@ -81,11 +81,11 @@ export default {
 
                 this.options = {
                     title: {
-                        text: 'LiveStock Update History'
+                        text: 'LiveStock Sales History'
                     },
                     xAxis: {
                         title: {
-                            text: "Date Updated"
+                            text: "Date Sold"
                         },
                         // tickInterval: 1,
                         // type: 'logarithmic',
@@ -93,7 +93,7 @@ export default {
                     },
                     yAxis: {
                         title: {
-                            text: "Number of Animals Added"
+                            text: "Number of Animals Sold"
                         },
                         type: 'logarithmic',
                         minorTickInterval: 0.1
@@ -103,7 +103,7 @@ export default {
                         pointFormat: 'Date = {point.x} <br /> Number = {point.y}'
                     },
                     series: [{
-                        name: "LiveStock Update History",
+                        name: "LiveStock Sales History",
                         data: numbers,
                         pointStart: 1
                     }]

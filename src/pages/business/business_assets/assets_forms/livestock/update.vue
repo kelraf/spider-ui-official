@@ -8,60 +8,18 @@
                         <div class="authentication-box">
                             <div class="card to-shake mt-4 p-4">
                                 <form class="theme-form">
-                                    <h5 class="f-16 mb-3 f-w-600"> Add Livestock </h5>
-
-                                    <!-- <multiselect 
-                                        :class="!form.livestock_value.error == '' ? 'form-error' : ''"
-                                        v-model="form.livestock_value.value" 
-                                        placeholder="Select LiveStock To Add" 
-                                        label="reference" 
-                                        track-by="['reference', 'type', 'breed']" 
-                                        :options="form.livestock.options" 
-                                        :option-height="104" 
-                                        :show-labels="false"
-                                        >
-                                        
-                                        <template slot="singleLabel" slot-scope="props">
-                                            
-                                            <img class="img-fluid img-50" :src="getImgUrl(props.option.img)" alt="#">
-                                            
-                                            <div class="option__desc">
-                                                
-                                                <div class="container-fluid">
-                                                    <div class="row">
-                                                        <div class="col-4 text-center"> {{ props.option.reference }} </div>
-                                                        <div v-if="props.option.type != null" class="col-4"> {{ props.option.type }} </div>
-                                                        <div v-if="props.option.breed != null" class="col-4"> {{ props.option.breed }} </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            
-                                        </template>
-
-                                        <template slot="option" slot-scope="props">
-
-                                            <img class="img-fluid img-50" :src="getImgUrl(props.option.img)" alt="#">
-                                            
-                                            <div class="option__desc">
-
-                                                <div class="container-fluid">
-                                                    <div class="row">
-                                                        <div class="col-4 text-center"> {{ props.option.reference }} </div>
-                                                        <div v-if="props.option.type != null" class="col-4"> {{ props.option.type }} </div>
-                                                        <div v-if="props.option.breed != null" class="col-4"> {{ props.option.breed }} </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                        </template>
-
-                                    </multiselect> -->
+                                    <h5 class="f-16 mb-3 f-w-600"> Update Livestock </h5>
 
                                     <div class="form-group">
                                         <label class="col-form-label">Quantity</label>
                                         <input v-model="form.quantity.value" :class="form.quantity.error ? 'form-error' : ''" class="form-control" type="number" placeholder="Livestock Quantity">
+                                    </div>
+
+                                    <div class="form-group mb-2">
+                                        <div class="col-form-label"> Price Per Animal </div>
+                                        <b-input-group prepend="KSHS" append=".00">
+                                            <b-form-input v-model="form.price.value" :class="form.price.error ? 'form-error' : ''" type="number" placeholder="Price Per Animal"></b-form-input>
+                                        </b-input-group>
                                     </div>
                                     
                                     <div class="form-group form-row mb-0">
@@ -97,8 +55,6 @@ import axios from "axios"
 import { ApiUrl } from "../../../../../api/apiurl"
 import Auth from "../../../../../auth/js/spider_auth"
 
-import Multiselect from 'vue-multiselect'
-
 export default {
     data() {
         return {
@@ -108,6 +64,10 @@ export default {
                     error: '',
                     value: ''
                 },
+                price: {
+                    error: "",
+                    value: ""
+                },
                 dlivestock_id: null,
                 business_id: null,
                 user_id: null
@@ -115,8 +75,7 @@ export default {
         }
     },
     components: {
-        Loader,
-        Multiselect
+        Loader
     },
     props: {
         livestockData: Object
@@ -131,6 +90,7 @@ export default {
 
                 this.form.business_id = this.livestockData.business_id
                 this.form.user_id = this.livestockData.user_id
+                this.form.price.value = this.livestockData.price
                 this.form.quantity.value = this.livestockData.quantity
                 this.form.dlivestock_id = this.livestockData.dlivestock_id,
                 this.form.id = this.livestockData.id
@@ -200,6 +160,8 @@ export default {
 
             if(this.form.dlivestock_id == null) {
 
+                this.form.price.error = ''
+                this.form.quantity.error = ''
                 this.$toasted.show(`Oops!! An Error Occured. Please Try Again.`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
             }  else if(this.form.quantity.value == '') {
@@ -207,6 +169,7 @@ export default {
                 $(".to-shake").addClass("animated").addClass("shake");
                 
                 this.form.quantity.error = 'field can\'t be empty'
+                this.form.price.error = ''
 
                 this.$toasted.show(`Quantity : ${this.form.quantity.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -216,18 +179,21 @@ export default {
 
             } else if(this.form.business_id == null) {
 
+                this.form.price.error = ''
                 this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again.`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
             } else {
 
                     this.form.quantity.error = ''
+                    this.form.price.error = ''
     
                     this.loading = true
     
                     let data = {
-                        livestock : {
+                        livestock: {
                             dlivestock_id : this.form.dlivestock_id,
                             quantity : this.form.quantity.value,
+                            price: this.form.price.value,
                             user_id: this.form.user_id,
                             business_id: this.form.business_id
                         }
@@ -270,6 +236,9 @@ export default {
                                         if(key == "quantity") {
                                             self.form.quantity.error = err.response.data.errors.quantity[0]
                                             self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.quantity[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                        } else if(key == "price") {
+                                            self.form.price.error = err.response.data.errors.price[0]
+                                            self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.price[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                         } else if(key == "dlivestock_id") {
                                             self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                         }  else if(key == "business_id") {
@@ -317,7 +286,7 @@ export default {
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css">
+<style>
 
     .btn-container {
         margin: auto;

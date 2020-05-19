@@ -17,8 +17,8 @@
             :mouse-drag=true
             :speed=3000
             :paginationEnabled=true
-            :autoplay=true>
-            
+            :autoplay=true
+            >
             
             <slide>
               <div class="item">
@@ -31,6 +31,7 @@
                 </div>
               </div>
             </slide>
+
             <slide v-if="business_profile.business_type == 'group_ranch' || business_profile.business_type == 'association' || business_profile.business_type == 'co-oparative'">
               <div class="item">
                 <div class="card">
@@ -42,6 +43,7 @@
                 </div>
               </div>
             </slide>
+
             <slide>
               <div class="item">
                 <div class="card">
@@ -53,6 +55,7 @@
                 </div>
               </div>
             </slide>
+
             <slide>
               <div class="item">
                 <div class="card">
@@ -64,6 +67,7 @@
                 </div>
               </div>
             </slide>
+
             <slide>
               <div class="item">
                 <div class="card">
@@ -75,22 +79,29 @@
                 </div>
               </div>
             </slide>
-            <slide><div class="item">
-              <div class="card">
-                <div class="card-body ecommerce-icons text-center"><feather type="shopping-cart"></feather>
-                  <div><span>Total Sale Product</span></div>
-                  <h4 class="font-primary mb-0 counter">96</h4>
+
+            <slide>
+              <div class="item">
+                <div class="card">
+                  <div class="card-body ecommerce-icons text-center"><feather type="shopping-cart"></feather>
+                    <div><span>Total Sale Product</span></div>
+                    <h4 class="font-primary mb-0 counter">96</h4>
+                  </div>
                 </div>
               </div>
-            </div></slide>
-            <slide><div class="item">
-              <div class="card">
-                <div class="card-body ecommerce-icons text-center"><feather type="trending-down"></feather>
-                  <div><span>Company Loss</span></div>
-                  <h4 class="font-primary mb-0 counter">89</h4>
+            </slide>
+
+            <slide>
+              <div class="item">
+                <div class="card">
+                  <div class="card-body ecommerce-icons text-center"><feather type="trending-down"></feather>
+                    <div><span>Company Loss</span></div>
+                    <h4 class="font-primary mb-0 counter">89</h4>
+                  </div>
                 </div>
               </div>
-            </div></slide>
+            </slide>
+
           </carousel>
         </div>
         <!-- <div class="col-md-12">
@@ -176,36 +187,6 @@
 
           </div>
         </div>
-
-         <div class="col-xl-6 xl-100">
-
-          <div class="row">
-            <h4>Business Assets</h4>
-          </div>
-
-          <div class="row">
-
-            <!-- <div v-for="business_asset in business_profile.business_assets" :key="business_asset.id" class="col-md-6">
-
-              <Vehicle v-if="business_asset.asset_name == 'vehicle'" />
-
-              <Plane v-if="business_asset.asset_name == 'plane'" />
-
-              <Vessle v-if="business_asset.asset_name == 'vessle'" />
-
-              <Trains v-if="business_asset.asset_name == 'train'" />
-              
-              <Produce v-if="business_asset.asset_name == 'produce'" />
-
-              <Products v-if="business_asset.asset_name == 'product'" />
-
-              <Livestock v-if="business_asset.asset_name == 'livestock'" />
-
-            </div> -->
-
-          </div>
-
-         </div>
 
         <div class="col-xl-6 xl-100">
           <div class="row">
@@ -344,7 +325,6 @@ import NoBusiness from "./no_business"
               this.$router.replace("/auth/login")
 
             } else if(err.response.status == 404) {
-              console.log("404 HERE")
               this.no_business = true
             }
 

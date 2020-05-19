@@ -63,6 +63,13 @@
                                         <label class="col-form-label">Quantity</label>
                                         <input v-model="form.quantity.value" :class="form.quantity.error ? 'form-error' : ''" class="form-control" type="number" placeholder="Livestock Quantity">
                                     </div>
+
+                                    <div class="form-group mb-2">
+                                        <div class="col-form-label"> Price Per Animal </div>
+                                        <b-input-group prepend="KSHS" append=".00">
+                                            <b-form-input v-model="form.price.value" :class="form.price.error ? 'form-error' : ''" type="number" placeholder="Price Per Animal"></b-form-input>
+                                        </b-input-group>
+                                    </div>
                                     
                                     <div class="form-group form-row mb-0">
                                         <div class="col-md-12 btn-c">
@@ -114,6 +121,10 @@ export default {
                 livestock: {
                     error: '',
                     options: []
+                },
+                price: {
+                    error: "",
+                    value: ""
                 },
                 business_id: null,
                 user_id: parseInt(Auth.isAuthenticatedUser().sub)
@@ -200,6 +211,7 @@ export default {
 
                 this.form.livestock_value.error = 'field can\'t be empty'
                 this.form.quantity.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Livestock Reference : ${this.form.livestock_value.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -207,12 +219,13 @@ export default {
                     $(".to-shake").removeClass("animated").removeClass("shake");
                 }, 500)
 
-            }  else if(this.form.quantity.value == '') {
+            } else if(this.form.quantity.value == '') {
 
                 $(".to-shake").addClass("animated").addClass("shake");
 
                 this.form.livestock_value.error = ''
                 this.form.quantity.error = 'field can\'t be empty'
+                this.form.price.error = ''
 
                 this.$toasted.show(`Quantity : ${this.form.quantity.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -220,7 +233,25 @@ export default {
                     $(".to-shake").removeClass("animated").removeClass("shake");
                 }, 500)
 
+            } else if(this.form.price.value == '') {
+
+                $(".to-shake").addClass("animated").addClass("shake");
+
+                this.form.livestock_value.error = ''
+                this.form.quantity.error = ''
+                this.form.price.error = 'field can\'t be empty'
+
+                this.$toasted.show(`Price : ${this.form.price.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
+
+                setTimeout(function() {
+                    $(".to-shake").removeClass("animated").removeClass("shake");
+                }, 500)
+
             } else if(this.form.business_id == null) {
+
+                this.form.livestock_value.error = ''
+                this.form.quantity.error = ''
+                this.form.price.error = ''
 
                 this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. ccccc`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
@@ -235,6 +266,7 @@ export default {
                         livestock : {
                             dlivestock_id : this.form.livestock_value.value.id,
                             quantity : this.form.quantity.value,
+                            price : this.form.price.value,
                             user_id: this.form.user_id,
                             business_id: this.form.business_id
                         }
@@ -278,6 +310,9 @@ export default {
                                         if(key == "quantity") {
                                             self.form.quantity.error = err.response.data.errors.quantity[0]
                                             self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.quantity[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                        } else if(key == "price") {
+                                            self.form.price.error = err.response.data.errors.price[0]
+                                            self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.price[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                         } else if(key == "dlivestock_id") {
                                             self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                         }  else if(key == "business_id") {

@@ -32,11 +32,19 @@
                         </div>
                         <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-1">
                           <div class="row">
+
                             <div class="col-md-6">
                               <div class="ttl-info text-left">
                                 <h6> Breed </h6><span> {{ livestock.breed }} </span>
                               </div>
                             </div>
+
+                            <div class="col-md-6">
+                              <div class="ttl-info text-left">
+                                <h6> Price Per Animal </h6><span> {{ livestock.price }} </span>
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                         <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-2">
@@ -73,13 +81,15 @@
                       <div class="follow">
                         <div class="row">
                           <div class="col-md-6 text-left border-right">
-                            <span>LiveStock Update Status</span>
+                            <span>LiveStock Update History</span>
 
-                            <Income class="mt-3" :livestockData="livestock" />
+                            <LiveStockUpdateChart class="mt-3" :livestockData="livestock" />
                             
                           </div>
                           <div class="col-md-6">
-                            <div class="follow-num counter">659887</div><span>Following</span>
+                            <span>LiveStock Sales History</span>
+
+                            <LiveStockSalesChart class="mt-3" :livestockData="livestock" />
                           </div>
                         </div>
                       </div>
@@ -106,6 +116,7 @@ import Auth from "../../../../auth/js/spider_auth"
 import UpdateLivestock from "../assets_forms/livestock/update"
 import { DLivestockProcessor } from "../../../../helpers/livestock"
 import LiveStockUpdateChart from "../../../../components/charts/livestock/livestock_update"
+import LiveStockSalesChart from "../../../../components/charts/livestock/livestock_sales"
 import Income from "../../../../components/charts/livestock/incomechart"
 
 export default {
@@ -117,6 +128,7 @@ export default {
   components: {
     UpdateLivestock,
     LiveStockUpdateChart,
+    LiveStockSalesChart,
     Income
   },
   watch: {
@@ -145,7 +157,8 @@ export default {
 					headers: {
 						Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
 					}
-				})
+        })
+        
 				.then( (resp) => {
 
           let processed = DLivestockProcessor.process_business_livestock(resp.data.data, [one])

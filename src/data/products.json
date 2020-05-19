@@ -1,0 +1,75 @@
+{
+  "data": [
+    {
+
+      "id": 1,
+      "type": "Cow",
+      "images": ["ecommerce/01.jpg","ecommerce/02.jpg","ecommerce/03.jpg","ecommerce/04.jpg"],
+      "sale": true,
+      "category": "Cattle"
+    },
+    {
+      "id": 2,
+      "type": "Sheep",
+      "images": ["ecommerce/02.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Cattle"
+    },
+    {
+      "id": 3,
+      "type": "Goat",
+      "images": ["ecommerce/03.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Cattle"
+    },
+    {
+      "id": 4,
+      "type": "Hen",
+      "images": ["ecommerce/04.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Poultry"
+    },
+    {
+      "id": 5,
+      "type": "Cok",
+      "images": ["ecommerce/05.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Poultry"
+    },
+    {
+      "id": 6,
+      "type": "VVV",
+      "images": ["ecommerce/06.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Cattle"
+    },
+    {
+      "id": 7,
+      "type": "UUUU",
+      "images": ["ecommerce/11.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Cattle"
+    },
+    {
+      "id": 8,
+      "type": "Jeans",
+      "images": ["ecommerce/12.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Cattle"
+    },
+    {
+      "id": 9,
+      "type": "T-shirt",
+      "images": ["ecommerce/09.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Poultry"
+    },
+    {
+      "id": 10,
+      "type": "Yellow base T-shirt",
+      "images": ["ecommerce/10.jpg","ecommerce/03.jpg","ecommerce/04.jpg","ecommerce/05.jpg"],
+      "sale": false,
+      "category": "Category One"
+    }
+  ]
+}
