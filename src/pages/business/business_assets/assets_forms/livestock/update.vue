@@ -68,7 +68,7 @@ export default {
                     error: "",
                     value: ""
                 },
-                dlivestock_id: null,
+                d_livestock_id: null,
                 business_id: null,
                 user_id: null
             }
@@ -92,7 +92,7 @@ export default {
                 this.form.user_id = this.livestockData.user_id
                 this.form.price.value = this.livestockData.price
                 this.form.quantity.value = this.livestockData.quantity
-                this.form.dlivestock_id = this.livestockData.dlivestock_id,
+                this.form.d_livestock_id = this.livestockData.d_livestock_id,
                 this.form.id = this.livestockData.id
 
                 this.get_dlivestock()
@@ -158,7 +158,7 @@ export default {
         },
         create: function() {
 
-            if(this.form.dlivestock_id == null) {
+            if(this.form.d_livestock_id == null) {
 
                 this.form.price.error = ''
                 this.form.quantity.error = ''
@@ -191,7 +191,7 @@ export default {
     
                     let data = {
                         livestock: {
-                            dlivestock_id : this.form.dlivestock_id,
+                            d_livestock_id : this.form.d_livestock_id,
                             quantity : this.form.quantity.value,
                             price: this.form.price.value,
                             user_id: this.form.user_id,
@@ -239,7 +239,7 @@ export default {
                                         } else if(key == "price") {
                                             self.form.price.error = err.response.data.errors.price[0]
                                             self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.price[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                        } else if(key == "dlivestock_id") {
+                                        } else if(key == "d_livestock_id") {
                                             self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                         }  else if(key == "business_id") {
                                             self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})

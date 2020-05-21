@@ -240,7 +240,47 @@
                 </div>
             </div>
 
+            <!-- Orders -->
+
+          <div class="col-md-6">
+              <div class="card">
+                <div class="card-body">
+
+                    <div class="media feather-main">
+                    <div class="feather-icon-block"><feather type="navigation"></feather></div>
+                    <div class="media-body align-self-center">
+                        <h6>Manage Business Orders</h6>
+                        <p>8569</p>
+                    </div>
+                    </div>
+
+                    <div class="media feather-main">
+
+                    <div class="col-xl-6 xl-100">
+                        <div class="row pt-4">
+
+                        <div class="col-md-6">
+                            <router-link to="/orders" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </router-link>
+                        </div>
+
+                        <!-- <div class="col-md-6">
+                            <button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Add </button>
+                        </div> -->
+
+                        </div>
+                    </div>
+                    
+                    </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          <!-- Orders End -->
+
           </div>
+
         </div>
       
     </div>

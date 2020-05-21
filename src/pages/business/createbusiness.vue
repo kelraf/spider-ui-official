@@ -265,7 +265,7 @@
                 <div class="card">
 
                   <div class="card-header"> 
-                    <h5> STORAGE CHAIN GROUPS </h5>
+                    <h5> Facility CHAIN GROUPS </h5>
                   </div>
 
                   <div class="card-body row pricing-content">

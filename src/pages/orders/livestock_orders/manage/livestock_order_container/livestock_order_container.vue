@@ -117,7 +117,6 @@ export default {
       .then( (resp) => {
 
           this.livestock_order_container = resp.data.data
-          console.log(this.livestock_order_container)
           this.process_avatar_url()
                   
       } )
@@ -166,7 +165,10 @@ export default {
 
     },
     process_user_names(user) {
-      return `${user.first_name} ${user.last_name}`
+
+      if(user == null || user == undefined) return ""
+      else return `${user.first_name} ${user.last_name}`
+
     }
   }
 }

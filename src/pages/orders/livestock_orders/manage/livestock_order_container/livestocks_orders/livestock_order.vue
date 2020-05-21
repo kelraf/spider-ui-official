@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-md-6">
                               <div class="ttl-info text-left">
-                                <h6>Category</h6><span> {{ livestock_order.dlivestock.category }} </span>
+                                <h6>Category</h6><span> {{ livestock_order | get_category }} </span>
                               </div>
                             </div>
                           </div>
@@ -33,7 +33,7 @@
                           <div class="row">
                             <div class="col-md-6">
                               <div class="ttl-info text-left">
-                                <h6>Type</h6><span> {{ livestock_order.dlivestock.type }} </span>
+                                <h6>Type</h6><span> {{ livestock_order | get_type }} </span>
                               </div>
                             </div>
                             <div class="col-md-6">
@@ -119,7 +119,6 @@ export default {
 
           this.livestock_order = resp.data.data
           this.center_order = this.livestock_order.center_order
-          console.log(this.livestock_order)
                   
       } )
 
@@ -142,6 +141,18 @@ export default {
 
       } )
 
+  },
+  filters: {
+    get_category: function(livestock_order) {
+
+      if(livestock_order.d_livestock !== undefined) return livestock_order.d_livestock.category
+
+    },
+    get_type: function(livestock_order) {
+
+      if(livestock_order.d_livestock !== undefined) return livestock_order.d_livestock.type
+
+    }
   }
 }
 </script>

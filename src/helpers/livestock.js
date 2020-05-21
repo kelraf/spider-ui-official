@@ -1,7 +1,7 @@
 export const DLivestockProcessor = {
     process_business_livestock: (dlivestock_array, business_livestock) => {
 
-        if(business_livestock.length == 0) {
+        if(business_livestock.length <= 0) {
             return []
         } else {
 
@@ -11,7 +11,7 @@ export const DLivestockProcessor = {
 
                 for (const business_livestock_object of business_livestock) {
 
-                    if(dlivestock_object.id == business_livestock_object.dlivestock_id) {
+                    if(dlivestock_object.id == business_livestock_object.d_livestock_id) {
 
                         let processed = {
                             reference: dlivestock_object.reference,
@@ -20,7 +20,7 @@ export const DLivestockProcessor = {
                             price: business_livestock_object.price,
                             quantity: business_livestock_object.quantity,
                             id: business_livestock_object.id,
-                            dlivestock_id: dlivestock_object.id,
+                            d_livestock_id: dlivestock_object.id,
                             business_id: business_livestock_object.business_id,
                             user_id: business_livestock_object.user_id,
                             tlivestocks: business_livestock_object.tlivestocks

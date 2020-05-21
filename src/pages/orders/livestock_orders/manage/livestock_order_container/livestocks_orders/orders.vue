@@ -19,10 +19,10 @@
         <tr v-for="(livestock_order, index) in livestock_orders" :key="index">
             <td># {{ livestock_order.id }} </td>
             <td>
-                {{ livestock_order.dlivestock.category }}
+                {{ livestock_order.d_livestock.category }}
             </td>
             <td>
-                {{ livestock_order.dlivestock.type }}
+                {{ livestock_order.d_livestock.type }}
             </td>
             <td>
                 {{ livestock_order.quantity }}
@@ -60,8 +60,9 @@ export default {
             immediate: true,
             handler() {
 
-                this.livestockOrders == this.livestockOrders || []
-                if (this.livestockOrders.length > 0) this.livestock_orders = this.livestockOrders
+                this.livestockOrders == this.livestockOrders
+
+                if(this.livestockOrders !== null || this.livestockOrders !== undefined && this.livestockOrders.length > 0) this.livestock_orders = this.livestockOrders
                 
             }
         }

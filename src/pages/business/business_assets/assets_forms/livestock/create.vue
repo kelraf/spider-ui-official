@@ -264,7 +264,7 @@ export default {
     
                     let data = {
                         livestock : {
-                            dlivestock_id : this.form.livestock_value.value.id,
+                            d_livestock_id : this.form.livestock_value.value.id,
                             quantity : this.form.quantity.value,
                             price : this.form.price.value,
                             user_id: this.form.user_id,
@@ -313,7 +313,7 @@ export default {
                                         } else if(key == "price") {
                                             self.form.price.error = err.response.data.errors.price[0]
                                             self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.price[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                        } else if(key == "dlivestock_id") {
+                                        } else if(key == "d_livestock_id") {
                                             self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                         }  else if(key == "business_id") {
                                             self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})

@@ -44,6 +44,7 @@ import Orders from "../pages/orders/orders"
 import LivestocksOrdersContainers from "../pages/orders/livestock_orders/manage/livestocks_orders_containers"
 import LivestockOrderContainer from "../pages/orders/livestock_orders/manage/livestock_order_container/livestock_order_container"
 import LivestockOrder from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order"
+import CenterOrderBeforeGoLive from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/center_order_before_go_live"
 import Livestocks from "../pages/ecommerce/livestocks"
 import Cart from "../pages/ecommerce/cart"
 
@@ -364,6 +365,15 @@ const routes = [
       component: LivestockOrder,
       meta: {
         title: `Livestock Order | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'center-order/:id',
+      name: 'center-order',
+      component: CenterOrderBeforeGoLive,
+      meta: {
+        title: `Center Order | ${system_title}`,
 
       }
     }
