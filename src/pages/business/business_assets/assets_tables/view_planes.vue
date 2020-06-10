@@ -59,21 +59,13 @@
 								</div>
 							</div>
 							<div class="table-responsive vue-smart">
-
-							<!-- <v-table
-							:data="users.data" class="table"
-							:currentPage.sync="filter.currentPage"
-							:pageSize="10"
-							@totalPagesChanged="filter.totalPages = $event"
-							:filters="filters"
-							> -->
-
+							
 							<v-table
-							:data="flights" class="table"
-							:currentPage.sync="filter.currentPage"
-							:pageSize="10"
-							@totalPagesChanged="filter.totalPages = $event"
-							:filters="filters"
+								:data="flights" class="table"
+								:currentPage.sync="filter.currentPage"
+								:pageSize="10"
+								@totalPagesChanged="filter.totalPages = $event"
+								:filters="filters"
 							>
 
 							<thead slot="head">

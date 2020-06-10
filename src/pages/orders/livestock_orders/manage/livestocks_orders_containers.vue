@@ -3,7 +3,14 @@
     <Breadcrumbs main="Orders" title="Order Details"/>
       <!-- Container-fluid starts-->
       <div class="container-fluid">
-        <div class="row">
+
+        <div v-if="livestock_order_containers.length <= 0" class="row pt-5">
+            <div class="col-md-6 text-center offset-md-3 mt-5 pt-5">
+                <h2> No Orders At The Moment </h2>
+            </div>
+        </div>
+
+        <div v-if="livestock_order_containers.length > 0" class="row">
           <div class="col-sm-12">
             <div class="card">
               <div class="card-body">
@@ -224,6 +231,18 @@ export default {
             if(this.livestock_order_containers.length > 0) {
 
                 for (const livestock_order_container of this.livestock_order_containers) {
+
+                    if(livestock_order_container.livestock_orders.length > 0) {
+
+                        let total_cost = 0
+
+                        for (const livestock_order of livestock_order_container.livestock_orders) {
+                            total_cost += livestock_order.total_cost
+                        }
+
+                        livestock_order_container.total_cost = total_cost
+
+                    }
 
                     if (livestock_order_container.status == 1) {
 

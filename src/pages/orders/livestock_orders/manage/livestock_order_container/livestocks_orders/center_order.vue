@@ -16,7 +16,7 @@
                 <table class="table table-bordered table-sm">
                     <tbody>
                     <tr class="pt-2">
-                        <td>Required Animals :</td>
+                        <td>Ordered Animals :</td>
                         <td class="text-left"> {{ center_order.required_animals }} </td>
                     </tr>
                     <tr class="pt-2">
@@ -41,7 +41,7 @@
                 <div class="container-fluid mt-4">
                     <div class="row">
                         <div class="col-md-8 offset-md-1">
-                            <router-link :to="'/orders/center-order/' + center_order.id" id="default-outline-success" type="button" class="btn btn-pill btn-outline-success btn-block">
+                            <router-link v-if="center_order.status == 'offline'" :to="'/orders/center-order/' + center_order.id" id="default-outline-success" type="button" class="btn btn-pill btn-outline-success btn-block">
                                 MORE
                             </router-link>
                         </div>

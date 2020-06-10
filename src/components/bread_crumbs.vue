@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-9">
           <!-- <div class="back-button"> -->
-            <a href="javascript:void(0);" id="default-outline-success" type="button" class="back-button">
+            <a href="javascript:void(0);" @click="goBack" id="default-outline-success" type="button" class="back-button">
                 <i class="icofont icofont-arrow-left"></i>
             </a>
           <!-- </div> -->
@@ -37,6 +37,11 @@ export default {
   },
   components:{
     Bookmark
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

@@ -118,6 +118,18 @@ export default {
 
           this.livestock_order_container = resp.data.data
           this.process_avatar_url()
+
+          if(this.livestock_order_container.livestock_orders.length > 0) {
+
+              let total_cost = 0
+
+              for (const livestock_order of this.livestock_order_container.livestock_orders) {
+                  total_cost += livestock_order.total_cost
+              }
+
+              this.livestock_order_container.total_cost = total_cost
+
+          }
                   
       } )
 

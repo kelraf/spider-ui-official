@@ -49,6 +49,14 @@ import Livestocks from "../pages/ecommerce/livestocks"
 import Cart from "../pages/ecommerce/cart"
 
 
+// Livestock Order Stages
+
+import Collection from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/collection"
+import CCPLOrder from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/c_c_p_l_order/c_c_p_l_order"
+import ExportZoneSpider from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/export_zone_spider/export_zone"
+import Processing from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/processing/processing"
+
+
 // Dashboards
 import Home from "../pages/dashboard/home"
 // import Business from "../pages/dashboard/business"
@@ -366,7 +374,45 @@ const routes = [
       meta: {
         title: `Livestock Order | ${system_title}`,
 
-      }
+      },
+      children: [
+        {
+          path: 'stages-collection/:stage_id',
+          name: 'stages-collection',
+          component: Collection,
+          meta: {
+            title: `Stage | ${system_title}`,
+    
+          }
+        },
+        {
+          path: 'stages-c-c-p-l-order/:stage_id',
+          name: 'stages-c-c-p-l-order',
+          component: CCPLOrder,
+          meta: {
+            title: `Stage | ${system_title}`,
+    
+          }
+        },
+        {
+          path: 'stages-export-zone-spider/:stage_id',
+          name: 'stages-export-zone-spider',
+          component: ExportZoneSpider,
+          meta: {
+            title: `Stage | ${system_title}`,
+    
+          }
+        },
+        {
+          path: 'stages-processing/:stage_id',
+          name: 'stages-processing',
+          component: Processing,
+          meta: {
+            title: `Stage | ${system_title}`,
+    
+          }
+        }
+      ]
     },
     {
       path: 'center-order/:id',
