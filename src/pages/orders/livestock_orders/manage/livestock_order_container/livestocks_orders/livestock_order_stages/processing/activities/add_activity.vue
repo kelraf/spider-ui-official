@@ -53,6 +53,7 @@ export default {
     data() {
         return {
             loading: false,
+            livestock_order_stage_data: {},
             form: {
                 activity_name: {
                     error: '',
@@ -72,13 +73,19 @@ export default {
         Loader,
     },
     props: {
-        livestockOrder: Object
+        livestockOrderStageData: Object
     },
     mounted() {
 
     },
     watch: {
-        
+        livestockOrderStageData: {
+            immediate: true,
+            handler() {
+                this.livestock_order_stage_data = this.livestockOrderStageData
+                console.log(this.livestock_order_stage_data)
+            }
+        }
     },
     methods: {
         close: function() {
@@ -115,10 +122,10 @@ export default {
                 this.loading = true
 
                 let data = {
-                    livestock_order_stage : {
+                    livestock_order_processing_stage : {
                         stage_name: this.form.activity_name.value,
-                        livestock_order_id: this.livestockOrder.id,
-                        stage_number: this.livestockOrder.livestock_order_stages.length += 2
+                        livestock_order_id: this.livestock_order_stage_data.livestock_order_id,
+                        livestock_order_stage_id: this.livestock_order_stage_data.id
                     }
                 }  
                 
@@ -132,13 +139,13 @@ export default {
                     }
                 }
 
-                axios.post(`${ApiUrl.url}livestock-order-stages`, data, headers) 
+                axios.post(`${ApiUrl.url}livestock-order-processing-stages`, data, headers) 
                 .then( (resp) => {
                     setTimeout(function() {
 
                         self.loading = false
-                        self.$emit("add-stage-success", resp.data.data)
-                        self.$toasted.show(`Stage Added Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
+                        self.$emit("livestock-order-processing-stage-add-success", resp.data.data)
+                        self.$toasted.show(`Processing Stage Added Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
                         Custombox.modal.close()
 
                     }, 2000)
@@ -156,21 +163,23 @@ export default {
 
                             if(err.response.status == 422) {
 
-                                for (const key of Object.keys(err.response.data.errors)) {
+                                self.$toasted.show(`Oops!! An Error Occured. Please Try Again.`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
 
-                                    if(key == "quantity") {
-                                        self.form.quantity.error = err.response.data.errors.quantity[0]
-                                        self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.quantity[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                    } else if(key == "dproduce_id") {
-                                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                    }  else if(key == "business_id") {
-                                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                    } else if(key == "user_id") {
-                                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 002-002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-                                    }  else {
-                                        console.log("Oops!! Error Occured")
-                                    }
-                                }
+                                // for (const key of Object.keys(err.response.data.errors)) {
+
+                                //     if(key == "quantity") {
+                                //         self.form.quantity.error = err.response.data.errors.quantity[0]
+                                //         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.quantity[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                //     } else if(key == "dproduce_id") {
+                                //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                //     }  else if(key == "business_id") {
+                                //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                //     } else if(key == "user_id") {
+                                //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 002-002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                //     }  else {
+                                //         console.log("Oops!! Error Occured")
+                                //     }
+                                // }
 
                             } else if(err.response.status == 401) {
 
@@ -190,7 +199,7 @@ export default {
 
                             }
 
-                        }, 3000)
+                        }, 2000)
 
                     }
 

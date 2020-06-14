@@ -10,6 +10,7 @@ import VueJWT from 'vuejs-jwt'
 import SmartTable from 'vuejs-smart-table'
 import VueFormWizard from 'vue-form-wizard';
 import HighchartsVue from 'highcharts-vue'
+import VueGlide from 'vue-glide-js'
 
 
 // Import Theme scss
@@ -20,6 +21,7 @@ Vue.use(Toasted,{
   iconPack: 'fontawesome'
 });
 
+Vue.use(VueGlide)
 Vue.use(HighchartsVue)
 Vue.use(VueFormWizard)
 Vue.use(SmartTable)

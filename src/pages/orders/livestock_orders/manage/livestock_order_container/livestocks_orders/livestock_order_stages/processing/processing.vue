@@ -1,7 +1,7 @@
 <template>
   
     <div class="follow">
-        <div class="row">
+        <div v-if="livestock_order_processing_stages.length > 0" class="row">
             <div class="col-md-6 text-md-right border-right">
 
                  <div class="col-6 offset-3 pb-3">
@@ -10,34 +10,33 @@
                     </button>
                 </div>
             
-                <!-- Center Orders -->
-                <Activities />
+                <Activities v-on:current-processing-stage="currentProcessingStage" :livestockOrderProcessingStages="livestock_order_processing_stages" />
 
             </div>
             <div class="col-md-6 text-md-left">
             
-                <!-- <SlaughterOrderView /> -->
+                <SlaughterOrderView class="animated bounceIn" v-if="Object.keys(current_processing_stage_data).length > 0 && current_processing_stage_data.stage_name == 'slaughter'" />
 
-                <ValueAdditionOrderView />
+                <ValueAdditionOrderView class="animated bounceIn" v-if="Object.keys(current_processing_stage_data).length > 0 && current_processing_stage_data.stage_name == 'value_addition'" />
 
-                <!-- <div v-if="livestock_sales.length <= 0" class="row pt-5">
+                <div v-if="Object.keys(current_processing_stage_data).length <= 0" class="row pt-5">
                     <div class="col-md-6 text-center offset-md-3 mt-5 pt-5">
-                        <h2> No Sales Requests Yet </h2>
+                        <h2> Please Select a Stage To View Details </h2>
                     </div>
-                </div> -->
+                </div>
 
             </div>
         </div>
 
-        <div v-if="Object.keys(center_order).length == 0" class="row pb-5 pt-5">
+        <div v-if="livestock_order_processing_stages.length <= 0" class="row pb-5 pt-5">
             <div class="col-md-6 text-center offset-md-3 pb-5 pt-5">
-                <h2> No Activities Available </h2>
+                <h2> No Livestock Order Processing Stage Available </h2>
 
                 <div class="container pt-5">
                     <div class="row">
                         <div class="col-6 offset-3">
-                            <button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary btn-block">
-                                Create
+                            <button @click="openAddActivityModal" id="default-outline-primary" type="button" class="btn btn-pill btn-sm btn-outline-primary btn-block">
+                                ADD STAGE
                             </button>
                         </div>
                     </div>
@@ -45,7 +44,7 @@
             </div>
         </div>
 
-        <AddActivity style="display: none;" id="open-add-activity" />
+        <AddActivity v-on:livestock-order-processing-stage-add-success="livestockOrderProcessingStageAddSuccess" :livestockOrderStageData="stage" style="display: none;" id="open-add-activity" />
 
     </div>
 
@@ -57,8 +56,6 @@ import {ApiUrl} from "../../../../../../../../api/apiurl"
 import Auth from "../../../../../../../../auth/js/spider_auth"
 import axios from "axios"
 
-import CenterOrder from "../../center_order"
-import LivestockSales from "../../livestock_sales"
 import Activities from "./activities/activities"
 import AddActivity from "./activities/add_activity"
 import SlaughterOrderView from "./activities/activities_orders/view/slaughter/view"
@@ -68,13 +65,11 @@ export default {
     data() {
         return {
             stage: {},
-            center_order: {},
-            livestock_sales: []
+            livestock_order_processing_stages: [],
+            current_processing_stage_data: {}
         }
     },
     components: {
-        CenterOrder,
-        LivestockSales,
         Activities,
         AddActivity,
         SlaughterOrderView,
@@ -90,10 +85,8 @@ export default {
         .then( (resp) => {
 
             this.stage = resp.data.data
-            
-            if(this.stage.center_order !== null) this.center_order = this.stage.center_order
-
-            if(this.stage.center_order.livestock_sales.length > 0) this.livestock_sales = this.stage.center_order.livestock_sales
+            this.livestock_order_processing_stages = this.stage.livestock_order_processing_stages
+            console.log("Stage Here", this.stage)
                     
         } )
 
@@ -128,6 +121,14 @@ export default {
             })
 
             modal.open()
+
+       },
+       livestockOrderProcessingStageAddSuccess(data) {
+           this.livestock_order_processing_stages.push(data)
+       },
+       currentProcessingStage(data) {
+
+            this.current_processing_stage_data = data
 
        }
     }
