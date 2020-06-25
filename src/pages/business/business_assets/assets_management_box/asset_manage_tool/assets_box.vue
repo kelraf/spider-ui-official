@@ -52,9 +52,15 @@ export default {
         businessProfile: {
             immediate: true,
             handler() {
-                this.business_profile = this.businessProfile
-                this.business_assets = this.business_profile.business_assets
-                this.process_assets()
+
+                if(this.businessProfile !== undefined && Object.keys(this.businessProfile).length > 0) {
+
+                    this.business_profile = this.businessProfile
+                    this.business_assets = this.business_profile.business_assets
+                    this.process_assets()
+
+                }
+
             },
             deep: true
         }

@@ -29,7 +29,14 @@
 
                                 <div class="col-md-4">
                                     <div class="ttl-info text-left">
-                                        <h6>Status</h6><span> Pending </span>
+                                        <h6>Status</h6>
+                                        <span> 
+                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 1" variant="info">PENDING</b-badge>
+                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 2" variant="warning">ACCEPTED</b-badge>
+                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 3" variant="success">IN PROGRESS</b-badge>
+                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 4" variant="success">COMPLETED</b-badge>
+                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 0" variant="danger">REJECTED</b-badge>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -101,7 +108,7 @@
 
                             <div class="col-md-4">
                             <div class="ttl-info text-left">
-                                <h6>Export Zone Name</h6><span>  {{ export_zone_livestock_order.export_zone_bundler.business.business_name }} </span>
+                                <h6> Export Zone Name </h6><span> {{ export_zone_livestock_order.export_zone_bundler.business.business_name }} </span>
                             </div>
                             </div>
 
@@ -113,7 +120,7 @@
 
                             <div class="col-md-4">
                             <div class="ttl-info text-left">
-                                <h6>Phone</h6><span> {{ export_zone_livestock_order.export_zone_bundler.business.user.phone_number }} </span>
+                                <h6> Phone </h6><span> {{ export_zone_livestock_order.export_zone_bundler.business.user.phone_number }} </span>
                             </div>
                             </div>
                             
@@ -144,6 +151,7 @@ export default {
     data() {
         return {
             export_zone_livestock_order: {},
+            export_zone_livestock_orders: [],
             livestock_order: {}
         }
     },
@@ -151,23 +159,55 @@ export default {
 
     },
     props: {
-        exportZoneLivestockOrder: Object
+        exportZoneLivestockOrders: Array
     },
     watch: {
-        exportZoneLivestockOrder: {
+        exportZoneLivestockOrders: {
             immediate: true,
             handler() {
 
-                if(Object.keys(this.exportZoneLivestockOrder).length > 0) this.export_zone_livestock_order = this.exportZoneLivestockOrder
-                this.getLivestockOrder()
+                console.log("XXXXXXXXXXXXX", this.exportZoneLivestockOrders)
+
+                if(this.exportZoneLivestockOrders.length > 0) {
+
+                    this.rejected = this.exportZoneLivestockOrders.filter((export_zone_livestock_order) => {
+
+                        if(export_zone_livestock_order.status == 0) return export_zone_livestock_order
+
+                    })
+
+                    this.others = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
+
+                        if(export_zone_livestock_order.status !== 0) return export_zone_livestock_order
+
+                    })
+
+                    if(this.rejected.length > 0 && this.others.length <= 0) {
+
+                        this.export_zone_livestock_order = this.rejected[0]
+
+                    } else {
+
+                        this.export_zone_livestock_order = this.others[0]
+
+                    }
+
+                    console.log("ZZZZZZZZZZZZZZ", this.export_zone_livestock_order)
+
+
+                    this.getLivestockOrder()
+
+                }
 
             }
         }
     },
     filters: {
         email_check(mail) {
+
             if(mail == null) return "No Email"
             else return mail
+
         },
         get_livestock_category(livestock_order) {
             if(Object.keys(livestock_order).length > 0) return livestock_order.d_livestock.category
@@ -185,7 +225,7 @@ export default {
         },
         getLivestockOrder: function() {
 
-            axios.get(`${ApiUrl.url}livestock-orders/${this.exportZoneLivestockOrder.livestock_order_id}`, {
+            axios.get(`${ApiUrl.url}livestock-orders/${this.export_zone_livestock_order.livestock_order_id}`, {
                 headers: {
                     Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                 }

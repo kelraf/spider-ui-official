@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div @click.self="close" class="row">
             <div class="col-md-6 offset-md-3">
 
                 <form-wizard color="#4466f2" class="bg-white p-4 m-2" :start-index="0"  title="Export Zone Request Wizard" subtitle="Go Through The Wizard To Complete Request Info" back-button-text="Go back!" next-button-text="Go next!" finish-button-text="We're there">
@@ -199,6 +199,7 @@ export default {
 
                 if(Object.keys(this.stageData).length > 0) {
 
+
                     this.stage_data = this.stageData
                     if(this.stage_data.export_zone_livestock_order !== null) {
                         this.export_zone_livestock_order = this.stage_data.export_zone_livestock_order
@@ -227,6 +228,9 @@ export default {
 
     },
     methods: {
+        close() {
+            Custombox.modal.close()
+        },
         checkSelected() {
             
             if(Object.keys(this.selected_export_zone).length == 0) {
@@ -294,6 +298,8 @@ export default {
             if(!this.checkDates()[0]) return false
 
             if(this.stage_data.export_zone_livestock_order == null) {
+
+                this.loading = true
                 
                 let data = {
                     export_zone_livestock_order: {

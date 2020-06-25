@@ -11,6 +11,7 @@ import SmartTable from 'vuejs-smart-table'
 import VueFormWizard from 'vue-form-wizard';
 import HighchartsVue from 'highcharts-vue'
 import VueGlide from 'vue-glide-js'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 
 // Import Theme scss
@@ -21,6 +22,12 @@ Vue.use(Toasted,{
   iconPack: 'fontawesome'
 });
 
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyA3GNu4uUATI-5IeNMZu4qyjzglFlrgCw0',
+    libraries: 'places',
+  },
+})
 Vue.use(VueGlide)
 Vue.use(HighchartsVue)
 Vue.use(VueFormWizard)

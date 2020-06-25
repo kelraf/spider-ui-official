@@ -121,7 +121,7 @@
                                 </div>
                                 </div>
                             </tab-content>
-                            <tab-content title="Select Final Outputs">
+                            <!-- <tab-content title="Select Final Outputs">
                                 <div class="setup-content" id="step-3">
                                     <div class="container-fluid no-guttars">
                                         <div class="row">
@@ -142,46 +142,10 @@
 
                                             </div>
 
-                                            <div class="col-md-6 p-1 mb-4 border-left">
-                                                
-                                                <!-- <div class="container-fluid text-center">
-
-                                                    <div class="row p-2">
-                                                        <div class="col-md-6 p-0 mt-2 text-md-left  text-primary">OutPut : </div>
-                                                        <div class="col-md-6 p-0 mt-2 text-md-left font-secondary">OutPut Name</div>
-
-                                                        <div class="col-12 p-0 mt-3 text-primary">Quantity</div>
-                                                        <div class="col-12 p-0">
-
-                                                            <b-input-group>
-
-                                                                <b-input-group-prepend>
-                                                                    <b-button class="btn-square bootstrap-touchspin-down btn-xs" type="button" @click="num--" variant="primary"><i class="fa fa-minus"></i></b-button>
-                                                                </b-input-group-prepend>
-
-                                                                <b-input-group-prepend>
-                                                                    <span class="input-group-text">Kgs</span>
-                                                                </b-input-group-prepend>
-                                                                
-                                                                <b-form-input class="touchspin" type="text" v-model="num"></b-form-input>
-
-                                                                <b-input-group-append>
-                                                                    <b-button class="btn-square bootstrap-touchspin-down btn-xs" type="button" @click="num++" variant="primary"><i class="fa fa-plus"></i></b-button>
-                                                                </b-input-group-append>
-
-                                                            </b-input-group>
-
-                                                        </div>
-                                                    </div>
-
-                                                </div> -->
-
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
-                            </tab-content>
+                            </tab-content> -->
                             <tab-content :before-change="checkDesc" title="Order Description">
                                 <div class="setup-content" id="step-3">
                                 <div class="col-xs-12">
@@ -300,8 +264,22 @@ export default {
         livestockOrderProcessingStageData: {
             immediate: true,
             handler() {
+
                 this.livestock_order_processing_stage_data = this.livestockOrderProcessingStageData
-                this.get_d_livestock_slaughter_outputs()
+
+                if(this.livestock_order_processing_stage_data.livestock_order_slaughter_order == null) return
+
+                let {dates, description, livestock_order_slaughter_order_outputs, business_id, business, id} = this.livestock_order_processing_stage_data.livestock_order_slaughter_order
+
+                this.id = id
+                this.editorData = description
+                this.selectedBusiness = business
+                this.dates.starting_date = new Date(dates.starting_date)
+                this.dates.ending_date = new Date(dates.ending_date)
+                this.slaughter_order_outputs = livestock_order_slaughter_order_outputs
+
+                this.get_d_livestock_slaughter_outputs(livestock_order_slaughter_order_outputs)
+
             }
         }
     },
@@ -414,7 +392,7 @@ export default {
                     livestock_order_stage_id: livestock_order_stage_id,
                     livestock_order_processing_stage_id: id,
                     description: this.editorData,
-                    livestock_order_slaughter_order_outputs: this.slaughter_order_outputs
+                    id: this.id
                 }
             }
 
@@ -427,12 +405,12 @@ export default {
                 }
             }
 
-            axios.post(`${ApiUrl.url}livestock-order-slaughter-orders`, data, headers) 
+            axios.put(`${ApiUrl.url}livestock-order-slaughter-orders/${this.id}`, data, headers) 
             .then( (resp) => {
                 setTimeout(function() {
 
                     self.loading = false
-                    self.$emit("livestock-order-slaughter-order-created-success", resp.data.data)
+                    self.$emit("livestock-order-slaughter-order-updated-success", resp.data.data)
                     self.$toasted.show(`Request Sent Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
                     Custombox.modal.close()
 
@@ -491,7 +469,7 @@ export default {
             } ) 
 
         },
-        get_d_livestock_slaughter_outputs() {
+        get_d_livestock_slaughter_outputs(livestock_order_slaughter_order_outputs) {
 
             if(Object.keys(this.livestock_order_processing_stage_data).length <= 0) return false
 
@@ -512,26 +490,35 @@ export default {
 
                 .then( (resp) => {
 
-                    this.d_livestock_slaughter_outputs = resp.data.data
+                    let d_livestock_slaughter_outputs = resp.data.data
+                    let existing = []
 
-                    this.d_livestock_slaughter_outputs.map( (d_livestock_slaughter_output) => {
+                    for (const d_livestock_slaughter_output of d_livestock_slaughter_outputs) {
 
-                        if(d_livestock_slaughter_output.checked) {
+                        for (const livestock_order_slaughter_order_output of livestock_order_slaughter_order_outputs) {
 
-                            let {livestock_order_id, livestock_order_stage_id, id} = this.livestock_order_processing_stage_data
+                            if(livestock_order_slaughter_order_output.d_livestock_slaughter_output_id == d_livestock_slaughter_output.id) { 
 
-                            let slaughter_order_output = {
-                                livestock_order_id: livestock_order_id,
-                                livestock_order_stage_id: livestock_order_stage_id,
-                                livestock_order_processing_stage_id: id,
-                                d_livestock_slaughter_output_id: d_livestock_slaughter_output.id
-                            }
+                                d_livestock_slaughter_output.checked = true
+                                this.d_livestock_slaughter_outputs.push(d_livestock_slaughter_output)
+                                existing.push(d_livestock_slaughter_output.id)
+
+                            } 
+                            
+                        }
                         
-                            this.slaughter_order_outputs.push(slaughter_order_output)
+                    }
+
+                    for (const d_livestock_slaughter_output of d_livestock_slaughter_outputs) {
+
+                        if(!existing.includes(d_livestock_slaughter_output.id)) {
+
+                            d_livestock_slaughter_output.checked = false
+                            this.d_livestock_slaughter_outputs.push(d_livestock_slaughter_output)
 
                         }
-
-                    } )
+                        
+                    }
                             
                 } )
 
@@ -539,16 +526,16 @@ export default {
 
                     if(err.response) {
 
-                    if(err.response.status == 404) {
+                        if(err.response.status == 404) {
 
-                        this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                            this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
 
-                    } else if(err.response.status == 401) {
+                        } else if(err.response.status == 401) {
 
-                        this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-                        this.$router.replace("/auth/login")
+                            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                            this.$router.replace("/auth/login")
 
-                    }
+                        }
 
                     }
 

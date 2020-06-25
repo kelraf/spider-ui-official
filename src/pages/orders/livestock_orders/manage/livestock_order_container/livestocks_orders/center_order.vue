@@ -41,7 +41,8 @@
                 <div class="container-fluid mt-4">
                     <div class="row">
                         <div class="col-md-8 offset-md-1">
-                            <router-link v-if="center_order.status == 'offline'" :to="'/orders/center-order/' + center_order.id" id="default-outline-success" type="button" class="btn btn-pill btn-outline-success btn-block">
+                            <!-- v-if="center_order.status == 'offline'" -->
+                            <router-link :to="'/orders/center-order/' + center_order.id" id="default-outline-success" type="button" class="btn btn-pill btn-outline-success btn-block">
                                 MORE
                             </router-link>
                         </div>

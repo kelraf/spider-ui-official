@@ -1,10 +1,13 @@
 <template>
   
     <div class="follow">
-        <div v-if="Object.keys(export_zone_livestock_order).length > 0" class="row">
+        <div v-if="export_zone_livestock_orders.length > 0" class="row">
             <div class="col-md-6 text-md-right border-right">
 
-                <ExportZoneDataReview v-on:open-edit-event="open_request" :exportZoneLivestockOrder="export_zone_livestock_order" />
+                <ExportZoneDataReview 
+                    v-on:open-edit-event="open_request" 
+                    :exportZoneLivestockOrders="export_zone_livestock_orders" 
+                />
 
             </div>
             <div class="col-md-6 text-md-left">
@@ -18,14 +21,19 @@
             </div>
         </div>
 
-        <div v-if="Object.keys(export_zone_livestock_order).length == 0" class="row pt-5">
+        <div v-if="export_zone_livestock_orders.length == 0" class="row pt-5">
             <div class="col-md-6 text-center offset-md-3 pt-5">
                 <h2> No Export zone Livestock Order Available </h2>
 
                 <div class="container pt-5">
                     <div class="row">
                         <div class="col-6 offset-3">
-                            <button @click="open_request" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary btn-block">
+                            <button 
+                                @click="open_request" 
+                                id="default-outline-primary" 
+                                type="button" 
+                                class="btn btn-pill btn-outline-primary btn-block"
+                            >
                                 Make
                             </button>
                         </div>
@@ -34,7 +42,14 @@
             </div>
         </div>
 
-        <Request v-on:export-zone-request-updated-success="exportZoneRequestCreatedSuccess" v-on:export-zone-request-created-success="exportZoneRequestCreatedSuccess" :stageData="stage" :exportZones="export_zones" id="request" style="display: none;" />
+        <Request 
+            v-on:export-zone-request-updated-success="exportZoneRequestCreatedSuccess" 
+            v-on:export-zone-request-created-success="exportZoneRequestCreatedSuccess" 
+            :stageData="stage" 
+            :exportZones="export_zones" 
+            id="request" 
+            style="display: none;" 
+        />
 
     </div>
 
@@ -54,7 +69,7 @@ export default {
     data() {
         return {
             stage: {},
-            export_zone_livestock_order: {},
+            export_zone_livestock_orders: [],
             export_zones: []
         }
     },
@@ -73,9 +88,10 @@ export default {
 
         .then( (resp) => {
 
-            this.stage = resp.data.data
-            
-            if(this.stage.export_zone_livestock_order !== null) this.export_zone_livestock_order = this.stage.export_zone_livestock_order
+            this.stage = resp.data.data            
+            if(this.stage.export_zone_livestock_order !== null) {
+                this.export_zone_livestock_orders = this.stage.export_zone_livestock_orders
+            }
                     
         } )
 

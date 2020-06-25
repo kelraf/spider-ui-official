@@ -51,10 +51,21 @@ import Cart from "../pages/ecommerce/cart"
 
 // Livestock Order Stages
 
-import Collection from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/collection"
+import Collection from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/collection/collection"
 import CCPLOrder from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/c_c_p_l_order/c_c_p_l_order"
 import ExportZoneSpider from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/export_zone_spider/export_zone"
 import Processing from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/processing/processing"
+
+
+// Livestock Sales
+import LivestockSales from "../pages/livestock_sales/livestock_sales"
+
+// Export Zone Requests
+import ExportZoneRequests from "../pages/export_zone_request_details/export_zone_container"
+
+// Market
+import MarketIndex from "../pages/market/market"
+import CenterOrderMarket from "../pages/market/center_order_market"
 
 
 // Dashboards
@@ -425,6 +436,73 @@ const routes = [
     }
   ]
 },
+{
+  path: "/market",
+  component: Body,
+  name: "market",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'market-index',
+      component: MarketIndex,
+      meta: {
+        title: `Market Index | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'center-order-market/:id',
+      name: 'center-order-market',
+      component: CenterOrderMarket,
+      meta: {
+        title: `Market Index | ${system_title}`,
+
+      }
+    }
+  ]
+},
+{
+  path: "/livestock-sales",
+  component: Body,
+  name: "livestock-sales",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'livestock-sales',
+      component: LivestockSales,
+      meta: {
+        title: `Livestock Sales | ${system_title}`,
+
+      }
+    }
+  ]
+},
+{
+  path: "/export-zone-requests",
+  component: Body,
+  name: "export-zone-requests",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'export-zone-requests',
+      component: ExportZoneRequests,
+      meta: {
+        title: `Export Zone Requests | ${system_title}`,
+
+      }
+    }
+  ]
+}
+,
 {
   path: "/shop",
   component: Body,

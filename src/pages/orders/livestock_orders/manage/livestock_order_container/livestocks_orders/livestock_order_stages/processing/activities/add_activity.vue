@@ -83,7 +83,6 @@ export default {
             immediate: true,
             handler() {
                 this.livestock_order_stage_data = this.livestockOrderStageData
-                console.log(this.livestock_order_stage_data)
             }
         }
     },
@@ -129,8 +128,6 @@ export default {
                     }
                 }  
                 
-                console.log(data)
-
                 let self = this
                     
                 let headers = {

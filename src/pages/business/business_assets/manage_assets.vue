@@ -3,13 +3,10 @@
     <!-- Container-fluid starts-->
     <div class="container-fluid">
 
+        <Breadcrumbs main="Manage Assets" title="Manage"/>
+
         <div class="row">
             <div class="col-xl-6 xl-100">
-
-                <div class="row">
-                    <h4>Business Assets</h4>
-                </div>
-
                 <div class="row">
 
                     <div class="col-md-6">

@@ -51,7 +51,8 @@ export default {
     ...mapState({
       menuItems: state => state.menu.data,
       layout: state => state.layout.layout,
-      userProfile: state => state.userProfile.userProfile
+      userProfile: state => state.userProfile.userProfile,
+      businessData: state => state.businessData.businessData
     })
   },
   created(){
@@ -60,6 +61,11 @@ export default {
     this.resized = this.sidebar_toggle_var;
     this.$store.dispatch('layout/set')
     this.loadUserProfile()
+  },
+  mounted() {
+
+    this.loadBusinessData()
+
   },
   watch:{
     '$route' (){
@@ -94,12 +100,13 @@ export default {
       axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
       .then( (resp) => {
 
-        this.user_profile = resp.data.data
-        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
+          this.user_profile = resp.data.data
+          this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar == undifined || this.user_profile.avatar == null ? null : this.user_profile.avatar.avatar.file_name}`
 
-        delete this.user_profile.pin
-        delete this.user_profile.national_id_number
-        this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+          delete this.user_profile.pin
+          delete this.user_profile.national_id_number
+          delete this.user_profile.user
+          this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
 
       } )
       .catch( (err) => {
@@ -116,6 +123,44 @@ export default {
         }
 
       } )
+
+    },
+    loadBusinessData() {
+
+        let headers = {
+            headers: {
+                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+            }
+        }
+
+        axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
+          .then( (resp) => {
+
+            if(resp.data.data.length <= 0) return false
+
+            this.business = resp.data.data[0]
+
+            delete this.business.business_pin
+            delete this.business.registration_number
+            delete this.business.user
+            this.$store.dispatch('businessData/updateBusinessData', this.business)
+
+
+          } )
+          .catch( (err) => {
+
+            if(err.response) {
+
+              if (err.response.status == 401) {
+                
+                this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                this.$router.replace("/auth/login")
+
+              }
+
+            }
+
+          } )
 
     },
     sidebar_toggle(value) {
