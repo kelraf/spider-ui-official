@@ -65,7 +65,6 @@ export default {
        openMakeSlaughterOrderModalFromSlaughterView: {
            immediate: true,
            handler() {
-               console.log("Then Here 3 Value", this.openMakeSlaughterOrderModalFromSlaughterView)
                this.open_make_slaughter_order_modal_from_slaughter_view = this.openMakeSlaughterOrderModalFromSlaughterView
                setTimeout(() => {
                    this.open_make_slaughter_order_modal_from_slaughter_view = false

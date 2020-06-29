@@ -1,7 +1,7 @@
 <template>
 
     <div class="container-fluid">
-        <div class="row">
+        <div @click.self="close" class="row">
             <div class="col-md-4 offset-md-4">
                 <div class="card p-0 m-0 custom-card">
 

@@ -1,13 +1,13 @@
 <template>
   
     <div class="container-fluid">
-        <div class="row">
+        <div @click.self="close" class="row">
             <div class="col-md-6 offset-md-3">
 
                 <div class="card"> 
                     <div class="card-body">
                         <form-wizard color="#4466f2" :start-index="0" title="Make A Slaughter Order" subtitle="Split a complicated flow in multiple steps" back-button-text="Go back!" next-button-text="Go next!" finish-button-text="We're there">
-                            <tab-content :before-change="checkSelectedBusiness" title="Select Slaughter House/Abattor">
+                            <tab-content :before-change="checkSelectedSlaughterOrderBundler" title="Select Slaughter House/Abattor">
                                 <div class="setup-content" id="step-1">
                                 <div class="col-xs-12 p-0">
                                     <div class="col-md-12 p-0">
@@ -31,7 +31,7 @@
                                             :bullets="false">
                                             <vueper-slide
                                                 style="height: 300px; "
-                                                v-for="(business, index) in businesses"
+                                                v-for="(slaughter_order_bundler, index) in slaughter_order_bundlers"
                                                 :key="index"
                                                 >
 
@@ -51,13 +51,13 @@
 
                                                                             <div class="col-md-6">
                                                                                 <div class="font-success text-left">
-                                                                                    <h6>Business Name</h6><span> {{ business.business_name }} </span>
+                                                                                    <h6>Business Name</h6><span> {{ slaughter_order_bundler.business.business_name }} </span>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="col-md-6">
                                                                                 <div class="font-success text-left">
-                                                                                    <h6>Sub Category</h6><span> {{ business.sub_category }} </span>
+                                                                                    <h6>Sub Category</h6><span> {{ slaughter_order_bundler.business.sub_category }} </span>
                                                                                 </div>                                    
                                                                             </div>
                                                                             
@@ -71,17 +71,17 @@
                                                                         </div>
 
                                                                         <div class="row">
-                                                                            <div class="col-md-6 offset-md-3 font-secondary"> {{ business.user.first_name }} {{ business.user.last_name }} </div>
+                                                                            <div class="col-md-6 offset-md-3 font-secondary"> {{ slaughter_order_bundler.business.user.first_name }} {{ slaughter_order_bundler.business.user.last_name }} </div>
                                                                         </div>
 
                                                                         <div class="row pt-3">
 
                                                                             <div class="col-6">
-                                                                                <div><feather type="phone"></feather></div> <div class="font-secondary"> {{ business.user.phone_number }} </div>
+                                                                                <div><feather type="phone"></feather></div> <div class="font-secondary"> {{ slaughter_order_bundler.business.user.phone_number }} </div>
                                                                             </div>
 
                                                                             <div class="col-6">
-                                                                                <div><feather type="mail"></feather></div> <div class="font-secondary"> {{ business.user | getMail }} </div>
+                                                                                <div><feather type="mail"></feather></div> <div class="font-secondary"> {{ slaughter_order_bundler.business.user | getMail }} </div>
                                                                             </div>
 
                                                                         </div>
@@ -89,10 +89,10 @@
                                                                         <div class="row">
                                                                             <div class="col-6 offset-3 pt-2">
 
-                                                                                <button id="default-outline-secondary" @click="setSelected(business)" type="button" class="btn btn-pill btn-xs btn-outline-secondary btn-block">
-                                                                                    <span v-if="Object.keys(selectedBusiness).length == 0">SELECT</span>
-                                                                                    <span v-if="Object.keys(selectedBusiness).length > 0 && selectedBusiness.id !== business.id">SELECT</span>
-                                                                                    <span v-if="Object.keys(selectedBusiness).length > 0 && selectedBusiness.id == business.id">SELECTED</span>
+                                                                                <button id="default-outline-secondary" @click="setSelected(slaughter_order_bundler)" type="button" class="btn btn-pill btn-xs btn-outline-secondary btn-block">
+                                                                                    <span v-if="Object.keys(selectedSlaughterOrderBundler).length == 0">SELECT</span>
+                                                                                    <span v-if="Object.keys(selectedSlaughterOrderBundler).length > 0 && selectedSlaughterOrderBundler.id !== slaughter_order_bundler.id">SELECT</span>
+                                                                                    <span v-if="Object.keys(selectedSlaughterOrderBundler).length > 0 && selectedSlaughterOrderBundler.id == slaughter_order_bundler.id">SELECTED</span>
                                                                                 </button>
 
                                                                             </div>
@@ -284,7 +284,9 @@ export default {
             dates: {
                 starting_date: "",
                 ending_date: ""
-            }
+            },
+            slaughter_order_bundlers: [],
+            selectedSlaughterOrderBundler: {}
         }
     },
     components: { 
@@ -306,6 +308,41 @@ export default {
         }
     },
     mounted() {
+
+
+        axios.get(`${ApiUrl.url}slaughter-order-bundlers`, {
+            headers: {
+                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+            }
+        })
+        .then( (resp) => {
+
+            this.slaughter_order_bundlers = resp.data.data
+
+            this.slaughter_order_bundlers.map((slaughter_order_bundler) => {
+                delete slaughter_order_bundler.livestock_order_slaughter_orders
+            })
+                    
+        } )
+
+        .catch( (err) => {
+
+            if(err.response) {
+
+            if(err.response.status == 404) {
+
+                this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+
+            } else if(err.response.status == 401) {
+
+                this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                this.$router.replace("/auth/login")
+
+            }
+
+            }
+
+        } )
 
         axios.get(`${ApiUrl.url}businesses`, {
             headers: {
@@ -339,6 +376,11 @@ export default {
 
     },
     methods: {
+        close() {
+
+            Custombox.modal.close()
+
+        },
         checkIt(e) {
             if(e.target.checked) {
 
@@ -359,13 +401,13 @@ export default {
 
             }
         },
-        setSelected(business) {
+        setSelected(slaughter_order_bundler) {
 
-            this.selectedBusiness = business
+            this.selectedSlaughterOrderBundler = slaughter_order_bundler
 
         },
-        checkSelectedBusiness() {
-            if(Object.keys(this.selectedBusiness).length == 0) {
+        checkSelectedSlaughterOrderBundler() {
+            if(Object.keys(this.selectedSlaughterOrderBundler).length == 0) {
                 this.$toasted.show(`Please Select A Business`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
                 return false
             } else {
@@ -409,7 +451,8 @@ export default {
             let data = {
                 livestock_order_slaughter_order: {
                     dates: this.checkDates()[1],
-                    business_id: this.selectedBusiness.id,
+                    business_id: this.selectedSlaughterOrderBundler.business.id,
+                    slaughter_order_bundler_id: this.selectedSlaughterOrderBundler.id,
                     livestock_order_id: livestock_order_id,
                     livestock_order_stage_id: livestock_order_stage_id,
                     livestock_order_processing_stage_id: id,
@@ -461,6 +504,8 @@ export default {
                                     self.$toasted.show(`Oops!! Something Went Wrong: Description`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                 } else if(key == "livestock_order_id") {
                                     self.$toasted.show(`Oops!! Something Went Wrong: Livestock Order`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                } else if(key == "slaughter_order_bundler_id") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong.`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                 }  else {
                                     console.log("Oops!! Error Occured")
                                 }

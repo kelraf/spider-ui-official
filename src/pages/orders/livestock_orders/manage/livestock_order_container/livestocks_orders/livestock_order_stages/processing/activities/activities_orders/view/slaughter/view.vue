@@ -57,7 +57,7 @@
 
                                         <div class="row">
                                             <div class="col-8 offset-2 pb-3 text-left">
-                                                <button @click="openEditModal" id="default-outline-secondary" type="button" class="btn btn-pill btn-outline-secondary btn-block">
+                                                <button :disabled="livestock_order_slaughter_order.status <= 0 ? true : false " @click="openEditModal" id="default-outline-secondary" type="button" class="btn btn-sm btn-pill btn-outline-secondary btn-block">
                                                     EDIT
                                                 </button>
                                             </div>
@@ -67,7 +67,14 @@
 
                                             <div class="col-md-4">
                                                 <div class="font-success text-left">
-                                                    <h6>Status</h6><span> {{ livestock_order_slaughter_order.status | displayStatus }} </span>
+                                                    <h6>Status</h6>
+                                                    <span> 
+                                                        <b-badge style="color: white !important;" v-if="livestock_order_slaughter_order.status == 1" variant="info">PENDING</b-badge>
+                                                        <b-badge style="color: white !important;" v-if="livestock_order_slaughter_order.status == 2" variant="warning">ACCEPTED</b-badge>
+                                                        <b-badge style="color: white !important;" v-if="livestock_order_slaughter_order.status == 3" variant="success">IN PROGRESS</b-badge>
+                                                        <b-badge style="color: white !important;" v-if="livestock_order_slaughter_order.status == 4" variant="success">COMPLETED</b-badge>
+                                                        <b-badge style="color: white !important;" v-if="livestock_order_slaughter_order.status == 0" variant="danger">REJECTED</b-badge>
+                                                    </span>
                                                 </div>
                                             </div>
 

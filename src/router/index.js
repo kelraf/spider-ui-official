@@ -63,6 +63,10 @@ import LivestockSales from "../pages/livestock_sales/livestock_sales"
 // Export Zone Requests
 import ExportZoneRequests from "../pages/export_zone_request_details/export_zone_container"
 
+// Slaughter Orders
+import SlaughterOrders from "../pages/slaughter_orders/slaughter_order_bundler"
+import SlaughterOrder from "../pages/slaughter_orders/slaughter_order_"
+
 // Market
 import MarketIndex from "../pages/market/market"
 import CenterOrderMarket from "../pages/market/center_order_market"
@@ -497,6 +501,34 @@ const routes = [
       component: ExportZoneRequests,
       meta: {
         title: `Export Zone Requests | ${system_title}`,
+
+      }
+    }
+  ]
+},
+{
+  path: "/slaughter-orders",
+  component: Body,
+  name: "slaughter-orders",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'slaughter-orders',
+      component: SlaughterOrders,
+      meta: {
+        title: `Slaughter Orders | ${system_title}`,
+
+      }
+    },
+    {
+      path: ':id',
+      name: 'slaughter-order',
+      component: SlaughterOrder,
+      meta: {
+        title: `Slaughter Order | ${system_title}`,
 
       }
     }

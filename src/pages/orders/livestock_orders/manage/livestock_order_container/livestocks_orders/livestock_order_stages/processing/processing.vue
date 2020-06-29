@@ -22,12 +22,17 @@
                 <SlaughterOrderView 
                     v-on:open-make-slaughter-order-modal="openMakeSlaughterOrderModalFromSlaughterView" 
                     v-on:open-edit-modal="openEditModal" 
-                    :currentProcessingStageData="current_processing_stage_data" 
+                    :currentProcessingStageData="current_processing_stage_data"
+                    :dataPosition="position" 
                     class="animated bounceIn" 
                     v-if="Object.keys(current_processing_stage_data).length > 0 && current_processing_stage_data.stage_name == 'slaughter'" 
                 />
 
-                <ValueAdditionOrderView :currentProcessingStageData="current_processing_stage_data" class="animated bounceIn" v-if="Object.keys(current_processing_stage_data).length > 0 && current_processing_stage_data.stage_name == 'value_addition'" />
+                <ValueAdditionOrderView 
+                    :currentProcessingStageData="current_processing_stage_data" 
+                    class="animated bounceIn" 
+                    v-if="Object.keys(current_processing_stage_data).length > 0 && current_processing_stage_data.stage_name == 'value_addition'" 
+                />
 
                 <div v-if="Object.keys(current_processing_stage_data).length <= 0" class="row pt-5">
                     <div class="col-md-6 text-center offset-md-3 mt-5 pt-5">
@@ -54,9 +59,19 @@
             </div>
         </div>
 
-        <AddActivity v-on:livestock-order-processing-stage-add-success="livestockOrderProcessingStageAddSuccess" :livestockOrderStageData="stage" style="display: none;" id="open-add-activity" />
+        <AddActivity 
+            v-on:livestock-order-processing-stage-add-success="livestockOrderProcessingStageAddSuccess" 
+            :livestockOrderStageData="stage" 
+            style="display: none;" 
+            id="open-add-activity" 
+        />
 
-        <LivestockOrderSlaughterOrderEdit v-on:livestock-order-slaughter-order-updated-success="livestockOderSlaughterOrderUpdatedSuccess" :livestockOrderProcessingStageData="current_processing_stage_data" id="open-edit-modal" style="display: none;" />
+        <LivestockOrderSlaughterOrderEdit 
+            v-on:livestock-order-slaughter-order-updated-success="livestockOderSlaughterOrderUpdatedSuccess" 
+            :livestockOrderProcessingStageData="current_processing_stage_data" 
+            id="open-edit-modal" 
+            style="display: none;" 
+        />
 
     </div>
 
@@ -80,7 +95,8 @@ export default {
             stage: {},
             open_make_slaughter_order_modal_from_slaughter_view: false,
             livestock_order_processing_stages: [],
-            current_processing_stage_data: {}
+            current_processing_stage_data: {},
+            position: 0
         }
     },
     components: {
@@ -106,6 +122,7 @@ export default {
             .then( (resp) => {
 
                 this.stage = resp.data.data
+                console.log(this.stage)
                 this.livestock_order_processing_stages = this.stage.livestock_order_processing_stages
                         
             } )
@@ -156,7 +173,6 @@ export default {
 
        },
        openMakeSlaughterOrderModalFromSlaughterView() {
-           console.log("Then Came Here 2")
            this.open_make_slaughter_order_modal_from_slaughter_view = true
        },
        openEditModal() {

@@ -1,121 +1,78 @@
 <template>
   
     <div class="container-fluid">
-        <div class="row">
+        <div @click.self="close" class="row">
             <div class="col-md-6 offset-md-3">
 
                 <div class="card"> 
                     <div class="card-body">
                         <form-wizard color="#4466f2" :start-index="0" title="Make A Slaughter Order" subtitle="Split a complicated flow in multiple steps" back-button-text="Go back!" next-button-text="Go next!" finish-button-text="We're there">
-                            <tab-content :before-change="checkSelectedBusiness" title="Select Slaughter House/Abattor">
+                            <tab-content title="Select Slaughter House/Abattor">
                                 <div class="setup-content" id="step-1">
                                 <div class="col-xs-12 p-0">
                                     <div class="col-md-12 p-0">
 
-                                        <div class="row op p-2">
-                                            <div class="col-6 ">
-                                                <b-input-group class="pill-input-group">
-                                                    <b-form-input placeholder="Search....." type="text"></b-form-input>
-                                                    <b-input-group-append is-text><i class="icofont icofont-stock-search"></i></b-input-group-append>
-                                                </b-input-group>
-                                            </div>
-                                        </div>
-                                        
-                                        <vueper-slides
-                                            3d
-                                            arrows-outside
-                                            ref="vueperslides1"
-                                            fixed-height="300px"
-                                            @slide="$refs.vueperslides2 && $refs.vueperslides2.goToSlide($event.currentSlide.index, { emit: false })"
-                                            :slide-ratio="1 / 4"
-                                            :bullets="false">
-                                            <vueper-slide
-                                                style="height: 300px; "
-                                                v-for="(business, index) in businesses"
-                                                :key="index"
-                                                >
+                                        <!-- Container-fluid starts-->
+                                        <div v-if="Object.keys(selectedBusiness).length > 0" class="container-fluid fix-it">
+                                            <div class="user-profile">
+                                            <div class="row">
+                                                <!-- user profile first-style start-->
+                                                <div class="col-sm-12 p-0">
+                                                <div class="card hovercard text-center">
+                                                    <div class="info infor">
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-lg-12 order-sm-1 order-xl-0">
+                                                            <div class="row">
 
-                                                <template v-slot:content>
-                                                
-                                                    <!-- Container-fluid starts-->
-                                                    <div class="container-fluid fix-it">
-                                                        <div class="user-profile">
-                                                        <div class="row">
-                                                            <!-- user profile first-style start-->
-                                                            <div class="col-sm-12 p-0">
-                                                            <div class="card hovercard text-center">
-                                                                <div class="info infor">
-                                                                <div class="row">
-                                                                    <div class="col-sm-12 col-lg-12 order-sm-1 order-xl-0">
-                                                                        <div class="row">
-
-                                                                            <div class="col-md-6">
-                                                                                <div class="font-success text-left">
-                                                                                    <h6>Business Name</h6><span> {{ business.business_name }} </span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-md-6">
-                                                                                <div class="font-success text-left">
-                                                                                    <h6>Sub Category</h6><span> {{ business.sub_category }} </span>
-                                                                                </div>                                    
-                                                                            </div>
-                                                                            
-                                                                            
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="col-6 mt-3 offset-3">
-                                                                                <div class="avatar"><img class="img-50 rounded-circle" :src='"../../../../../../../../../../../../assets/images/user/1.jpg"' alt="#"></div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="col-md-6 offset-md-3 font-secondary"> {{ business.user.first_name }} {{ business.user.last_name }} </div>
-                                                                        </div>
-
-                                                                        <div class="row pt-3">
-
-                                                                            <div class="col-6">
-                                                                                <div><feather type="phone"></feather></div> <div class="font-secondary"> {{ business.user.phone_number }} </div>
-                                                                            </div>
-
-                                                                            <div class="col-6">
-                                                                                <div><feather type="mail"></feather></div> <div class="font-secondary"> {{ business.user | getMail }} </div>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="col-6 offset-3 pt-2">
-
-                                                                                <button id="default-outline-secondary" @click="setSelected(business)" type="button" class="btn btn-pill btn-xs btn-outline-secondary btn-block">
-                                                                                    <span v-if="Object.keys(selectedBusiness).length == 0">SELECT</span>
-                                                                                    <span v-if="Object.keys(selectedBusiness).length > 0 && selectedBusiness.id !== business.id">SELECT</span>
-                                                                                    <span v-if="Object.keys(selectedBusiness).length > 0 && selectedBusiness.id == business.id">SELECTED</span>
-                                                                                </button>
-
-                                                                            </div>
-                                                                        </div>
-
+                                                                <div class="col-md-6">
+                                                                    <div class="font-success text-left">
+                                                                        <h6>Business Name</h6><span> {{ selectedBusiness.business_name }} </span>
                                                                     </div>
                                                                 </div>
-                                                                                                                                        
+
+                                                                <div class="col-md-6">
+                                                                    <div class="font-success text-left">
+                                                                        <h6>Sub Category</h6><span> {{ selectedBusiness.sub_category }} </span>
+                                                                    </div>                                    
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-6 mt-3 offset-3">
+                                                                    <div class="avatar"><img class="img-50 rounded-circle" :src='"../../../../../../../../../../../../assets/images/user/1.jpg"' alt="#"></div>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-6 offset-md-3 font-secondary"> {{ selectedBusiness.user.first_name }} {{ selectedBusiness.user.last_name }} </div>
                                                             </div>
-                                                            <!-- user profile first-style end-->
-                                                            
-                                                        </div>
+
+                                                            <div class="row pt-3">
+
+                                                                <div class="col-6">
+                                                                    <div><feather type="phone"></feather></div> <div class="font-secondary"> {{ selectedBusiness.user.phone_number }} </div>
+                                                                </div>
+
+                                                                <div class="col-6">
+                                                                    <div><feather type="mail"></feather></div> <div class="font-secondary"> {{ selectedBusiness.user | getMail }} </div>
+                                                                </div>
+
+                                                            </div>
+
                                                         </div>
                                                     </div>
-                                                    <!-- Container-fluid Ends-->
-
-                                                </template>
-
-
-                                            </vueper-slide>
-                                        </vueper-slides>
+                                                                                                                            
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <!-- user profile first-style end-->
+                                                
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <!-- Container-fluid Ends-->
 
                                     </div>
                                 </div>
@@ -237,7 +194,7 @@ export default {
     data() {
         return {
             loading: false,
-            businesses: [],
+            business: {},
             num: 20,
             selectedBusiness: {},
             editorData: '',
@@ -269,54 +226,25 @@ export default {
 
                 if(this.livestock_order_processing_stage_data.livestock_order_slaughter_order == null) return
 
-                let {dates, description, livestock_order_slaughter_order_outputs, business_id, business, id} = this.livestock_order_processing_stage_data.livestock_order_slaughter_order
+                let {dates, description, business_id, business, id} = this.livestock_order_processing_stage_data.livestock_order_slaughter_order
 
                 this.id = id
                 this.editorData = description
                 this.selectedBusiness = business
                 this.dates.starting_date = new Date(dates.starting_date)
                 this.dates.ending_date = new Date(dates.ending_date)
-                this.slaughter_order_outputs = livestock_order_slaughter_order_outputs
-
-                this.get_d_livestock_slaughter_outputs(livestock_order_slaughter_order_outputs)
+                // this.get_d_livestock_slaughter_outputs(livestock_order_slaughter_order_outputs)
 
             }
         }
     },
     mounted() {
 
-        axios.get(`${ApiUrl.url}businesses`, {
-            headers: {
-                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-            }
-        })
-        .then( (resp) => {
-
-            this.businesses = resp.data.data
-                    
-        } )
-
-        .catch( (err) => {
-
-            if(err.response) {
-
-            if(err.response.status == 404) {
-
-                this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-
-            } else if(err.response.status == 401) {
-
-                this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-                this.$router.replace("/auth/login")
-
-            }
-
-            }
-
-        } )
-
     },
     methods: {
+        close() {
+            Custombox.modal.close()
+        },
         checkIt(e) {
             if(e.target.checked) {
 
@@ -336,11 +264,6 @@ export default {
                 this.slaughter_order_outputs = this.slaughter_order_outputs.filter((slaughter_order_output) => { if(slaughter_order_output.d_livestock_slaughter_output_id !== e.target.value) return slaughter_order_output })
 
             }
-        },
-        setSelected(business) {
-
-            this.selectedBusiness = business
-
         },
         checkSelectedBusiness() {
             if(Object.keys(this.selectedBusiness).length == 0) {
@@ -387,12 +310,7 @@ export default {
             let data = {
                 livestock_order_slaughter_order: {
                     dates: this.checkDates()[1],
-                    business_id: this.selectedBusiness.id,
-                    livestock_order_id: livestock_order_id,
-                    livestock_order_stage_id: livestock_order_stage_id,
-                    livestock_order_processing_stage_id: id,
-                    description: this.editorData,
-                    id: this.id
+                    description: this.editorData
                 }
             }
 

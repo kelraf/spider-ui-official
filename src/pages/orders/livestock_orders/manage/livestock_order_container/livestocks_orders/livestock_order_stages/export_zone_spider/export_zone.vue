@@ -5,6 +5,7 @@
             <div class="col-md-6 text-md-right border-right">
 
                 <ExportZoneDataReview 
+                    @open-make-new-request-excluding="makeNewRequestExclude"
                     v-on:open-edit-event="open_request" 
                     :exportZoneLivestockOrders="export_zone_livestock_orders" 
                 />
@@ -23,7 +24,7 @@
 
         <div v-if="export_zone_livestock_orders.length == 0" class="row pt-5">
             <div class="col-md-6 text-center offset-md-3 pt-5">
-                <h2> No Export zone Livestock Order Available </h2>
+                <h2> No Export Zone Livestock Order Available </h2>
 
                 <div class="container pt-5">
                     <div class="row">
@@ -45,7 +46,7 @@
         <Request 
             v-on:export-zone-request-updated-success="exportZoneRequestCreatedSuccess" 
             v-on:export-zone-request-created-success="exportZoneRequestCreatedSuccess" 
-            :stageData="stage" 
+            :stageData="editedStage" 
             :exportZones="export_zones" 
             id="request" 
             style="display: none;" 
@@ -69,6 +70,7 @@ export default {
     data() {
         return {
             stage: {},
+            editedStage: {},
             export_zone_livestock_orders: [],
             export_zones: []
         }
@@ -88,7 +90,7 @@ export default {
 
         .then( (resp) => {
 
-            this.stage = resp.data.data            
+            this.stage = resp.data.data    
             if(this.stage.export_zone_livestock_order !== null) {
                 this.export_zone_livestock_orders = this.stage.export_zone_livestock_orders
             }
@@ -116,7 +118,95 @@ export default {
 
     },
     methods: {
-        open_request: function() {
+        makeNewRequestExclude(rejected) {
+
+            this.editedStage = {
+                ...this.stage,
+                export_zone_livestock_order: null
+            }
+
+            axios.get(`${ApiUrl.url}export-zone-bundlers`, {
+                headers: {
+                    Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+                }
+            })
+
+            .then( (resp) => {
+
+                if(this.stage !== undefined && this.stage.export_zone_livestock_orders.length > 0) {
+
+                    let list = []
+
+                    for (let rejected_ of rejected) {
+                        
+                        list.push(rejected_.export_zone_bundler_id)
+                        
+                    }
+
+                    for (let export_zone of resp.data.data) {
+
+
+                        if(!list.includes(export_zone.id)) {
+
+                            export_zone.selected = false
+                            this.export_zones.push(export_zone)
+
+                        }
+                        
+                    }
+
+                    console.log("Export Zone Request", rejected)
+
+                    console.log("Export Zones", this.export_zones)
+
+                } else {
+
+                    this.export_zones = this.export_zones.map((export_zone) => { 
+
+                        export_zone.selected = false
+                        return export_zone
+                        
+                    })    
+
+                }
+
+                let modal = new Custombox.modal({
+                    content: {
+                        effect: 'slip',
+                        target: '#request'
+                    }
+                })
+
+                modal.open()
+
+            } )
+
+            .catch( (err) => {
+
+                if(err.response) {
+
+                    if(err.response.status == 404) {
+
+                        this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+
+                    } else if(err.response.status == 401) {
+
+                        this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                        this.$router.replace("/auth/login")
+
+                    }
+
+                }
+
+            } )
+
+        },
+        open_request: function(export_zone_livestock_order) {
+
+            this.editedStage = {
+                ...this.stage,
+                export_zone_livestock_order
+            }
 
             axios.get(`${ApiUrl.url}export-zone-bundlers`, {
                 headers: {
@@ -128,17 +218,20 @@ export default {
 
                 this.export_zones = resp.data.data
 
-                if(this.stage !== undefined && this.stage.export_zone_livestock_order !== null) {
-
+                if(this.stage !== undefined && this.stage.export_zone_livestock_orders.length > 0) {
 
                     this.export_zones = this.export_zones.map((export_zone) => { 
 
-                        if(export_zone.id == this.stage.export_zone_livestock_order.export_zone_bundler.id) {
+                        if(export_zone.id == this.editedStage.export_zone_livestock_order.export_zone_bundler.id) {
+
                             export_zone.selected = true
                             return export_zone
+
                         } else {
+
                             export_zone.selected = false
                             return export_zone
+
                         } 
 
                     })
@@ -186,8 +279,14 @@ export default {
 
         },
         exportZoneRequestCreatedSuccess(data) {
-            this.export_zone_livestock_order = data
-            this.stage.export_zone_livestock_order = data
+
+            this.export_zone_livestock_orders = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
+
+                if(export_zone_livestock_order.id !== data.id) return export_zone_livestock_order
+
+            })
+
+            this.export_zone_livestock_orders.push(data)
         }
     }
 }

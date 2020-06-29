@@ -11,11 +11,53 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-12 order-sm-1 order-xl-0">
 
-                            <div class="row">
+                            <div v-if="rejected_ && rejected.length > 1" class="row">
+                                <div class="col-6 offset-3 pb-3 text-left">
+
+                                    <b-button-group style="width: 100%;" class="btn-group-pill">
+                                        <b-button style="font-size: 5px !important;" ref="back" @click="goBack" class="btn-xs pt-1" variant="outline-warning">
+                                            <feather type="arrow-left-circle"></feather>
+                                        </b-button>
+                                        <!-- <b-button class="btn-xs" variant="outline-warning"> {{ position }} </b-button> -->
+                                        <b-button style="font-size: 5px !important;" @click="goNext" ref="next" class="btn-xs pt-1" variant="outline-warning">
+                                            <feather type="arrow-right-circle"></feather>
+                                        </b-button>
+                                    </b-button-group>
+
+                                </div>
+                            </div>
+
+                            <div v-if="rejected.length > 0 && others.length > 0" class="row">
+                                <div class="col-12 pb-3 text-left">
+
+                                    <b-button-group class="btn-group-pill">
+                                        <b-button @click="showRejected" class="btn-sm" :variant="export_zone_livestock_order.status <= 0 ? 'danger' : 'outline-danger'">REJECTED</b-button>
+                                        <b-button @click="showOthers" class="btn-sm" :variant="export_zone_livestock_order.status > 0 ? 'warning' : 'outline-warning'">OTHERS</b-button>
+                                        <b-button :disabled="export_zone_livestock_order.status <= 0 ? true : false" class="btn-sm" @click="openEditEvent" variant="outline-warning">UPDATE</b-button>
+                                    </b-button-group>
+
+                                </div>
+                            </div>
+
+                            <div v-if="others.length == 1 && rejected.length <= 0" class="row">
                                 <div class="col-8 offset-2 pb-3 text-left">
-                                    <button @click="openEditEvent" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary btn-block">
-                                        EDIT
+
+                                    <button @click="openEditEvent" id="default-outline-warning" type="button" class="btn btn-sm btn-pill btn-outline-warning btn-block">
+                                        <span v-if="!loading">UPDATE</span>
+                                        <img style="width: 20px;" v-if="loading" src="../../../../../../../../assets/images/loader.gif" alt="">
                                     </button>
+
+                                </div>
+                            </div>
+
+                            <div v-if="rejected.length >= 1 && others.length <= 0" class="row">
+                                <div class="col-8 offset-2 pb-3 text-left">
+
+                                    <button @click="makeNewRequestExclude" id="default-outline-warning" type="button" class="btn btn-sm btn-pill btn-outline-warning btn-block">
+                                        <span v-if="!loading">MAKE NEW REQUEST</span>
+                                        <img style="width: 20px;" v-if="loading" src="../../../../../../../../assets/images/loader.gif" alt="">
+                                    </button>
+
                                 </div>
                             </div>
 
@@ -152,7 +194,15 @@ export default {
         return {
             export_zone_livestock_order: {},
             export_zone_livestock_orders: [],
-            livestock_order: {}
+            livestock_order: {},
+            rejected_: false,
+            loading: false,
+            currentObjectPosition: 0
+        }
+    },
+    computed: {
+        position: function() {
+            return this.currentObjectPosition+=1
         }
     },
     mounted() {
@@ -166,11 +216,11 @@ export default {
             immediate: true,
             handler() {
 
-                console.log("XXXXXXXXXXXXX", this.exportZoneLivestockOrders)
+                this.export_zone_livestock_orders = this.exportZoneLivestockOrders
 
                 if(this.exportZoneLivestockOrders.length > 0) {
 
-                    this.rejected = this.exportZoneLivestockOrders.filter((export_zone_livestock_order) => {
+                    this.rejected = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
 
                         if(export_zone_livestock_order.status == 0) return export_zone_livestock_order
 
@@ -178,13 +228,25 @@ export default {
 
                     this.others = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
 
-                        if(export_zone_livestock_order.status !== 0) return export_zone_livestock_order
+                        if(export_zone_livestock_order.status > 0) return export_zone_livestock_order
 
                     })
 
                     if(this.rejected.length > 0 && this.others.length <= 0) {
 
-                        this.export_zone_livestock_order = this.rejected[0]
+                        if(this.rejected.length > 1) {
+
+                            this.rejected_ = true
+                            let val = this.rejected.length
+                            val = val-=1
+                            this.export_zone_livestock_order = this.rejected[val]
+
+                        } else {
+
+                            this.export_zone_livestock_order = this.rejected[0]
+
+                        }
+
 
                     } else {
 
@@ -192,8 +254,8 @@ export default {
 
                     }
 
-                    console.log("ZZZZZZZZZZZZZZ", this.export_zone_livestock_order)
-
+                    console.log("Rejected", this.rejected)
+                    console.log("Others", this.others)
 
                     this.getLivestockOrder()
 
@@ -220,8 +282,56 @@ export default {
         }
     },
     methods: {
+        goNext() {
+
+            let maxPos = this.rejected.length
+            maxPos-=1
+
+            let currentObjectIndex = this.rejected.findIndex(one => one.id == this.export_zone_livestock_order.id)
+
+            currentObjectIndex++
+
+            if(currentObjectIndex <= maxPos) {
+
+                this.export_zone_livestock_order = this.rejected[currentObjectIndex]
+
+            }
+
+        },
+        goBack() {
+
+            let maxPos = this.rejected.length
+            maxPos -= 1
+            let currentObjectIndex = this.rejected.findIndex(one => one.id == this.export_zone_livestock_order.id)
+
+            if(currentObjectIndex <= maxPos) {
+
+                currentObjectIndex -= 1
+                
+                if(currentObjectIndex < 0) return
+
+                this.export_zone_livestock_order = this.rejected[currentObjectIndex]
+
+            }
+
+        },
+        showRejected() {
+
+            this.rejected_ = true
+            this.export_zone_livestock_order = this.rejected[0]
+
+        },
+        showOthers() {
+
+            this.rejected_ = false
+            this.export_zone_livestock_order = this.others[0]
+
+        },
+        makeNewRequestExclude() {
+            this.$emit("open-make-new-request-excluding", this.rejected)
+        },
         openEditEvent() {
-            this.$emit("open-edit-event")
+            this.$emit("open-edit-event", this.export_zone_livestock_order)
         },
         getLivestockOrder: function() {
 
@@ -241,16 +351,16 @@ export default {
 
                 if(err.response) {
 
-                if(err.response.status == 404) {
+                    if(err.response.status == 404) {
 
-                    this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                        this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
 
-                } else if(err.response.status == 401) {
+                    } else if(err.response.status == 401) {
 
-                    this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-                    this.$router.replace("/auth/login")
+                        this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                        this.$router.replace("/auth/login")
 
-                }
+                    }
 
                 }
 

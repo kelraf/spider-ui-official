@@ -71,7 +71,7 @@
                             </div>
                         </div>
                     </tab-content>
-                    <tab-content :before-change="checkDesc" title="Request Description">
+                    <!-- <tab-content :before-change="checkDesc" title="Request Description">
                         <div class="setup-content" id="step-3">
                         <div class="col-xs-12">
                             <div class="col-md-12">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         </div>
-                    </tab-content>
+                    </tab-content> -->
                     <tab-content title="Select Date And Send">
                         <div class="setup-content" id="step-4">
                             <div class="container-fluid">
@@ -361,17 +361,17 @@ export default {
                             } else if(err.response.status == 401) {
 
                                 Custombox.modal.close()
-                                self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                                self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline', position: "top-right", icon : 'info', type: 'info', duration: 4000})
                                 self.$router.replace("/auth/login")
 
                             } else if(err.response.status == 400) {
 
-                                self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 400`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 400`, {theme: 'outline', position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                 Custombox.modal.close()
 
                             } else if(err.response.status == 500) {
 
-                                self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 500`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 500`, {theme: 'outline', position: "top-right", icon : 'times', type: 'error', duration: 8000})
                                 Custombox.modal.close()
 
                             }
@@ -403,6 +403,7 @@ export default {
                     }
                 }
 
+                this.loading = true
                 let self = this
                         
                 let headers = {
