@@ -122,7 +122,6 @@ export default {
             .then( (resp) => {
 
                 this.stage = resp.data.data
-                console.log(this.stage)
                 this.livestock_order_processing_stages = this.stage.livestock_order_processing_stages
                         
             } )

@@ -45,8 +45,10 @@
             </form>
           </li>
           <li><a class="text-dark" v-on:click="toggle_fullscreen()"><feather type="maximize"></feather></a></li>
-          <li class="onhover-dropdown"><a class="txt-dark" href="#">
-            <h6>EN</h6></a>
+          <li class="onhover-dropdown">
+            <a class="txt-dark" href="#">
+            <h6>EN</h6>
+            </a>
             <ul class="language-dropdown onhover-show-div p-20">
               <li><a href="#" data-lng="en"><i class="flag-icon flag-icon-is"></i> English</a></li>
               <li><a href="#" data-lng="es"><i class="flag-icon flag-icon-um"></i> Spanish</a></li>
@@ -54,8 +56,8 @@
               <li><a href="#" data-lng="fr"><i class="flag-icon flag-icon-nz"></i> French</a></li>
             </ul>
           </li>
-          <li class="onhover-dropdown"><feather type="bell">
-            </feather>
+          <li class="onhover-dropdown">
+            <feather type="bell"></feather>
             <!-- <span class="dot"></span> -->
             <ul class="notification-dropdown onhover-show-div">
               <li>Notification <span class="badge badge-pill badge-primary pull-right">3</span></li>
@@ -86,11 +88,38 @@
               <li class="bg-light txt-dark"><a href="#">All</a> notification</li>
             </ul>
           </li>
-          <li>
-            <a href="#">
+          <li class="onhover-dropdown">
+            <router-link to="/shop/cart">
+
               <feather type="shopping-cart"></feather>
-              <!-- <span class="dot"></span> -->
-            </a>
+
+              <span 
+                v-if="Object.keys(cart_data.livestock_container).length > 0 || Object.keys(cart_data.produce_container).length > 0" 
+                class="dot"
+              ></span>
+
+              <ul 
+                class="language-dropdown onhover-show-div p-20"
+                v-if="Object.keys(cart_data.livestock_container).length > 0 || Object.keys(cart_data.produce_container).length > 0"
+              >
+                <li>
+                  <router-link 
+                    to="/shop/cart"
+                    v-if="cart_data.livestock_container && cart_data.livestock_container.livestock_orders"
+                    href="javascript:void(0)" 
+                    data-lng="en"
+                  > Live Animals <b-badge variant="primary" class="counter digits"> {{ cart_data.livestock_container.livestock_orders | calcQuantity }} </b-badge> </router-link >
+                </li>
+                <li>
+                  <a 
+                    v-if="cart_data.produce_container && cart_data.produce_container.produce_orders"
+                    href="javascript:void(0)" 
+                    data-lng="es"
+                  > Products <b-badge variant="primary" class="counter digits">14</b-badge></a>
+                </li>
+              </ul>
+
+            </router-link>
           </li>
           <li class="onhover-dropdown">
             <div class="media align-items-center">
@@ -122,7 +151,7 @@
 </template>
 <script>
 var body = document.getElementsByTagName("body")[0];
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import Auth from "../auth/js/spider_auth"
 import logoutModal from "./logout_modal"
 
@@ -146,10 +175,16 @@ export default {
   components: {
     logoutModal
   },
+  mounted() {
+    console.log("XXXXXXXXXXX", this.cart_data)
+  },
   computed: {
     ...mapState({
       menuItems: state => state.menu.searchData,
       userProfile: state => state.userProfile.userProfile
+    }),
+    ...mapGetters({
+      cart_data: "livestocks/getAllCartData"
     })
   },
   methods: {
@@ -236,6 +271,21 @@ export default {
         this.avatar_url = ""
         
       }
+    }
+  },
+  filters: {
+    calcQuantity: function(livestock_orders) {
+
+      let total = 0
+
+      livestock_orders.map((livestock_order) => {
+
+        total += parseInt(livestock_order.quantity)
+
+      })
+
+      return total
+
     }
   }
 }

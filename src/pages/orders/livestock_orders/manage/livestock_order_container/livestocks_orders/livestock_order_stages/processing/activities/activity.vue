@@ -194,7 +194,8 @@ export default {
 
                 this.livestockOrderProcessingStageHandler()
 
-            }
+            },
+            deep: true
         }
     },
     methods: {
@@ -255,8 +256,6 @@ export default {
                     ...interSection
                 }
 
-                console.log("Rejected", this.rejected)
-
             } else if(stage_name == "value_addition") {
                 this.general = {
                     // ...this.imploded, 
@@ -274,6 +273,8 @@ export default {
                     // }
                 }
             }
+
+            this.emitCurrentProcessingStage()
 
         },
         goBack() {
@@ -377,9 +378,9 @@ export default {
         },
         livestockOrderSlaughterOrderCreatedSuccess(data) {
 
-            this.livestockOrderProcessingStage.livestock_order_slaughter_order = data
-            this.livestockOrderProcessingStageHandler()
-            this.emitCurrentProcessingStage()
+            this.livestockOrderProcessingStage.livestock_order_slaughter_orders.push(data)
+            // this.livestockOrderProcessingStageHandler()
+            // this.emitCurrentProcessingStage()
 
         }
     },

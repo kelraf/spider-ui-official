@@ -1,7 +1,7 @@
 <template>
   
     <!-- Container-fluid starts-->
-        <div v-if="Object.keys(export_zone_livestock_order).length > 0" class="container-fluid">
+        <div v-if="Object.keys(feed_lot_livestock_order).length > 0" class="container-fluid">
             <div class="user-profile">
               <div class="row">
                 <!-- user profile first-style start-->
@@ -31,9 +31,9 @@
                                 <div class="col-12 pb-3 text-left">
 
                                     <b-button-group class="btn-group-pill">
-                                        <b-button @click="showRejected" class="btn-sm" :variant="export_zone_livestock_order.status <= 0 ? 'danger' : 'outline-danger'">REJECTED</b-button>
-                                        <b-button @click="showOthers" class="btn-sm" :variant="export_zone_livestock_order.status > 0 ? 'warning' : 'outline-warning'">OTHERS</b-button>
-                                        <b-button :disabled="export_zone_livestock_order.status <= 0 ? true : false" class="btn-sm" @click="openEditEvent" variant="outline-warning">UPDATE</b-button>
+                                        <b-button @click="showRejected" class="btn-sm" :variant="feed_lot_livestock_order.status <= 0 ? 'danger' : 'outline-danger'">REJECTED</b-button>
+                                        <b-button @click="showOthers" class="btn-sm" :variant="feed_lot_livestock_order.status > 0 ? 'warning' : 'outline-warning'">OTHERS</b-button>
+                                        <b-button :disabled="feed_lot_livestock_order.status <= 0 ? true : false" class="btn-sm" @click="openEditEvent" variant="outline-warning">UPDATE</b-button>
                                     </b-button-group>
 
                                 </div>
@@ -43,8 +43,7 @@
                                 <div class="col-8 offset-2 pb-3 text-left">
 
                                     <button @click="openEditEvent" id="default-outline-warning" type="button" class="btn btn-sm btn-pill btn-outline-warning btn-block">
-                                        <span v-if="!loading">UPDATE</span>
-                                        <img style="width: 20px;" v-if="loading" src="../../../../../../../../assets/images/loader.gif" alt="">
+                                        <span>UPDATE</span>
                                     </button>
 
                                 </div>
@@ -73,11 +72,11 @@
                                     <div class="ttl-info text-left">
                                         <h6>Status</h6>
                                         <span> 
-                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 1" variant="info">PENDING</b-badge>
-                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 2" variant="warning">ACCEPTED</b-badge>
-                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 3" variant="success">IN PROGRESS</b-badge>
-                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 4" variant="success">COMPLETED</b-badge>
-                                            <b-badge style="color: white !important;" v-if="export_zone_livestock_order.status == 0" variant="danger">REJECTED</b-badge>
+                                            <b-badge style="color: white !important;" v-if="feed_lot_livestock_order.status == 1" variant="info">PENDING</b-badge>
+                                            <b-badge style="color: white !important;" v-if="feed_lot_livestock_order.status == 2" variant="warning">ACCEPTED</b-badge>
+                                            <b-badge style="color: white !important;" v-if="feed_lot_livestock_order.status == 3" variant="success">IN PROGRESS</b-badge>
+                                            <b-badge style="color: white !important;" v-if="feed_lot_livestock_order.status == 4" variant="success">COMPLETED</b-badge>
+                                            <b-badge style="color: white !important;" v-if="feed_lot_livestock_order.status == 0" variant="danger">REJECTED</b-badge>
                                         </span>
                                     </div>
                                 </div>
@@ -87,13 +86,13 @@
 
                                         <div class="col-md-12">
                                             <div class="ttl-info text-left">
-                                                <h6>Starting Date</h6><span> {{ export_zone_livestock_order.dates.starting_date }} </span>
+                                                <h6>Starting Date</h6><span> {{ feed_lot_livestock_order.dates.starting_date }} </span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12 pt-2">
                                             <div class="ttl-info text-left">
-                                                <h6>Ending Date</h6><span> {{ export_zone_livestock_order.dates.ending_date }} </span>
+                                                <h6>Ending Date</h6><span> {{ feed_lot_livestock_order.dates.ending_date }} </span>
                                             </div>
                                         </div>
 
@@ -140,7 +139,7 @@
 
                     <div class="row">
                         <div class="col-12 text-md-left text-sm-center text-center">
-                            <h5>Export Zone Details</h5>
+                            <h5>FeedLot Details</h5>
                         </div>
                     </div>
 
@@ -150,19 +149,19 @@
 
                             <div class="col-md-4">
                             <div class="ttl-info text-left">
-                                <h6> Export Zone Name </h6><span> {{ export_zone_livestock_order.export_zone_bundler.business.business_name }} </span>
+                                <h6> FeedLot Name </h6><span> {{ feed_lot_livestock_order.feed_lot_bundler.business.business_name }} </span>
                             </div>
                             </div>
 
                             <div class="col-md-4">
                             <div class="ttl-info text-left">
-                                <h6> Email </h6><span> {{ export_zone_livestock_order.export_zone_bundler.business.user.email | email_check }} </span>
+                                <h6> Email </h6><span> {{ feed_lot_livestock_order.feed_lot_bundler.business.user.email | email_check }} </span>
                             </div>
                             </div>
 
                             <div class="col-md-4">
                             <div class="ttl-info text-left">
-                                <h6> Phone </h6><span> {{ export_zone_livestock_order.export_zone_bundler.business.user.phone_number }} </span>
+                                <h6> Phone </h6><span> {{ feed_lot_livestock_order.feed_lot_bundler.business.user.phone_number }} </span>
                             </div>
                             </div>
                             
@@ -192,8 +191,8 @@ import axios from "axios"
 export default {
     data() {
         return {
-            export_zone_livestock_order: {},
-            export_zone_livestock_orders: [],
+            feed_lot_livestock_order: {},
+            feed_lot_livestock_orders: [],
             livestock_order: {},
             rejected_: false,
             loading: false,
@@ -209,26 +208,25 @@ export default {
 
     },
     props: {
-        exportZoneLivestockOrders: Array
+        feedLotLivestockOrders: Array
     },
     watch: {
-        exportZoneLivestockOrders: {
+        feedLotLivestockOrders: {
             immediate: true,
             handler() {
 
-                this.export_zone_livestock_orders = this.exportZoneLivestockOrders
+                this.feed_lot_livestock_orders = this.feedLotLivestockOrders
+                if(this.feedLotLivestockOrders.length > 0) {
 
-                if(this.exportZoneLivestockOrders.length > 0) {
+                    this.rejected = this.feed_lot_livestock_orders.filter((feed_lot_livestock_order) => {
 
-                    this.rejected = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
-
-                        if(export_zone_livestock_order.status == 0) return export_zone_livestock_order
+                        if(feed_lot_livestock_order.status == 0) return feed_lot_livestock_order
 
                     })
 
-                    this.others = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
+                    this.others = this.feed_lot_livestock_orders.filter((feed_lot_livestock_order) => {
 
-                        if(export_zone_livestock_order.status > 0) return export_zone_livestock_order
+                        if(feed_lot_livestock_order.status > 0) return feed_lot_livestock_order
 
                     })
 
@@ -239,18 +237,18 @@ export default {
                             this.rejected_ = true
                             let val = this.rejected.length
                             val = val-=1
-                            this.export_zone_livestock_order = this.rejected[val]
+                            this.feed_lot_livestock_order = this.rejected[val]
 
                         } else {
 
-                            this.export_zone_livestock_order = this.rejected[0]
+                            this.feed_lot_livestock_order = this.rejected[0]
 
                         }
 
 
                     } else {
 
-                        this.export_zone_livestock_order = this.others[0]
+                        this.feed_lot_livestock_order = this.others[0]
 
                     }
 
@@ -284,13 +282,13 @@ export default {
             let maxPos = this.rejected.length
             maxPos-=1
 
-            let currentObjectIndex = this.rejected.findIndex(one => one.id == this.export_zone_livestock_order.id)
+            let currentObjectIndex = this.rejected.findIndex(one => one.id == this.feed_lot_livestock_order.id)
 
             currentObjectIndex++
 
             if(currentObjectIndex <= maxPos) {
 
-                this.export_zone_livestock_order = this.rejected[currentObjectIndex]
+                this.feed_lot_livestock_order = this.rejected[currentObjectIndex]
 
             }
 
@@ -299,7 +297,7 @@ export default {
 
             let maxPos = this.rejected.length
             maxPos -= 1
-            let currentObjectIndex = this.rejected.findIndex(one => one.id == this.export_zone_livestock_order.id)
+            let currentObjectIndex = this.rejected.findIndex(one => one.id == this.feed_lot_livestock_order.id)
 
             if(currentObjectIndex <= maxPos) {
 
@@ -307,7 +305,7 @@ export default {
                 
                 if(currentObjectIndex < 0) return
 
-                this.export_zone_livestock_order = this.rejected[currentObjectIndex]
+                this.feed_lot_livestock_order = this.rejected[currentObjectIndex]
 
             }
 
@@ -315,24 +313,24 @@ export default {
         showRejected() {
 
             this.rejected_ = true
-            this.export_zone_livestock_order = this.rejected[0]
+            this.feed_lot_livestock_order = this.rejected[0]
 
         },
         showOthers() {
 
             this.rejected_ = false
-            this.export_zone_livestock_order = this.others[0]
+            this.feed_lot_livestock_order = this.others[0]
 
         },
         makeNewRequestExclude() {
             this.$emit("open-make-new-request-excluding", this.rejected)
         },
         openEditEvent() {
-            this.$emit("open-edit-event", this.export_zone_livestock_order)
+            this.$emit("open-edit-event", this.feed_lot_livestock_order)
         },
         getLivestockOrder: function() {
 
-            axios.get(`${ApiUrl.url}livestock-orders/${this.export_zone_livestock_order.livestock_order_id}`, {
+            axios.get(`${ApiUrl.url}livestock-orders/${this.feed_lot_livestock_order.livestock_order_id}`, {
                 headers: {
                     Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                 }

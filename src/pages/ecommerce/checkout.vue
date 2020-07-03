@@ -117,7 +117,9 @@
                 />
               </div>
             </div>
-            <div class="col-lg-6 col-sm-12">
+
+
+            <!-- <div class="col-lg-6 col-sm-12">
               <div class="checkout-details">
                 <div class="order-box">
                   <div class="title-box">
@@ -200,7 +202,9 @@
                   </div>                   
                 </div>
               </div>
-            </div>
+            </div> -->
+
+
           </div>
           </form>
         </div>

@@ -144,7 +144,7 @@
                                         <p> {{ livestock_order_slaughter_order_output.quantity | displayQuantity }} </p>
                                       </td>
                                       <td>
-                                        <p> {{ livestock_order_slaughter_order_output.units | displayUnits }} </p>
+                                        <p> {{ livestock_order_slaughter_order_output.d_livestock_slaughter_output.units }} </p>
                                       </td>
                                       <td>
                                         <button 
@@ -255,7 +255,7 @@ export default {
 
         this.livestock_order_slaughter_order = resp.data.data
         this.processDates() 
-        
+
       } )
 
       .catch( (err) => {

@@ -165,6 +165,8 @@ export default {
 
       if(stage.stage_name == "processing") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-processing/${stage.id}`})
 
+      if(stage.stage_name == "feedlot") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-feedlot/${stage.id}`})
+
     },
     process_data() {
 

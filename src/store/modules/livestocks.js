@@ -11,22 +11,63 @@ let cartItems = JSON.parse(localStorage.getItem("cartItem")) || {};
 // 				livestock_order_container_id: null,
 // 				price: null,
 // 				quantity: null,
-// 				dlivestock_id: null
+// 				d_livestock_id: null
 // 			},
 // 			{
 // 				livestock_order_container_id: null,
 // 				price: null,
 // 				quantity: null,
-// 				dlivestock_id: null
+// 				d_livestock_id: null
 // 			}
 // 		]
 // 	}
 // }
 
-console.log("TTTTTT______>>>>>>>>", cartItems)
+// {
+//     "livestock_order_container": {
+//         "channel": "channel",
+//         "status": 1,
+//         "business_from_id": 2,
+//         "user_id": 1,
+//         "business_id": 2,
+//         "livestock_orders": [
+//             {
+//                 "price": 5684,
+//                 "quantity": 456,
+//                 "d_livestock_id": 1,
+//                 "livestock_order_stages": [
+//                     {
+//                         "stage_name": "collection",
+//                         "status": 1
+//                     },
+//                     {
+//                         "stage_name": "ccp",
+//                         "status": 1
+//                     }
+//                 ]
+//             },
+//             {
+//                 "price": 5684,
+//                 "quantity": 456,
+//                 "d_livestock_id": 2,
+//                 "livestock_order_stages": [
+//                     {
+//                         "stage_name": "collection",
+//                         "status": 1
+//                     },
+//                     {
+//                         "stage_name": "ccp",
+//                         "status": 1
+//                     }
+//                 ]
+//             }
+//         ]
+//     } 
+// }
+
 
 const state = {
-	livestocks: products.data,
+	d_livestocks: products.data,
 	products: products.data,
 	productslist: products.data,
 	cart: cartItems,
@@ -36,16 +77,18 @@ const state = {
 	searchTerm: ''
 }
 
+console.log("Cart Item", cartItems)
+
 // getters
 const getters = {
-	getLivestocks: (state) => {
-		return state.livestocks
+	getDLivestocks: (state) => {
+		return state.d_livestocks
 	},
 	getCategories: (state) => {
 
 		let categories = []
 
-		state.livestocks.map(function(currentLivestockObject) {
+		state.d_livestocks.map(function(currentLivestockObject) {
 
 			if (!categories.includes(currentLivestockObject.category)) categories.push(currentLivestockObject.category)
 
@@ -97,7 +140,7 @@ const mutations = {
 
 			let hasItems = state.cart.livestock_container.livestock_orders.find( item => {
 
-				if (item.dlivestock_id === payload.dlivestock_id) {
+				if (item.d_livestock_id === payload.d_livestock_id) {
 
 					item.quantity = item.quantity ? item.quantity : 1
 					return true
@@ -126,6 +169,7 @@ const mutations = {
 				livestock_orders,
 				user_id: null,
 				business_id: null,
+				business_from_id: null,
 				id: null
 			}
 
@@ -135,36 +179,37 @@ const mutations = {
 		
 	},
 
-	updateCartQuantity: (state, payload) => {
-		// Calculate Product stock Counts
-		function calculateStockCounts(product, quantity) {
-			let qty = product.quantity + quantity;
-			let stock = product.stock;
-			if (stock < qty) {
-				//   this.toastrService.error('You can not add more items than available. In stock '+ stock +' items.');
-				return false
-			}
-			return true
-		}
-		state.cart.find((items, index) => {
-			if (items.id === payload.product.id) {
+	updateLivestockOrderQuantity: (state, payload) => {
 
-				let qty = state.cart[index].quantity + payload.qty;
-				console.log("Match", items.id, qty);
-				let stock = calculateStockCounts(state.cart[index], payload.qty);
-				if (qty != 0 && stock)
-					state.cart[index]['quantity'] = qty;
-				else
-					localStorage.setItem("cartItem", JSON.stringify(state.cart));
-				return true;
-			}
-		});
+		// state.cart.livestock_container.livestock_orders = state.cart.livestock_container.livestock_orders.filter((livestock_order) => {
+
+		// 	if (livestock_order.d_livestock_id !== payload.d_livestock_id) {
+		// 		return livestock_order
+		// 	}
+
+		// });
+
+		let currentObjectPosition = state.cart.livestock_container.livestock_orders.findIndex(object => object.d_livestock_id == payload.livestock_order.d_livestock_id)
+
+		state.cart.livestock_container.livestock_orders[currentObjectPosition].quantity = payload.quantity
+		state.cart.livestock_container.livestock_orders[currentObjectPosition].total_price = payload.quantity * payload.livestock_order.price_per_animal
+
+		localStorage.setItem("cartItem", JSON.stringify(state.cart));
+
 	},
 
-	removeProduct: (state, payload) => {
-		const index = state.cart.indexOf(payload);
-		state.cart.splice(index, 1);
+	removeLivestockOrderQuantity: (state, payload) => {
+
+		state.cart.livestock_container.livestock_orders = state.cart.livestock_container.livestock_orders.filter((livestock_order) => {
+
+			if (livestock_order.d_livestock_id !== payload.d_livestock_id) {
+				return livestock_order
+			}
+
+		});
+
 		localStorage.setItem("cartItem", JSON.stringify(state.cart));
+
 	},
 	sortProducts: (state, payload) => {
 		if (payload === 'a-z') {
@@ -216,11 +261,11 @@ const actions = {
 	addToCart: (context, payload) => {
 		context.commit('addToCart', payload)
 	},
-	updateCartQuantity: (context, payload) => {
-		context.commit('updateCartQuantity', payload)
+	updateLivestockOrderQuantity: (context, payload) => {
+		context.commit('updateLivestockOrderQuantity', payload)
 	},
-	removeProduct: (context, payload) => {
-		context.commit('removeProduct', payload)
+	removeLivestockOrderQuantity: (context, payload) => {
+		context.commit('removeLivestockOrderQuantity', payload)
 	},
 	sortProducts: (context, payload) => {
 		context.commit('sortProducts', payload)

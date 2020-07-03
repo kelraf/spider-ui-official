@@ -47,6 +47,7 @@ import LivestockOrder from "../pages/orders/livestock_orders/manage/livestock_or
 import CenterOrderBeforeGoLive from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/center_order_before_go_live"
 import Livestocks from "../pages/ecommerce/livestocks"
 import Cart from "../pages/ecommerce/cart"
+import CheckOut from "../pages/ecommerce/checkout"
 
 
 // Livestock Order Stages
@@ -55,6 +56,7 @@ import Collection from "../pages/orders/livestock_orders/manage/livestock_order_
 import CCPLOrder from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/c_c_p_l_order/c_c_p_l_order"
 import ExportZoneSpider from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/export_zone_spider/export_zone"
 import Processing from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/processing/processing"
+import FeedLot from "../pages/orders/livestock_orders/manage/livestock_order_container/livestocks_orders/livestock_order_stages/feed_lot_spider/feed_lot"
 
 
 // Livestock Sales
@@ -62,6 +64,9 @@ import LivestockSales from "../pages/livestock_sales/livestock_sales"
 
 // Export Zone Requests
 import ExportZoneRequests from "../pages/export_zone_request_details/export_zone_container"
+
+// FeedLot Requests
+import FeedLotRequests from "../pages/feed_lot_request_details/feed_lot_container"
 
 // Slaughter Orders
 import SlaughterOrders from "../pages/slaughter_orders/slaughter_order_bundler"
@@ -426,6 +431,15 @@ const routes = [
             title: `Stage | ${system_title}`,
     
           }
+        },
+        {
+          path: 'stages-feedlot/:stage_id',
+          name: 'stages-feedlot',
+          component: FeedLot,
+          meta: {
+            title: `Stage | ${system_title}`,
+    
+          }
         }
       ]
     },
@@ -507,6 +521,25 @@ const routes = [
   ]
 },
 {
+  path: "/feed-lot-requests",
+  component: Body,
+  name: "feed-lot-requests",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'feed-lot-requests',
+      component: FeedLotRequests,
+      meta: {
+        title: `FeedLot Requests | ${system_title}`,
+
+      }
+    }
+  ]
+},
+{
   path: "/slaughter-orders",
   component: Body,
   name: "slaughter-orders",
@@ -567,6 +600,15 @@ const routes = [
       component: Cart,
       meta: {
         title: ` Cart | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'checkout',
+      name: 'checkout',
+      component: CheckOut,
+      meta: {
+        title: ` CheckOut | ${system_title}`,
 
       }
     }

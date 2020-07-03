@@ -1,13 +1,13 @@
 <template>
   
     <div class="follow">
-        <div v-if="export_zone_livestock_orders.length > 0" class="row">
+        <div v-if="feed_lot_livestock_orders.length > 0" class="row">
             <div class="col-md-6 text-md-right border-right">
 
-                <ExportZoneDataReview 
+                <FeedLotDataReview 
                     @open-make-new-request-excluding="makeNewRequestExclude"
                     v-on:open-edit-event="open_request" 
-                    :exportZoneLivestockOrders="export_zone_livestock_orders" 
+                    :feedLotLivestockOrders="feed_lot_livestock_orders" 
                 />
 
             </div>
@@ -22,15 +22,15 @@
             </div>
         </div>
 
-        <div v-if="export_zone_livestock_orders.length == 0" class="row pt-5">
+        <div v-if="feed_lot_livestock_orders.length == 0" class="row pt-5">
             <div class="col-md-6 text-center offset-md-3 pt-5">
-                <h2> No Export Zone Livestock Order Available </h2>
+                <h2> No FeedLot Order Available </h2>
 
                 <div class="container pt-5">
                     <div class="row">
                         <div class="col-6 offset-3">
                             <button 
-                                @click="open_request" 
+                                @click="open_request(null)" 
                                 id="default-outline-primary" 
                                 type="button" 
                                 class="btn btn-pill btn-outline-primary btn-block"
@@ -44,10 +44,10 @@
         </div>
 
         <Request 
-            v-on:export-zone-request-updated-success="exportZoneRequestCreatedSuccess" 
-            v-on:export-zone-request-created-success="exportZoneRequestCreatedSuccess" 
+            v-on:feed-lot-request-updated-success="feedLotRequestCreatedSuccess" 
+            v-on:feed-lot-request-created-success="feedLotRequestCreatedSuccess" 
             :stageData="editedStage" 
-            :exportZones="export_zones" 
+            :feedLots="feed_lots" 
             id="request" 
             style="display: none;" 
         />
@@ -62,8 +62,7 @@ import {ApiUrl} from "../../../../../../../../api/apiurl"
 import Auth from "../../../../../../../../auth/js/spider_auth"
 import axios from "axios"
 
-import CenterOrder from "../../center_order"
-import ExportZoneDataReview from "./export_zone_data_review"
+import FeedLotDataReview from "./feed_lot_data_review"
 import Request from "./request"
 
 export default {
@@ -71,13 +70,12 @@ export default {
         return {
             stage: {},
             editedStage: {},
-            export_zone_livestock_orders: [],
-            export_zones: []
+            feed_lot_livestock_orders: [],
+            feed_lots: []
         }
     },
     components: {
-        CenterOrder,
-        ExportZoneDataReview,
+        FeedLotDataReview,
         Request
     },
     mounted() {
@@ -91,8 +89,8 @@ export default {
         .then( (resp) => {
 
             this.stage = resp.data.data 
-            if(this.stage.export_zone_livestock_order !== null) {
-                this.export_zone_livestock_orders = this.stage.export_zone_livestock_orders
+            if(this.stage.feed_lot_livestock_orders.length > 0) {
+                this.feed_lot_livestock_orders = this.stage.feed_lot_livestock_orders
             }
                     
         } )
@@ -122,10 +120,10 @@ export default {
 
             this.editedStage = {
                 ...this.stage,
-                export_zone_livestock_order: null
+                feed_lot_livestock_order: null
             }
 
-            axios.get(`${ApiUrl.url}export-zone-bundlers`, {
+            axios.get(`${ApiUrl.url}feed-lot-bundlers`, {
                 headers: {
                     Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                 }
@@ -133,38 +131,34 @@ export default {
 
             .then( (resp) => {
 
-                if(this.stage !== undefined && this.stage.export_zone_livestock_orders.length > 0) {
+                if(this.stage !== undefined && this.stage.feed_lot_livestock_orders.length > 0) {
 
                     let list = []
 
                     for (let rejected_ of rejected) {
                         
-                        list.push(rejected_.export_zone_bundler_id)
+                        list.push(rejected_.feed_lot_bundler_id)
                         
                     }
 
-                    for (let export_zone of resp.data.data) {
+                    for (let feed_lot of resp.data.data) {
 
 
-                        if(!list.includes(export_zone.id)) {
+                        if(!list.includes(feed_lot.id)) {
 
-                            export_zone.selected = false
-                            this.export_zones.push(export_zone)
+                            feed_lot.selected = false
+                            this.feed_lots.push(feed_lot)
 
                         }
                         
                     }
 
-                    console.log("Export Zone Request", rejected)
-
-                    console.log("Export Zones", this.export_zones)
-
                 } else {
 
-                    this.export_zones = this.export_zones.map((export_zone) => { 
+                    this.feed_lots = this.feed_lots.map((feed_lot) => { 
 
-                        export_zone.selected = false
-                        return export_zone
+                        feed_lot.selected = false
+                        return feed_lot
                         
                     })    
 
@@ -201,14 +195,14 @@ export default {
             } )
 
         },
-        open_request: function(export_zone_livestock_order) {
+        open_request: function(feed_lot_livestock_order) {
 
             this.editedStage = {
                 ...this.stage,
-                export_zone_livestock_order
+                feed_lot_livestock_order: feed_lot_livestock_order
             }
 
-            axios.get(`${ApiUrl.url}export-zone-bundlers`, {
+            axios.get(`${ApiUrl.url}feed-lot-bundlers`, {
                 headers: {
                     Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
                 }
@@ -216,21 +210,21 @@ export default {
 
             .then( (resp) => {
 
-                this.export_zones = resp.data.data
+                this.feed_lots = resp.data.data
 
-                if(this.stage !== undefined && this.stage.export_zone_livestock_orders.length > 0) {
+                if(this.stage !== undefined && this.stage.feed_lot_livestock_orders.length > 0) {
 
-                    this.export_zones = this.export_zones.map((export_zone) => { 
+                    this.feed_lots = this.feed_lots.map((feed_lot) => { 
 
-                        if(export_zone.id == this.editedStage.export_zone_livestock_order.export_zone_bundler.id) {
+                        if(feed_lot.id == this.editedStage.feed_lot_livestock_order.feed_lot_bundler.id) {
 
-                            export_zone.selected = true
-                            return export_zone
+                            feed_lot.selected = true
+                            return feed_lot
 
                         } else {
 
-                            export_zone.selected = false
-                            return export_zone
+                            feed_lot.selected = false
+                            return feed_lot
 
                         } 
 
@@ -238,10 +232,10 @@ export default {
 
                 } else {
 
-                    this.export_zones = this.export_zones.map((export_zone) => { 
+                    this.feed_lots = this.feed_lots.map((feed_lot) => { 
 
-                        export_zone.selected = false
-                        return export_zone
+                        feed_lot.selected = false
+                        return feed_lot
                         
                     })    
 
@@ -278,15 +272,15 @@ export default {
             } )
 
         },
-        exportZoneRequestCreatedSuccess(data) {
+        feedLotRequestCreatedSuccess(data) {
 
-            this.export_zone_livestock_orders = this.export_zone_livestock_orders.filter((export_zone_livestock_order) => {
+            this.feed_lot_livestock_orders = this.feed_lot_livestock_orders.filter((feed_lot_livestock_orders) => {
 
-                if(export_zone_livestock_order.id !== data.id) return export_zone_livestock_order
+                if(feed_lot_livestock_orders.id !== data.id) return feed_lot_livestock_orders
 
             })
 
-            this.export_zone_livestock_orders.push(data)
+            this.feed_lot_livestock_orders.push(data)
         }
     }
 }

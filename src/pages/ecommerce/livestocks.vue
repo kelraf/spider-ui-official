@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumbs main="Ecommerce" title="Product" />
+    <Breadcrumbs main="Shop" title="Live Animals" />
     <!-- Container-fluid starts-->
     <div
       :class="filtered ? 'container-fluid product-wrapper sidebaron' : 'container-fluid product-wrapper'"
@@ -129,7 +129,7 @@
             <div
               :class="[col2 ? 'col-md-6': col3 ? 'col-lg-4 col-md-6' : col4 ? 'col-xl-3 col-md-6' : 
                           col6 ? 'col-xl-2 col-lg-4 col-md-6' : list ? 'col-xl-12' : 'col-xl-3 col-md-6']"
-              v-for="(livestock, index) in livestocks"
+              v-for="(d_livestock, index) in d_livestocks"
               :key="index"
             >
               <div class="card">
@@ -141,28 +141,41 @@
 
                           <div class="card custom-card mb-0">
 
-                            <div class="card-profile">
-                              <img class="rounded-circle" src="../../assets/images/avtar/3.jpg" alt="">
+                            <div v-if="d_livestock.d_livestock_images.length > 0" class="card-profile">
+                              <img 
+                                class="rounded-circle" 
+                                :src="getImgUrl(d_livestock.d_livestock_images[0])"
+                                alt=""
+                              >
+                            </div>
+
+                            <div v-else class="card-profile">
+                              <!-- <img class="img-90 rounded-circle margin-auto" :src='"../../assets/images/user/16.png"' alt="#"> -->
+                              <div class="initial">
+                                <h2>
+                                  <b> {{ d_livestock.type | getInitial }} </b>
+                                </h2>
+                              </div>
                             </div>
 
                             <div class="text-center profile-details">
                               <h4>
-                                <router-link :to="'/ecommerce/details/'+livestock.id">
-                                  {{ livestock.type }}
+                                <router-link :to="'/ecommerce/details/'+d_livestock.id">
+                                  {{ d_livestock.type }}
                                 </router-link>
                               </h4>
-                              <h6>{{ livestock.category }}</h6>
+                              <h6>{{ d_livestock.category }}</h6>
                             </div>
 
                             <div class="card-footer row">
                               <div class="col-6">
 
-                                <button @click="addToCart(livestock)"  id="default-outline-success" type="button" class="btn btn-x btn-pill btn-xs btn-outline-success btn-block">
+                                <button @click="quickViewDLivestockShow(d_livestock)"  id="default-outline-success" type="button" class="btn btn-x btn-pill btn-xs btn-outline-success btn-block">
                                   <i class="icon-shopping-cart icon-s"></i>
                                 </button>
 
                                 <!-- <router-link :to="'/ecommerce/cart'">
-                                  <li @click="addToCart(livestock)">
+                                  <li @click="addToCart(d_livestock)">
                                     <button class="btn" type="button">
                                       <i class="icon-shopping-cart"></i>
                                     </button>
@@ -176,7 +189,7 @@
                                   id="default-outline-success" 
                                   type="button" 
                                   class="btn btn-x btn-pill btn-xs btn-outline-success btn-block"
-                                  @click="quickView(livestock)"
+                                  @click="quickView(d_livestock)"
                                   data-toggle="modal"
                                   data-target="#exampleModalCenter"
                                 >
@@ -206,13 +219,13 @@
       </button>
       <div class="product-box quickview row">
         <div class="product-img col-md-6">
-           <img class="img-fluid" :src="getImgUrl(modalShow?quickViewProduct.images[0]:'ecommerce/11.jpg')" alt="">
+           <img class="img-fluid" :src="getImgUrl(quickViewDLivestock.d_livestock_images[0])" alt="">
         </div>
         <div class="product-details col-md-6 text-left">
-          <h1>{{quickViewProduct.name}}</h1>
+          <h1>{{quickViewDLivestock.name}}</h1>
           <div class="product-price">
-            <del>{{quickViewProduct.salePrice | currency }}</del>
-            {{quickViewProduct.price | currency }}
+            <del>{{quickViewDLivestock.salePrice | currency }}</del>
+            {{quickViewDLivestock.price | currency }}
           </div>
           <div class="product-view">
             <h6 class="f-w-600">Product Details</h6>
@@ -250,7 +263,7 @@
                   type="button"
                   data-original-title="btn btn-info-gradien"
                   title
-                  @click="addToCart(quickViewProduct,counter)"
+                  @click="addToCart(quickViewDLivestock, counter)"
                 >Add To Cart</button>
               </router-link>
               <router-link
@@ -263,20 +276,35 @@
       </div>
     </b-modal> -->
 
+    <QuickViewDLivestock
+      id="quick-view-d-livestock"
+      style="display: none;"
+      :quickViewDLivestock="quickViewDLivestock"
+      @add-to-cart="addToCart"
+    />
+
   </div>
 </template>
-  <script>
+<script>
+
 import { mapGetters } from "vuex";
 import Slider from "./filterbar";
+import QuickViewDLivestock from "./quick_view_d_livestock"
+
+import { ApiUrl } from "../../api/apiurl"
+import Auth from "../../auth/js/spider_auth"
+import axios from "axios"
+
 export default {
   name: "Livestock",
   components: {
-    Slider
+    Slider,
+    QuickViewDLivestock
   },
   data() {
     return {
       modalShow: false,
-      quickViewProduct: [],
+      quickViewDLivestock: {},
       counter: 1,
       priceArray: [],
       allfilters: [],
@@ -287,21 +315,27 @@ export default {
       col4: true,
       col6: false,
       listViewEnable: false,
-      list: false
+      list: false,
+      d_livestocks: []
     }
   },
   computed: {
     ...mapGetters({
       filterProduct: "products/filterProducts",
-      livestocks: "livestocks/getLivestocks",
+      livestocks: "livestocks/getDLivestocks",
       cart_data: "livestocks/getCartData"
     }),
+  },
+  mounted() {
+    this.loadData()
   },
   methods: {
 
     //For getting image path
-    getImgUrl(path) {
-      return require("../../assets/images/" + path);
+    getImgUrl(d_livestock_image) {
+
+        return `${ApiUrl.url}uploads/d_livestocks/` + d_livestock_image.image.file_name
+
     },
 
     // For Order By  
@@ -325,27 +359,40 @@ export default {
     },
     
     //Add to cart
-    addToCart: function(livestock, qty, s_price) {
+    addToCart: function(payLoad) {
 
       let livestock_order = {
-        dlivestock_id: livestock.id,
-        category: livestock.category,
-        type: livestock.type,
+        d_livestock_id: payLoad.d_livestock_id,
+        category: payLoad.category,
+        type: payLoad.type,
         livestock_order_container_id: null,
-        quantity: qty ? qty : 1,
-        s_price: s_price ? s_price : 0
+        quantity: payLoad.quantity,
+        price_per_animal: payLoad.price_per_animal,
+        total_price: payLoad.total_price
       };
 
       this.$store.dispatch("livestocks/addToCart", livestock_order);
 
-      console.log("XXXXXXX>>>>>>>>>>", this.cart_data)
+      this.$toasted.show(`Added To Cart.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+
+      console.log("PayLoad", payLoad)
 
     },
 
     //Quick View
-    quickView: function(product) {
-      this.modalShow = true;
-      return (this.quickViewProduct = product);
+    quickViewDLivestockShow: function(d_livestock) {
+
+      this.quickViewDLivestock = d_livestock
+
+      let modal = new Custombox.modal({
+          content: {
+              effect: 'slip',
+              target: '#quick-view-d-livestock'
+          }
+      })
+
+      modal.open()
+
     },
     quickViewClose: function() {
       this.modalShow = false;
@@ -353,7 +400,7 @@ export default {
 
     //Quantity increment Decrement
     increment() {
-      if (this.counter < this.quickViewProduct.stock) this.counter++;
+      if (this.counter < this.quickViewDLivestock.stock) this.counter++;
     },
 
     decrement() {
@@ -400,6 +447,47 @@ export default {
     gridView() {
       this.listViewEnable = false;
       this.col4 = true;
+    },
+    loadData() {
+
+      axios.get(`${ApiUrl.url}d-livestock`, {
+            headers: {
+                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+            }
+      })
+      .then( (resp) => {
+
+          this.d_livestocks = resp.data.data
+          console.log(this.d_livestocks)
+
+      } )
+
+      .catch( (err) => {
+
+          if(err.response) {
+
+          if(err.response.status == 404) {
+
+              this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+
+          } else if(err.response.status == 401) {
+
+              this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+              this.$router.replace("/auth/login")
+
+          }
+
+          }
+
+      } )
+
+    }
+  },
+  filters: {
+    getInitial(type) {
+
+      return type.split("")[0].toUpperCase()
+
     }
   }
 };
@@ -412,5 +500,20 @@ export default {
   }
   .icon-s {
     font-size: 14px !important;
+  }
+  .initial {
+    margin: auto;
+    height: 100px;
+    width: 100px;
+    background: gray;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .initial h2 {
+    padding-top: 30%;
+    font-weight: 800;
+    color: white;
   }
 </style>
