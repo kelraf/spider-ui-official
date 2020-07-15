@@ -76,34 +76,70 @@
                           <div class="setup-content" id="step-2">
                             <div class="col-xs-12">
                               <div class="col-md-12">
-                                <div v-if="d_livestock_data.length > 0" class="row">
 
-                                    <div class="col-md-12">
-                                      <div class="card">
-                                        <div class="card-header text-left">
-                                          <h5 class="card-title">Available Livestocks</h5>
-                                        </div>
-                                        <div class="card-body">
-                                          <div class="table-responsive datatable-vue m-0 vue-smart">
+                                  <div v-if="!processed_data.length" class="row pt-5">
+                                    <div class="col-md-6 text-center offset-md-3 pt-5 mt-5 pb-5 mb-5">
+
+                                      <h2 class="font-danger"> No Business Available To Buy From </h2>
+
+                                    </div>
+                                  </div>
+
+                                  <div v-if="processed_data.length" class="row">
+
+                                    <div class="col-12">
+                                      <h5><b class="font-success">Available Businesses To Buy From</b></h5>
+                                    </div>
+
+                                      <div class="col-md-12">
+                                        <div class="card">
+                                          <div class="card-body">
+                                            <div class="datatable-vue m-0">
+
+                                            <div class="row filter-smart">
+
+                                              <div class="col-6">
+                                                <input class="form-control" v-model="filters.business_name.value" placeholder="Search..."/>
+                                              </div>
+
+                                              <!-- <div class="col-sm-3">
+                                                <input class="form-control" v-model="filters.type.value" placeholder="Type" />
+                                              </div>
+                                              <div class="col-sm-2">
+                                                <input class="form-control" v-model="filters.breed.value" placeholder="Breed" />
+                                              </div>
+                                              <div class="col-sm-2">
+                                                <input class="form-control" v-model="filters.quantity.value" placeholder="Quantity" />
+                                              </div>
+                                              
+                                              <div class="col-sm-2">
+                                                <button id="default-outline-primary" @click="create_livestock" type="button" class="btn btn-pill btn-outline-primary btn-block">
+                                                  <i class="icon-plus"></i>
+                                                </button>
+                                              </div> -->
+                                            </div>
+
+                                            <div class="table-responsive vue-smart">
+
                                             <v-table
-                                                :data="d_livestock_data" class="table"
-                                                :currentPage.sync="selectrow.currentPage"
-                                                :pageSize="10"
-                                                @totalPagesChanged="selectrow.totalPages = $event"
-                                                selectionMode="multiple"
-                                                selectedClass="table-primary"
-                                                @selectionChanged="selectedRows = $event"
+                                              :data="processed_data" class="table"
+                                              :currentPage.sync="filter.currentPage"
+                                              :pageSize="5"
+                                              @totalPagesChanged="filter.totalPages = $event"
+                                              :filters="filters"
                                             >
 
-                                              <thead slot="head">
+                                            <thead slot="head">
                                               <v-th sortKey="business_name">Business Name</v-th>
                                               <v-th sortKey="sub_category">Sub Category</v-th>
                                               <v-th sortKey="quantity">Quantity</v-th>
                                               <v-th sortKey="price">Price Per Animal</v-th>
-                                              <v-th sortKey="quantity">Stats</v-th>
+                                              <v-th sortKey="quantity">Status</v-th>
                                               <v-th sortKey="salary">Action</v-th>
-                                              </thead>
-                                              <tbody slot="body" slot-scope="{displayData}">
+                                            </thead>
+
+                                            <tbody slot="body" slot-scope="{displayData}">
+                                              
                                               <v-tr
                                                   v-for="row in displayData"
                                                   :key="row.id"
@@ -113,22 +149,32 @@
                                                 <td>{{ row.business.sub_category }}</td>
                                                 <td>{{ row.quantity }}</td>
                                                 <td>{{ row.price }}</td>
-                                                <td>{{ row.quantity }}</td>
-                                                <td> <button>Wait</button> </td>
+                                                <td>
+                                                  <b-badge class="animated flip" v-if="!row.selected" style="color: white !important; animation-duration: .5s;" variant="danger">NOT SELECTED</b-badge>
+                                                  <b-badge class="animated flip" v-if="row.selected" style="color: white !important; animation-duration: .5s;" variant="success">SELECTED</b-badge>
+                                                </td>
+                                                <td style="overflow: hidden;"> 
+                                                  <button v-if="!row.selected" @click="selectIt(row)" type="button" style="animation-duration: .5s;" class="btn btn-sm btn-pill btn-outline-success btn-block animated bounceIn">SELECT</button>
+                                                  <button v-if="row.selected" @click="diselectIt(row)" type="button" style="animation-duration: .5s;" class="btn btn-sm btn-pill btn-outline-danger btn-block animated bounceIn">DISELECT</button> 
+                                                </td>
                                               </v-tr>
-                                              </tbody>
-                                            </v-table>
 
-                                            <smart-pagination
-                                                :currentPage.sync="selectrow.currentPage"
-                                                :totalPages="selectrow.totalPages"
-                                            />
+                                            </tbody>
+                                          </v-table>
                                           </div>
+
+                                          <smart-pagination
+                                            :currentPage.sync="filter.currentPage"
+                                            :totalPages="filter.totalPages"
+                                          />
                                         </div>
+                                          </div>
                                       </div>
                                     </div>
+                                      
+                                    </div>
 
-                                  </div>
+
                               </div>
                             </div>
                           </div>
@@ -136,9 +182,27 @@
                         <tab-content :before-change="checkDesc" title="Order Description">
                           <div class="setup-content" id="step-3">
                             <div class="col-xs-12">
-                              <div class="col-md-12">
+
+                              <div v-if="editorData.length > 6 || add_description" class="col-md-12">
                                 <ckeditor :editor="editor"  v-model="editorData"></ckeditor>
                               </div>
+
+                              <div v-if="editorData.length < 6 && !add_description" class="row pt-5">
+                                <div class="col-md-6 text-center offset-md-3 pt-5">
+                                  <h2> Add Description </h2>
+
+                                  <div class="container pt-5">
+                                    <div class="row">
+                                      <div class="col-6 offset-3">
+                                        <button id="default-outline-primary" @click="addDescription" type="button" class="btn btn-pill btn-outline-primary btn-block">
+                                          <i class="icon-plus"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                             </div>
                           </div>
                         </tab-content>
@@ -205,7 +269,7 @@
                                             <div class="col-md-6">
 
                                               <button @click="goLive" id="default-outline-warning" type="button" class="btn btn-pill btn-outline-warning btn-block">
-                                                  <span v-if="!loading">Go Live</span>
+                                                  <span v-if="!loading">GO LIVE</span>
                                                   <img style="width: 20px;" v-if="loading" src="../../../../../../assets/images/loader.gif" alt="">
                                               </button>
 
@@ -312,7 +376,9 @@ export default {
 
 			agefilters:{
 				age: { value: { min: 19, max: 22 }, custom: this.ageFilter }
-			}
+      },
+      processed_data: [],
+      add_description: false
     }
   },
   components: {
@@ -322,19 +388,110 @@ export default {
     Datepicker
   },
   methods: {
+    addDescription() {
+      this.add_description = true
+    },
+    selectIt(data) {
+
+      let currentObject = this.processed_data.findIndex(one_object => one_object.id == data.id)
+
+      this.processed_data[currentObject].selected = true
+      this.selectedRows.push({
+        business_id: data.business.id
+      })
+
+      let temp = this.d_livestock_data
+
+      this.processed_data = []
+
+      this.processed_data = temp
+      
+    },
+    diselectIt(data) {
+
+      let currentObject = this.processed_data.findIndex(one_object => one_object.id == data.id)
+
+      this.processed_data[currentObject].selected = false
+      this.selectedRows =  this.selectedRows.filter((selectedRow) => {
+        return selectedRow.business_id !== data.business.id
+      })
+
+      let temp = this.processed_data
+
+      this.processed_data = []
+      this.processed_data = temp
+
+    },
     checkDesc() {
-      if(this.editorData == '') {
+      if(this.add_description && this.editorData.length < 6) {
         this.$toasted.show(`Description is Required`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
         return false
       } else {
         return true
       }
     },
+    processData() {
+
+      this.processed_data = []
+
+      if(this.center_order.who_can_see.length) {
+
+        let inProcessed = []
+
+        for(const who_can of this.center_order.who_can_see) {
+
+          for(const d_livestock_with_id of this.d_livestock_data) {
+
+            if(who_can.business_id == d_livestock_with_id.business_id) {
+
+              if(!inProcessed.includes(who_can.business_id)) {
+
+                d_livestock_with_id.selected = true
+
+                this.processed_data.push(d_livestock_with_id)
+                inProcessed.push(who_can.business_id)
+
+              }
+
+            } 
+            
+          }
+          
+        }
+
+        for(const d_livestock_with_id of this.d_livestock_data) {
+
+          if(!inProcessed.includes(d_livestock_with_id.business_id)) {
+
+            d_livestock_with_id.selected = false
+
+            this.processed_data.push(d_livestock_with_id)
+            inProcessed.push(d_livestock_with_id.business_id)
+
+          }
+            
+        }
+
+        this.selectedRows = this.center_order.who_can_see
+
+      } else {
+
+          for (const d_livestock_with_id of this.d_livestock_data) {
+
+            d_livestock_with_id.selected = false
+
+            this.processed_data.push(d_livestock_with_id)
+            
+          }
+          
+      }
+      
+    },
     goLive() {
 
       this.loading = true
       
-      if(this.selectedRows.length > 0) this.selectedRows = this.selectedRows.map((selectedRow) => { return {business_id: selectedRow.business_id} })
+      // if(this.selectedRows.length > 0) this.selectedRows = this.selectedRows.map((selectedRow) => { return {business_id: selectedRow.business_id} })
       this.center_order.who_can_see = this.selectedRows
       this.center_order.status = "online"
       this.center_order.description = this.editorData == "" ? null : this.editorData
@@ -355,8 +512,6 @@ export default {
 
               self.loading = false
               self.$router.go(-1)
-
-              console.log(resp)
 
           }, 2000)
       } )
@@ -432,7 +587,9 @@ export default {
 
         this.center_order = resp.data.data
 
-        if(this.center_order.description !== null) this.editorData = this.center_order.description
+        if(this.center_order.description !== null) {
+          this.editorData = this.center_order.description
+        }
 
         axios.get(`${ApiUrl.url}livestocks/dlivestocks/${this.center_order.d_livestock_id}`, {
             headers: {
@@ -442,23 +599,8 @@ export default {
         .then( (resp) => {
 
             this.d_livestock_data = resp.data.data
+            this.processData()
 
-            if(this.center_order.who_can_see.length > 0) {
-
-              for (const who_can of this.center_order.who_can_see) {
-
-                for (const d_livestock_with_id of this.d_livestock_data) {
-
-                  if(who_can.business_id == d_livestock_with_id.business_id) this.selectedRows.push(d_livestock_with_id)
-                  
-                }
-                
-              }
-
-            }
-
-            console.log("Here ---->>",this.selectedRows)
-                    
         } )
 
         .catch( (err) => {

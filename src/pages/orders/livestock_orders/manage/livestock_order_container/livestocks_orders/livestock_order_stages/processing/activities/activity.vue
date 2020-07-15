@@ -192,6 +192,7 @@ export default {
             immediate: true,
             handler() {
 
+                this.livestock_order_processing_stage_data = this.livestockOrderProcessingStage
                 this.livestockOrderProcessingStageHandler()
 
             },

@@ -6,7 +6,7 @@
             <div class="edit-profile">
               <div class="row">
 
-                  <div class="col-md-6 col-lg-6 col-xl-4">
+                  <!-- <div class="col-md-12 col-lg-12 col-xl-12">
                     <div class="card custom-card">
 
                       <div class="card-header"><img class="img-fluid" src="../../assets/images/user-card/1.jpg" alt=""></div>
@@ -34,9 +34,9 @@
                       </div>
 
                     </div>
-                  </div>
+                  </div> -->
 
-                <div class="col-xl-8">
+                <div class="col-xl-12">
 
                   <form class="card">
 
@@ -103,7 +103,7 @@
                         </div>
                         <!-- Confidential Infor End -->
 
-                        <div class="group-btn">
+                        <div class="group-btn text-center">
 
                           <div class="location-title">
                             <h5 class="pl-3">Business Location</h5>
@@ -170,43 +170,6 @@
 
                 <!-- Model Ends -->
 
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title mb-0">My Businesses</h4>
-                      <div class="card-options"><a class="card-options-collapse" href="#" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-toggle="card-remove"><i class="fe fe-x"></i></a></div>
-                    </div>
-                    <div class="table-responsive mb-0">
-                      <table class="table card-table table-vcenter text-nowrap">
-                        <thead>
-                          <tr>
-                            <th>Project Name</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Price</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><a class="text-inherit" href="#">Untrammelled prevents</a></td>
-                            <td>14 June 2018</td>
-                            <td><span class="status-icon bg-warning"></span> Pending</td>
-                            <td>$70,435</td>
-                            <td class="text-right"><a class="icon" href="javascript:void(0)"></a><a class="btn btn-primary btn-sm" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-transparent btn-sm" href="javascript:void(0)"><i class="fa fa-link"></i> Update</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-danger btn-sm" href="javascript:void(0)"><i class="fa fa-trash"></i> Delete</a></td>
-                          </tr>
-                          <tr>
-                            <td><a class="text-inherit" href="#">Untrammelled prevents</a></td>
-                            <td>25 June 2018</td>
-                            <td><span class="status-icon bg-success"></span> Completed</td>
-                            <td>$15,987</td>
-                            <td class="text-right"><a class="icon" href="javascript:void(0)"></a><a class="btn btn-primary btn-sm" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-transparent btn-sm" href="javascript:void(0)"><i class="fa fa-link"></i> Update</a><a class="icon" href="javascript:void(0)"></a><a class="btn btn-danger btn-sm" href="javascript:void(0)"><i class="fa fa-trash"></i> Delete</a></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

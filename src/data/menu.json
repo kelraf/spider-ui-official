@@ -3,23 +3,47 @@
         {
           "path": "/dashboard", 
           "title": "DashBoard",
-          "icon": "headphones", 
+          "icon": "home", 
           "type": "link",
-          "param_type" : "no"
+          "param_type" : "no",
+          "for_": "general",
+          "id": 1
         },
         {
-          "path": "/businesses/to-create", 
-          "title": "Create Business",
-          "icon": "headphones", 
+          "path": "/businesses/profile", 
+          "title": "My Business",
+          "icon": "briefcase", 
           "type": "link",
-          "param_type" : "no"
+          "for_": "general",
+          "param_type" : "my_business",
+          "id": 4
         },
         {
-          "path": "/businesses/my-businesses", 
-          "title": "My Businesses",
-          "icon": "headphones", 
+          "path": "/users/profile", 
+          "title": "My Profile",
+          "icon": "user", 
           "type": "link",
-          "param_type" : "my_businesses"
+          "for_": "general",
+          "param_type" : "my_profile",
+          "id": 5
+        },
+        {
+          "path": "/businesses/all-d-livestock", 
+          "title": "Defined Livestocks",
+          "icon": "hash", 
+          "type": "link",
+          "for_": "spider-super-instance",
+          "param_type" : "all_d_livestock",
+          "id": 5
+        },
+        {
+          "path": "/businesses/super-instance-admins", 
+          "title": "S I Admins",
+          "icon": "command", 
+          "type": "link",
+          "for_": "server",
+          "param_type" : "super_instance_admins",
+          "id": 6
         }
       ]
 }

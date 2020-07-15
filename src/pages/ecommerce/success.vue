@@ -1,94 +1,66 @@
 <template>
   <div>
-    <Breadcrumbs main="Ecommerce" :title="order.length?'Suceess':'Forbidden'" />
+    <Breadcrumbs main="Checkout" :title="allow ? 'Success' : 'Forbiden'" />
     <!-- Container-fluid starts-->
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
           <div class="card">
             <div class="card-body">
-              <div class="invoice" v-if="order.length">
+
+              <div v-if="allow" class="invoice">
                 <div>
                   <div>
                     <div class="row">
-                      <div class="col-sm-12">
+                      <div class="col-sm-12 pt-5 mt-5">
                         <div class="success-text">
                           <i class="fa fa-check-circle" aria-hidden="true"></i>
-                          <h2>Thank you</h2>
-                          <p>Payment is has been received Order Placed Successfully</p>
-                          <p>Transaction ID:{{order.token}}</p>
+                          <h2 class="font-success">Thank you</h2>
+                          <h5 class="font-success">
+                            <b>Your Order has been received Successfully</b>
+                          </h5>
+                          <p>We Will Get Back To You as Soon As Possible</p>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <hr />
-                  <!-- End InvoiceTop-->
-                  <div>
-                    <div class="order-history success-table table-responsive">
-                      <table class="table table-bordernone">
-                        <thead>
-                          <tr>
-                            <th scope="col">Prdouct</th>
-                            <th scope="col">Prdouct Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Sub Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(item,index) in order.product" :key="index">
-                            <td>
-                              <img
-                                class="img-fluid img-60"
-                                :src="getImgUrl(item.images[0])"
-                                alt="#"
-                              />
-                            </td>
-                            <td>
-                              <div class="product-name">
-                                <a href="javascript:void()">{{item.name}}</a>
-                              </div>
-                            </td>
-                            <td>{{item.price}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.price*item.quantity}}</td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="Rate">
-                              <h6 class="mb-0 p-2">Total</h6>
-                            </td>
-                            <td class="payment digits">
-                              <h6 class="mb-0 p-2">${{order.amt}}</h6>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+
+                    <div class="row pb-5 mb-5">
+                      <div class="col-md-12 text-center">
+                        <router-link :to="'/shop/checkout'" class="btn btn-sm btn-pill btn-outline-success"> WHAT NEXT </router-link>
+                      </div>
                     </div>
-                    <!-- End Table-->
+
                   </div>
+                  <!-- End InvoiceTop-->
+                  
                 </div>
                 <!-- End Invoice-->
               </div>
-              <div class="p-0" v-if="!order.length">
+
+
+              <div v-if="!allow" class="p-0">
                 <div class="error-wrapper display-error">
-                  <img class="img-100" src="../../assets/images/other-images/sad.png" alt />
-                  <div class="error-heading">
-                    <h1 class="headline font-info">403</h1>
+                  <img class="img-40" src="../../assets/images/other-images/sad.png" alt />
+                  <div class="error-heading pt-5">
+                    <h1 style="font-size: 100px;" class="headline reduce-size font-danger">403</h1>
                   </div>
-                  <p class="sub-content"> You don't have permission to access this page.Server unable to read htaccess file, denying access to be safe
+                  <p class="sub-content"> You don't have permission to access this page.
                   </p>
                   <div>
-                    <router-link
-                      class="btn btn-info-gradien btn-lg"
-                      :to="{ path: '/dashboard/default' }"
-                    >BACK TO HOME PAGE</router-link>
+                    <!-- <router-link
+                      class="btn btn-sm btn-pill btn-outline-danger"
+                      :to="{ path: '/dashboard' }"
+                    >BACK TO HOME PAGE</router-link> -->
+
+                    <button
+                      class="btn btn-sm btn-pill btn-outline-danger"
+                      @click="$router.go(-1)"
+                    >BACK TO HOME PAGE</button>
+
                   </div>
                 </div>
               </div>
-              <!-- Section ends -->
+
             </div>
           </div>
         </div>
@@ -99,17 +71,17 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+
+import { mapGetters } from "vuex"
+
 export default {
   computed: {
-    ...mapGetters({
-      order: "products/getOrder"
-    })
+   ...mapGetters({
+     allow: "viewOrdeCreatedSuccess/allow"
+   })
   },
   methods: {
-    getImgUrl(path) {
-      return require("../../assets/images/" + path);
-    }
+    
   }
 };
 </script>

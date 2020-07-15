@@ -114,7 +114,19 @@ const mutations = {
           }
           
         })
-    }
+    },
+
+    processMenuFor(state, dashboard_type) {
+
+      state.data = state.data.filter((item) => {
+
+        if(item.for_ == dashboard_type || item.for_ == "general") {
+          return item
+        }
+
+      })
+
+    } 
     
 };
 
@@ -131,6 +143,10 @@ const actions = {
 
     setActiveRoute:(context, item) => {
         context.commit('setActiveRoute', item)
+    },
+
+    processMenuFor:(context, dashboard_type) => {
+        context.commit('processMenuFor', dashboard_type)
     }
 
 }

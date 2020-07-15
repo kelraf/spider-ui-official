@@ -65,7 +65,7 @@
                 </div>
                 <!-- Confidential Infor End -->
 
-                <div class="group-btn">
+                <div class="group-btn text-center">
 
                     <div class="location-title">
                         <h5 class="text-center">My Location</h5>

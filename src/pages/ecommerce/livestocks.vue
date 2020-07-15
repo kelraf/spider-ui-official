@@ -1,9 +1,63 @@
 <template>
   <div>
-    <Breadcrumbs main="Shop" title="Live Animals" />
+    <Breadcrumbs v-if="!loading && d_livestocks.length" main="Shop" title="Live Animals" />
+
+
+    <!-- Loader -->
+
+    <div v-if="loading" class="container-fluid mt-5 pt-5">
+      <div class="row mt-5 pt-5">
+        <div class="col-12 pt-5 mt-5 text-center">
+
+          <div class="loader">
+              <div class="line bg-warning"></div>
+              <div class="line bg-warning"></div>
+              <div class="line bg-warning"></div>
+              <div class="line bg-warning"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 text-center mt-4">
+          <p>Loading...</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Loader Ends -->
+
+    <!-- No d_livestocks -->
+
+    <div v-if="!loading && !d_livestocks.length" class="container-fluid mt-5 pt-5">
+      <div class="row mt-5 pt-5">
+        <div class="col-md-8 pt-5 mt-5 offset-md-2">
+          <h2>
+            <b class="font-danger">
+              No Live Animals Available At The Moment
+            </b>
+          </h2>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 text-center pt-3">
+          <button @click="$router.go(-1)" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success">
+            BACK
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- No d_livestocks Ends -->
+
     <!-- Container-fluid starts-->
     <div
       :class="filtered ? 'container-fluid product-wrapper sidebaron' : 'container-fluid product-wrapper'"
+      v-if="!loading && d_livestocks.length"
     >
       <div class="product-grid">
         <div class="feature-products">
@@ -316,7 +370,8 @@ export default {
       col6: false,
       listViewEnable: false,
       list: false,
-      d_livestocks: []
+      d_livestocks: [],
+      loading: true
     }
   },
   computed: {
@@ -374,8 +429,6 @@ export default {
       this.$store.dispatch("livestocks/addToCart", livestock_order);
 
       this.$toasted.show(`Added To Cart.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-
-      console.log("PayLoad", payLoad)
 
     },
 
@@ -450,34 +503,44 @@ export default {
     },
     loadData() {
 
+      let self = this
+
       axios.get(`${ApiUrl.url}d-livestock`, {
             headers: {
                 Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
             }
       })
       .then( (resp) => {
+        setTimeout(() => {
 
-          this.d_livestocks = resp.data.data
-          console.log(this.d_livestocks)
+            self.loading = false
+            self.d_livestocks = resp.data.data
 
+        }, 2000)
       } )
 
       .catch( (err) => {
 
-          if(err.response) {
+          setTimeout(() => {
 
-          if(err.response.status == 404) {
+            self.loading = false
 
-              this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+            if(err.response) {
 
-          } else if(err.response.status == 401) {
+              if(err.response.status == 404) {
 
-              this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-              this.$router.replace("/auth/login")
+                  self.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+
+              } else if(err.response.status == 401) {
+
+                  self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                  self.$router.replace("/auth/login")
+
+              }
 
           }
 
-          }
+          })
 
       } )
 

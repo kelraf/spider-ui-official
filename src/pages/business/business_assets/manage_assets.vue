@@ -21,7 +21,7 @@
 
                       <Vessle v-if="business_asset.asset_name == 'vessles' && business_asset.status == 2" :businessProfile="business_profile" />
 
-                      <Trains :businessProfile="business_profile" v-if="business_asset.asset_name == 'train' && business_asset.status == 2" />
+                      <Trains :businessProfile="business_profile" v-if="business_asset.asset_name == 'trains' && business_asset.status == 2" />
                       
                       <Produce :businessProfile="business_profile" v-if="business_asset.asset_name == 'produce' && business_asset.status == 2" />
 
@@ -47,6 +47,7 @@
 import axios from "axios"
 import { ApiUrl } from "../../../api/apiurl"
 import Auth from "../../../auth/js/spider_auth"
+import { mapState } from "vuex"
 
 import Produce from "./produce"
 import Products from "./products"
@@ -76,33 +77,18 @@ export default {
       Manage,
       DLivestocks
     },
+    computed: {
+      ...mapState({
+        userProfile: state => state.userProfile.userProfile,
+        businessData: state => state.businessData.businessData
+      })
+    },
     mounted () {
 
-      axios.get(`${ApiUrl.url}businesses/${this.$route.params.id}`, {
-        headers: {
-          Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-        }
-      })
-      .then( (resp) => {
-
-        this.business_profile = resp.data.data
-        this.business_assets = this.business_profile.business_assets
-
-      } )
-      .catch( (err) => {
-
-        if(err.response) {
-
-          if(err.response.status == 401) {
-
-            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-            this.$router.replace("/auth/login")
-
-          }
-
-        }
-
-      } )
+      this.business_profile = this.businessData  
+      this.business_assets = this.business_profile.business_assets  
+      
+      console.log("this.business_profile", this.business_profile)
 
       },
       methods: {

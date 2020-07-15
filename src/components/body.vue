@@ -10,6 +10,7 @@
           <transition name="fadeIn" enter-active-class="animated fadeIn">
             <router-view class="view"></router-view>
           </transition>
+          <!-- <button @click="getCurrentLocation">HHHHHH</button> -->
         </div>
         <Footer/>
       </div>
@@ -37,7 +38,7 @@ export default {
       sidebar_toggle_var: false,
       resized:false,
       avatar_url: "",
-      user_profile: {}
+      user_profile: {},
     }
   },
   // props:['sidebar_toggle_var'],
@@ -60,11 +61,12 @@ export default {
     this.handleResize();
     this.resized = this.sidebar_toggle_var;
     this.$store.dispatch('layout/set')
-    this.loadUserProfile()
   },
   mounted() {
-
-    this.loadBusinessData()
+    
+    // this.loadUserProfile()
+    // this.loadBusinessData()
+    // this.getCurrentLocation()
 
   },
   watch:{
@@ -89,80 +91,88 @@ export default {
     }
   },
   methods:{
-    loadUserProfile: function() {
+    getCurrentLocation() {
 
-      let headers = {
-          headers: {
-              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-          }
-      }
+      // "https://json.geoiplookup.io/api"
 
-      axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
-      .then( (resp) => {
+      axios.get("http://geoplugin.net/json.gp")
 
-          this.user_profile = resp.data.data
-          this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar == undifined || this.user_profile.avatar == null ? null : this.user_profile.avatar.avatar.file_name}`
+      .then((resp) => {
+        console.log(resp)
+      })
+      
+      .catch((err) => {
+        console.log("Error Here", err)
+      })
 
-          delete this.user_profile.pin
-          delete this.user_profile.national_id_number
-          delete this.user_profile.user
-          this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+    },
+    // loadUserProfile: function() {
 
-      } )
-      .catch( (err) => {
+    //   let headers = {
+    //       headers: {
+    //           Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+    //       }
+    //   }
 
-        if(err.response) {
+    //   axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
+    //   .then( (resp) => {
 
-          if (err.response.status == 401) {
+    //       this.user_profile = resp.data.data
+    //       this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar == null ? null : this.user_profile.avatar.avatar.file_name}`          
+    //       this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+
+    //   } )
+    //   .catch( (err) => {
+
+    //     if(err.response) {
+
+    //       if (err.response.status == 401) {
             
-            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-            this.$router.replace("/auth/login")
+    //         this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+    //         this.$router.replace("/auth/login")
 
-          }
+    //       }
 
-        }
+    //     }
 
-      } )
+    //   } )
 
-    },
-    loadBusinessData() {
+    // },
+    // loadBusinessData() {
 
-        let headers = {
-            headers: {
-                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-            }
-        }
+    //     let headers = {
+    //         headers: {
+    //             Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+    //         }
+    //     }
 
-        axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
-          .then( (resp) => {
+    //     axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
+    //       .then( (resp) => {
 
-            if(resp.data.data.length <= 0) return false
+    //         if(resp.data.data.length <= 0) return false
 
-            this.business = resp.data.data[0]
-
-            delete this.business.business_pin
-            delete this.business.registration_number
-            delete this.business.user
-            this.$store.dispatch('businessData/updateBusinessData', this.business)
+    //         this.business = resp.data.data[0]
+            
+    //         this.$store.dispatch('businessData/updateBusinessData', this.business)  
 
 
-          } )
-          .catch( (err) => {
+    //       } )
+    //       .catch( (err) => {
 
-            if(err.response) {
+    //         if(err.response) {
 
-              if (err.response.status == 401) {
+    //           if (err.response.status == 401) {
                 
-                this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-                this.$router.replace("/auth/login")
+    //             this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+    //             this.$router.replace("/auth/login")
 
-              }
+    //           }
 
-            }
+    //         }
 
-          } )
+    //       } )
 
-    },
+    // },
     sidebar_toggle(value) {
       this.sidebar_toggle_var = !value
     },
@@ -177,6 +187,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

@@ -48,6 +48,7 @@ import CenterOrderBeforeGoLive from "../pages/orders/livestock_orders/manage/liv
 import Livestocks from "../pages/ecommerce/livestocks"
 import Cart from "../pages/ecommerce/cart"
 import CheckOut from "../pages/ecommerce/checkout"
+import OrderSuccess from "../pages/ecommerce/success"
 
 
 // Livestock Order Stages
@@ -78,9 +79,19 @@ import CenterOrderMarket from "../pages/market/center_order_market"
 
 
 // Dashboards
-import Home from "../pages/dashboard/home"
-// import Business from "../pages/dashboard/business"
+import DashboardIntersection from "../pages/dashboard/dashboard_intersection"
+import Member from "../pages/dashboard/member"
+import SuperInstance from "../pages/dashboard/super_instance"
+import ExploreServer from "../pages/dashboard/server"
+
+
 import Manage from "../pages/business/business_assets/manage_assets"
+import SuperInstanceAdmins from "../pages/super_instance/super_instance_admins"
+import CreateBusinessPending from "../pages/dashboard/no_business"
+
+// GoogleMaps
+
+import GoogleMaps from "../pages/google_maps/google_map"
 
 
 // component
@@ -95,46 +106,79 @@ const routes = [
   path: '/auth',
   component: Auth,
   children: [
-  {
-    path: 'register-as',
-    name: 'register-as',
-    component: RegisterAsSelect,
-    meta: {
-      title: `Register As Select | ${system_title}`,
+    {
+      path: 'register-as',
+      name: 'register-as',
+      component: RegisterAsSelect,
+      meta: {
+        title: `Register As Select | ${system_title}`,
+      }
+    },
+    {
+      path: 'login',
+      name: 'Login',
+      component: login,
+      meta: {
+        title: ` login | ${system_title}`,
+      }
+    },
+    {
+      path: 'register',
+      name: 'register',
+      component: Register,
+      meta: {
+        title: `Register | ${system_title}`,
+      }
+    },
+    {
+      path: 'verify/:id',
+      name: 'verify',
+      component: VerifyCode,
+      meta: {
+        title: `Verify Code | ${system_title}I`,
+      }
+    },
+    {
+      path: 'not-verified',
+      name: 'not-verified',
+      component: NotVerified,
+      meta: {
+        title: `Not Verified | ${system_title}I`,
+      }
+    },
+    {
+      path: 'create',
+      name: 'create',
+      component: CreateBusinessPending,
+      meta: {
+        title: `Create Business | ${system_title}`,
+
+      }
     }
-  },
-  {
-    path: 'login',
-    name: 'Login',
-    component: login,
-    meta: {
-      title: ` login | ${system_title}`,
-    }
-  },
-  {
-    path: 'register',
-    name: 'register',
-    component: Register,
-    meta: {
-      title: `Register | ${system_title}`,
-    }
-  },
-  {
-    path: 'verify/:id',
-    name: 'verify',
-    component: VerifyCode,
-    meta: {
-      title: `Verify Code | ${system_title}I`,
-    }
-  },
-  {
-    path: 'not-verified',
-    name: 'not-verified',
-    component: NotVerified,
-    meta: {
-      title: `Not Verified | ${system_title}I`,
-    }
-  }
+  ]
+},
+{
+  path: '/account-pending',
+  component: Auth,
+  children: [
+    {
+      path: '',
+      name: 'account-pending',
+      component: CreateBusinessPending,
+      meta: {
+        title: `Create Business | ${system_title}`,
+
+      }
+    },
+    {
+      path: 'create',
+      name: 'create',
+      component: CreateBusiness,
+      meta: {
+        title: `Create Business | ${system_title}`,
+
+      }
+    },
   ]
 },
 {
@@ -147,9 +191,41 @@ const routes = [
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: DashboardIntersection,
       meta: {
         title: `Home | ${system_title}`,
+      }
+    },
+    {
+      path: 'super-instance',
+      name: 'super-instance',
+      component: SuperInstance,
+      meta: {
+        title: `Super Instance | ${system_title}`,
+      }
+    },
+    {
+      path: 'member',
+      name: 'member',
+      component: Member,
+      meta: {
+        title: `Member | ${system_title}`,
+      }
+    },
+    {
+      path: 'client',
+      name: 'client',
+      component: Member,
+      meta: {
+        title: `Member | ${system_title}`,
+      }
+    },
+    {
+      path: 'server',
+      name: 'server',
+      component: ExploreServer,
+      meta: {
+        title: `Member | ${system_title}`,
       }
     }
   ]
@@ -181,15 +257,6 @@ const routes = [
   },
   children: [
     {
-      path: 'to-create',
-      name: 'to-create',
-      component: CreateBusiness,
-      meta: {
-        title: `Create Business | ${system_title}`,
-
-      }
-    },
-    {
       path: 'my-businesses/:id',
       name: 'my-businesses',
       component: MyBusinesses,
@@ -207,7 +274,7 @@ const routes = [
       }
     },
     {
-      path: 'assets/:id',
+      path: 'assets',
       name: 'assets',
       component: Manage,
       meta: {
@@ -340,6 +407,14 @@ const routes = [
       component: ViewDLivestock,
       meta: {
         title: `DLivestock Profile | ${system_title}`,
+      }
+    },
+    {
+      path: 'super-instance-admins',
+      name: 'super-instance-admins',
+      component: SuperInstanceAdmins,
+      meta: {
+        title: `Super Instance Admins | ${system_title}`,
       }
     },
     {
@@ -566,6 +641,25 @@ const routes = [
       }
     }
   ]
+},
+{
+  path: "/google-maps",
+  component: Body,
+  name: "google-maps",
+  meta: {
+    requiresAuth: true
+  },
+  children: [
+    {
+      path: '',
+      name: 'index',
+      component: GoogleMaps,
+      meta: {
+        title: `Google Maps Index | ${system_title}`,
+
+      }
+    }
+  ]
 }
 ,
 {
@@ -609,7 +703,24 @@ const routes = [
       component: CheckOut,
       meta: {
         title: ` CheckOut | ${system_title}`,
-
+      },
+      children: [
+        {
+          path: 'success',
+          name: 'success',
+          component: OrderSuccess,
+          meta: {
+            title: ` CheckOut Success | ${system_title}`,
+          }
+        }
+      ]
+    },
+    {
+      path: 'success',
+      name: 'success',
+      component: OrderSuccess,
+      meta: {
+        title: ` CheckOut Success | ${system_title}`,
       }
     }
   ]

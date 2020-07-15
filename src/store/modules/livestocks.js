@@ -1,6 +1,15 @@
 import products from '../../data/products'
 
-let cartItems = JSON.parse(localStorage.getItem("cartItem")) || {};
+let cartItems = JSON.parse(localStorage.getItem("cartItem")) || {
+	livestock_container: {
+		user_id: null,
+		business_id: null, 
+		business_from_id: null, 
+		livestock_orders: []
+	},
+	produce_container: {},
+	products_container: {}
+};
 
 // cartItems = {
 // 	livestock_container: {
@@ -106,7 +115,34 @@ const getters = {
 	},
 	getAllCartData: function(state) {
 
+		// let cart = {}
+
+		// if("livestock_container" in state.cart){
+		// 	cart.livestock_container = state.cart.livestock_container
+		// } else {
+		// 	cart.livestock_container = {}
+		// }
+
+		// if("produce_container" in state.cart) {
+		// 	cart.produce_container = state.cart.produce_container
+		// } else {
+		// 	cart.produce_container = {}
+		// }
+
+		// if("products_container" in state.cart) {
+		// 	cart.products_container = state.cart.products_container
+		// } else {
+		// 	cart.products_container = {}
+		// }
+
+		return state.cart
+
+	},
+	getTotalAmount(state) {
+
 		let cart = {}
+
+		let total_amount = 0
 
 		if("livestock_container" in state.cart){
 			cart.livestock_container = state.cart.livestock_container
@@ -126,7 +162,61 @@ const getters = {
 			cart.products_container = {}
 		}
 
-		return cart
+		if(Object.keys(cart.livestock_container).length) {
+
+			if(cart.livestock_container.livestock_orders.length) {
+
+				cart.livestock_container.livestock_orders.map((livestock_order) => {
+
+					total_amount += parseInt(livestock_order.total_price)
+
+				})
+
+			}
+
+		}
+
+		return total_amount
+
+	},
+	processLivestockOrderContainerData(state) {
+
+		let data = {}
+
+		if(state.cart.livestock_container.livestock_orders.length){
+
+			let {user_id, business_id, business_from_id, livestock_orders} = state.cart.livestock_container
+
+			let livestock_order_container = {
+				user_id, 
+				business_id, 
+				business_from_id, 
+				livestock_orders: []
+			}
+
+			livestock_orders.map((livestock_order) => {
+
+				let new_livestock_order = {
+					price: parseInt(livestock_order.price_per_animal),
+					quantity: parseInt(livestock_order.quantity),
+					d_livestock_id: parseInt(livestock_order.d_livestock_id)
+				}
+
+				livestock_order_container.livestock_orders.push(new_livestock_order)
+
+			})
+
+			return {
+				bool: true,
+				data: {
+					livestock_order_container
+				}
+			}
+		} else {
+			return {
+				bool: false
+			}
+		}
 
 	}
 }
@@ -136,7 +226,7 @@ const mutations = {
 
 	addToCart: (state, payload) => {
 
-		if("livestock_container" in state.cart) {
+		if(state.cart.livestock_container.livestock_orders.length) {
 
 			let hasItems = state.cart.livestock_container.livestock_orders.find( item => {
 
@@ -161,18 +251,7 @@ const mutations = {
 
 		} else {
 
-			let livestock_orders = []
-
-			livestock_orders.push(payload)
-
-			state.cart.livestock_container = {
-				livestock_orders,
-				user_id: null,
-				business_id: null,
-				business_from_id: null,
-				id: null
-			}
-
+			state.cart.livestock_container.livestock_orders.push(payload)
 			localStorage.setItem("cartItem", JSON.stringify(state.cart));
 
 		}
@@ -180,14 +259,6 @@ const mutations = {
 	},
 
 	updateLivestockOrderQuantity: (state, payload) => {
-
-		// state.cart.livestock_container.livestock_orders = state.cart.livestock_container.livestock_orders.filter((livestock_order) => {
-
-		// 	if (livestock_order.d_livestock_id !== payload.d_livestock_id) {
-		// 		return livestock_order
-		// 	}
-
-		// });
 
 		let currentObjectPosition = state.cart.livestock_container.livestock_orders.findIndex(object => object.d_livestock_id == payload.livestock_order.d_livestock_id)
 
@@ -251,8 +322,17 @@ const mutations = {
 		}
 	},
 
-	createOrder: (state, payload) => {
-		state.order = payload
+	checkoutSuccess: (state, payload) => {
+		
+		state.cart.livestock_container = {
+			user_id: null,
+			business_id: null, 
+			business_from_id: null, 
+			livestock_orders: []
+		}
+
+		localStorage.setItem("cartItem", JSON.stringify(state.cart));
+
 	}
 }
 
@@ -270,8 +350,8 @@ const actions = {
 	sortProducts: (context, payload) => {
 		context.commit('sortProducts', payload)
 	},
-	createOrder: (context, payload) => {
-		context.commit('createOrder', payload)
+	checkoutSuccess: (context, payload) => {
+		context.commit('checkoutSuccess', payload)
 	}
 }
 

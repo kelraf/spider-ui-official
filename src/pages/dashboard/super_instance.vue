@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumbs main="Dashboard" title="Crypto"/>
+    <Breadcrumbs main="Dashboard" title="Super Instance"/>
     <!-- Container-fluid starts-->
     <div class="container-fluid">
       <div class="row">
@@ -10,35 +10,58 @@
             <div class="card-body">
               <div class="media bitcoin-graph"><img src="../../assets/images/bitcoin/graph-icon-1.png" alt="">
                 <div class="top-bitcoin">
-                  <h5>BTC</h5><span>Bitcoin</span>
+                  <h5>Live Animal</h5><span>Orders</span>
                 </div>
-                <div class="media-body">
-                  <div class="bitcoin-content text-right">
-                    <div class="bitcoin-numbers d-inline-block">
-                      <h6 class="mb-0">% 1h</h6>
-                      <h6 class="mb-0 font-primary"><span><feather type="arrow-down"></feather></span> 0.12</h6>
+                <div class="media-body text-center">
+
+                  <div class="container-fluid" style="font-size: 10px;">
+
+                    <div class="row text-left">
+                      <div class="col-6 ">
+                        <span >NEW</span> 
+                        <span class="text-center">
+                          <b-badge variant="success">3</b-badge>
+                        </span>
+                      </div>
+                      <div class="col-6">
+                        <span>IN PROGRESS</span> 
+                        <span>
+                          <b-badge style="color: white !important; animation-duration: .5s;" variant="success">3</b-badge>
+                        </span>
+                      </div>
                     </div>
-                    <div class="bitcoin-numbers d-inline-block">
-                      <h6 class="mb-0">% 24h</h6>
-                      <h6 class="mb-0 font-primary"><span><feather type="arrow-up"></feather></span> +0.30</h6>
+
+                    <div class="row text-left mt-2">
+                      <div class="col-6 ">
+                        <span >COMPLETED</span> 
+                        <span class="text-center">
+                          <b-badge variant="success">3</b-badge>
+                        </span>
+                      </div>
+                      <div class="col-6">
+                        <span>CANCLED</span> 
+                        <span>
+                          <b-badge style="color: white !important; animation-duration: .5s;" variant="success">3</b-badge>
+                        </span>
+                      </div>
                     </div>
-                    <div class="bitcoin-numbers d-inline-block">
-                      <h6 class="mb-0">% 7d</h6>
-                      <h6 class="mb-0 font-primary"><span><feather type="arrow-down"></feather></span> -0.20</h6>
-                    </div>
+
                   </div>
+                  
+                  <router-link to="/orders/livestocks-orders" disabled class="btn btn-sm btn-pill btn-outline-primary mt-2 mb-2">VIEW</router-link>
+
                 </div>
               </div>
             </div>
             <div class="dashboard-chart-container">
               <chartist
-              class="bitcoinchart-1"
-              ratio="ct-major-second"
-              type="Line"
-              :data="chart1.data"
-              :options="chart1.options"
-              >
-            </chartist>
+                class="bitcoinchart-1"
+                ratio="ct-major-second"
+                type="Line"
+                :data="chart1.data"
+                :options="chart1.options"
+                >
+              </chartist>
           </div>
         </div>
       </div>
@@ -48,24 +71,47 @@
           <div class="card-body">
             <div class="media bitcoin-graph"><img src="../../assets/images/bitcoin/graph-icon-2.png" alt="">
               <div class="top-bitcoin">
-                <h5>DASH</h5><span>Tranding</span>
+                <h5>Produce</h5><span>Orders</span>
               </div>
-              <div class="media-body">
-                <div class="bitcoin-content text-right">
-                  <div class="bitcoin-numbers d-inline-block">
-                    <h6 class="mb-0">% 1h</h6>
-                    <h6 class="mb-0 font-primary"><span><feather type="arrow-down"></feather></span> 0.12</h6>
+              <div class="media-body text-center">
+
+                <div class="container-fluid" style="font-size: 10px;">
+
+                  <div class="row text-left">
+                    <div class="col-6 ">
+                      <span >NEW</span> 
+                      <span class="text-center">
+                        <b-badge variant="success">0</b-badge>
+                      </span>
+                    </div>
+                    <div class="col-6">
+                      <span>IN PROGRESS</span> 
+                      <span>
+                        <b-badge style="color: white !important; animation-duration: .5s;" variant="success">0</b-badge>
+                      </span>
+                    </div>
                   </div>
-                  <div class="bitcoin-numbers d-inline-block">
-                    <h6 class="mb-0">% 24h</h6>
-                    <h6 class="mb-0 font-primary"><span><feather type="arrow-up"></feather></span> +0.30</h6>
+
+                  <div class="row text-left mt-2">
+                    <div class="col-6 ">
+                      <span >COMPLETED</span> 
+                      <span class="text-center">
+                        <b-badge variant="success">3</b-badge>
+                      </span>
+                    </div>
+                    <div class="col-6">
+                      <span>CANCLED</span> 
+                      <span>
+                        <b-badge style="color: white !important; animation-duration: .5s;" variant="success">0</b-badge>
+                      </span>
+                    </div>
                   </div>
-                  <div class="bitcoin-numbers d-inline-block">
-                    <h6 class="mb-0">% 7d</h6>
-                    <h6 class="mb-0 font-primary"><span><feather type="arrow-down"></feather></span> -0.20</h6>
-                  </div>
+
                 </div>
-              </div>
+              
+                <button disabled class="btn btn-sm btn-pill btn-outline-primary mt-2 mb-2">VIEW</button>
+
+            </div>
             </div>
           </div>
           <div class="dashboard-chart-container">
@@ -86,23 +132,46 @@
         <div class="card-body">
           <div class="media bitcoin-graph"><img src="../../assets/images/bitcoin/graph-icon-3.png" alt="">
             <div class="top-bitcoin">
-              <h5>ETH</h5><span>Ethereum</span>
+              <h5>Products</h5><span>Orders</span>
             </div>
-            <div class="media-body">
-              <div class="bitcoin-content text-right">
-                <div class="bitcoin-numbers d-inline-block">
-                  <h6 class="mb-0">% 1h</h6>
-                  <h6 class="mb-0 font-primary"><span><feather type="arrow-down"></feather></span> 0.12</h6>
+            <div class="media-body text-center">
+
+              <div class="container-fluid" style="font-size: 10px;">
+
+                  <div class="row text-left">
+                    <div class="col-6 ">
+                      <span >NEW</span> 
+                      <span class="text-center">
+                        <b-badge variant="success">0</b-badge>
+                      </span>
+                    </div>
+                    <div class="col-6">
+                      <span>IN PROGRESS</span> 
+                      <span>
+                        <b-badge style="color: white !important; animation-duration: .5s;" variant="success">0</b-badge>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="row text-left mt-2">
+                    <div class="col-6 ">
+                      <span >COMPLETED</span> 
+                      <span class="text-center">
+                        <b-badge variant="success">3</b-badge>
+                      </span>
+                    </div>
+                    <div class="col-6">
+                      <span>CANCLED</span> 
+                      <span>
+                        <b-badge style="color: white !important; animation-duration: .5s;" variant="success">0</b-badge>
+                      </span>
+                    </div>
+                  </div>
+
                 </div>
-                <div class="bitcoin-numbers d-inline-block">
-                  <h6 class="mb-0">% 24h</h6>
-                  <h6 class="mb-0 font-primary"><span><feather type="arrow-up"></feather></span> +0.30</h6>
-                </div>
-                <div class="bitcoin-numbers d-inline-block">
-                  <h6 class="mb-0">% 7d</h6>
-                  <h6 class="mb-0 font-primary"><span><feather type="arrow-down"></feather></span> -0.20</h6>
-                </div>
-              </div>
+              
+              <button disabled class="btn btn-sm btn-pill btn-outline-primary mt-2 mb-2">VIEW</button>
+
             </div>
           </div>
         </div>
@@ -205,73 +274,7 @@
   </div>
 
   <div class="col-xl-4 xl-50">
-    <div class="card">
-      <div class="card-header b-l-primary">
-        <div class="row">
-          <div class="col-sm-5">
-            <h5 class="bitcoin-header">Sell</h5>
-          </div>
-          <div class="col-sm-7">
-            <div class="text-right right-header-color">
-              <p class="mb-0">BTC Balance: $ 5000.00</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="bitcoin-form">
-          <div class="form-row">
-            <div class="col-xl-4 mb-3 col-sm-3">
-              <label class="f-w-600">Sell</label>
-              <div class="bitcoin-form-dropdown">
-                <div class="onhover-dropdown">
-                  <button class="btn f-12" type="button">Amount  <span class="pr-0"><i class="fa fa-angle-down"></i></span></button>
-                  <div class="onhover-show-div"><a class="d-block" href="#">Link 1</a><a class="d-block" href="#">Link 2</a><a class="d-block" href="#">Link 3</a></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-8 mb-3 col-sm-9">
-              <label class="f-w-600" for="validationCustomUsername">Units</label>
-              <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend3"><i class="fa fa-btc font-primary"></i></span></div>
-                <input class="form-control" id="validationCustomUsername3" type="text" aria-describedby="inputGroupPrepend" required="">
-                <div class="invalid-feedback">Please choose a username.</div>
-              </div>
-            </div>
-            <div class="col-xl-4 mb-3 col-sm-3">
-              <label class="f-w-600">Bid</label>
-              <div class="bitcoin-form-dropdown">
-                <div class="onhover-dropdown">
-                  <button class="btn f-12" type="button">Limit <span class="pr-0"><i class="fa fa-angle-down"></i></span></button>
-                  <div class="onhover-show-div"><a class="d-block" href="#">Link 1</a><a class="d-block" href="#">Link 2</a><a class="d-block" href="#">Link 3</a></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-8 mb-3 col-sm-9">
-              <label class="f-w-600" for="validationCustomUsername">Bid</label>
-              <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend5"><i class="fa fa-btc font-primary"></i></span></div>
-                <input class="form-control" id="validationCustomUsername5" type="text" aria-describedby="inputGroupPrepend" required="">
-                <div class="invalid-feedback">Please choose a username.</div>
-              </div>
-            </div>
-            <div class="col-md-12 mb-3">
-              <label class="f-w-600" for="validationCustomUsername">Total</label>
-              <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend6"><i class="fa fa-btc font-primary"></i></span></div>
-                <input class="form-control" id="validationCustomUsername6" type="text" aria-describedby="inputGroupPrepend" required="">
-                <div class="invalid-feedback">Please choose a username.</div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="btn-bottom">
-                <button class="btn btn-primary" type="button">Sell Now!</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DLivestocks />
   </div>
 
   <div class="col-xl-8 xl-50">
@@ -305,8 +308,14 @@
                 <td>
                   <div class="customers">
                     <ul>
-                      <li class="d-inline-block"><img class="img-40 rounded-circle" src="../../assets/images/user/3.jpg" alt=""></li>
-                      <li class="d-inline-block"><img class="img-40 rounded-circle" src="../../assets/images/user/5.jpg" alt=""></li>
+
+                      <li class="d-inline-block">
+                        <img class="img-40 rounded-circle" src="../../assets/images/user/3.jpg" alt="">
+                      </li>
+
+                      <li class="d-inline-block">
+                        <img class="img-40 rounded-circle" src="../../assets/images/user/5.jpg" alt="">
+                      </li>
                       <li class="d-inline-block"><img class="img-40 rounded-circle" src="../../assets/images/user/1.jpg" alt=""></li>
                       <li class="d-inline-block">
                         <p class="f-12">+10 More</p>
@@ -1151,6 +1160,7 @@
 
 <script>
 import InvestChart from './chartjs/invest'
+import DLivestocks from "../business/business_assets/dlivestocks"
 export default {
  data(){
   return{
@@ -1179,7 +1189,7 @@ export default {
       data:{
         labels: ['01', '02', '03', '04', '05', '06'],
         series: [
-        [8, 3, 7.5, 4, 7, 4]
+          [8, 3, 7.5, 4, 7, 4]
         ]
       },
       options: {
@@ -1296,7 +1306,8 @@ export default {
   }
 },
 components: {
-  InvestChart
+  InvestChart,
+  DLivestocks
 }
 }
 </script>

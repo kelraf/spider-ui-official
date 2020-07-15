@@ -22,22 +22,6 @@
             </div>
         </div>
 
-        <div v-if="Object.keys(center_order).length == 0" class="row pt-5">
-            <div class="col-md-6 text-center offset-md-3 pt-5">
-                <h2> No Center Order Not Available </h2>
-
-                <div class="container pt-5">
-                    <div class="row">
-                        <div class="col-6 offset-3">
-                            <button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary btn-block">
-                                Create
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 </template>

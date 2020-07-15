@@ -54,9 +54,9 @@
                         </div>
                       </div>
 
-                      <hr>
+                      <hr v-if="stages.length && stages[0].center_order !== null">
 
-                      <div class="follow">
+                      <div v-if="stages.length && stages[0].center_order !== null" class="follow">
                         <div class="row">
                           <div class="col-md-8 offset-md-2 mt-2 mb-4">
                             <b-button-group class="btn-group-pill">
@@ -68,7 +68,7 @@
                         </div>
                       </div>
 
-                      <div v-if="stages.length > 0" class="u-pearls-sm row mb-5">
+                      <div v-if="stages.length && stages[0].center_order !== null" class="u-pearls-xs row mb-5">
                         <div
                           v-for="(stage, index) in stages" 
                           :key="index" 
@@ -81,6 +81,34 @@
                       </div>
 
                       <hr />
+
+                      <div v-if="!stages.length || stages.length && stages[0].center_order == null" class="row pt-5">
+                        <div class="col-md-6 text-center offset-md-3 pt-5">
+                            
+                            <h2 v-if="!stages.length" class="font-success"> <b>Order Received Ready To Launch</b> </h2>
+
+                            <h2 v-if="stages.length && stages[0].center_order == null" class="font-success"> <b>Almost There </b> </h2>
+
+                            <div class="container pt-5">
+                                <div class="row">
+                                    <div class="col-6 offset-3">
+
+                                        <button v-if="!stages.length" id="default-outline-primary" @click="launchFirstLivestockStage" type="button" class="btn btn-pill btn-outline-primary btn-block">
+                                            <span v-if="!loading">START NOW</span>
+                                            <img style="width: 20px;" v-if="loading" src="../../../../../../assets/images/loader.gif" alt="">
+                                        </button>
+                                        
+                                        <button v-if="stages.length && stages[0].center_order == null" id="default-outline-success" @click="launchCenterOrder" type="button" class="btn btn-pill btn-outline-success btn-block">
+                                            <span v-if="!loading">COMPLETE</span>
+                                            <img style="width: 20px;" v-if="loading" src="../../../../../../assets/images/loader.gif" alt="">
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
 
                       <router-view></router-view>
                       
@@ -111,7 +139,8 @@ export default {
     return {
       livestock_order: {},
       center_order: {},
-      stages: []
+      stages: [],
+      loading: false
     }
   },
   components: {
@@ -170,16 +199,28 @@ export default {
     },
     process_data() {
 
-      this.center_order = this.livestock_order.center_order
+      // this.center_order = this.livestock_order.center_order
+
+      console.log("GGGGGGGGGGGGGG", this.livestock_order) 
 
       if(this.livestock_order.livestock_order_stages.length > 0) {
 
         this.stages = this.livestock_order.livestock_order_stages
 
-        this.goToStage(this.stages[0])
+        if(!this.stages.length) return
+
+        this.indexStage()
+
+        console.log("this.stages", this.stages)
 
       }
 
+    },
+    indexStage() {
+
+      let stage = this.stages[0]
+
+      if(stage.stage_name == "collection") this.$router.replace({path: `/orders/livestock-order/${this.livestock_order.id}/stages-collection/${stage.id}`})
     },
     addStage() {
       let modal = new Custombox.modal({
@@ -193,6 +234,176 @@ export default {
     },
     handleAddStageSuccess(data){
       this.get_data()
+    },
+    launchFirstLivestockStage: function() {
+                   
+        this.loading = true
+
+        let data = {
+            livestock_order_stage : {
+                stage_name: "collection",
+                livestock_order_id: this.livestock_order.id,
+                stage_number: 1
+            }
+        }  
+        
+        let self = this
+            
+        let headers = {
+            headers: {
+                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+            }
+        }
+
+        axios.post(`${ApiUrl.url}livestock-order-stages`, data, headers) 
+        .then( (resp) => {
+            setTimeout(function() {
+
+                console.log(resp)
+
+                self.stages.push(resp.data.data)
+                self.loading = false
+                self.$toasted.show(`Stage Added Successfully`, {theme: 'outline', position: "top-right", icon : 'check', type: 'success', duration: 8000})
+
+            }, 2000)
+        } )
+
+        .catch( (err) => {
+
+            if(err.response) {
+
+                setTimeout(function() {
+
+                    self.loading = false
+
+                    if(err.response.status == 422) {
+
+                        // for (const key of Object.keys(err.response.data.errors)) {
+
+                        //     if(key == "quantity") {
+                        //         self.form.quantity.error = err.response.data.errors.quantity[0]
+                        //         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.quantity[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     } else if(key == "dproduce_id") {
+                        //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     }  else if(key == "business_id") {
+                        //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     } else if(key == "user_id") {
+                        //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 002-002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     }  else {
+                        //         console.log("Oops!! Error Occured")
+                        //     }
+                        // }
+
+                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 422`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+
+                    } else if(err.response.status == 401) {
+
+                        self.$toasted.show(`Authentication Required. Please Login. : 401`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                        self.$router.replace("/auth/login")
+
+                    } else if(err.response.status == 400) {
+
+                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 400`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+
+                    } else if(err.response.status == 500) {
+
+                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 500`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+
+                    }
+
+                }, 2000)
+
+            }
+
+        } )     
+
+    },
+    launchCenterOrder() {
+
+        this.loading = true
+
+        let data = {
+            center_order : {
+                required_animals: this.livestock_order.quantity,
+                livestock_order_id: this.livestock_order.id,
+                livestock_order_stage_id: this.stages[0].id,
+                d_livestock_id: this.livestock_order.d_livestock_id
+            }
+        }  
+        
+        console.log(data)
+
+        let self = this
+            
+        let headers = {
+            headers: {
+                Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+            }
+        }
+
+        axios.post(`${ApiUrl.url}center-orders`, data, headers) 
+        .then( (resp) => {
+            setTimeout(function() {
+
+                console.log(resp)
+
+                self.stages[0].center_order = resp.data.data
+                self.loading = false
+                self.indexStage()
+                self.$toasted.show(`Successfully Launched Order`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
+
+            }, 2000)
+        } )
+
+        .catch( (err) => {
+
+            if(err.response) {
+
+                setTimeout(function() {
+
+                    self.loading = false
+
+                    if(err.response.status == 422) {
+
+                        // for (const key of Object.keys(err.response.data.errors)) {
+
+                        //     if(key == "quantity") {
+                        //         self.form.quantity.error = err.response.data.errors.quantity[0]
+                        //         self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.quantity[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     } else if(key == "dproduce_id") {
+                        //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     }  else if(key == "business_id") {
+                        //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     } else if(key == "user_id") {
+                        //         self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 002-002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                        //     }  else {
+                        //         console.log("Oops!! Error Occured")
+                        //     }
+                        // }
+
+                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 422`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+
+                    } else if(err.response.status == 401) {
+
+                        self.$toasted.show(`Authentication Required. Please Login. : 401`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                        self.$router.replace("/auth/login")
+
+                    } else if(err.response.status == 400) {
+
+                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 400`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+
+                    } else if(err.response.status == 500) {
+
+                        self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 500`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+
+                    }
+
+                }, 2000)
+
+            }
+
+        } ) 
+
     }
   },
   filters: {

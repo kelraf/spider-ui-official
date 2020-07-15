@@ -60,7 +60,7 @@ export default {
                     options: [
                         { value: '', text:'Select Stage' },
                         { value: 'ccp', text:'CCP' },
-                        { value: 'collection', text:'Collection' },
+                        // { value: 'collection', text:'Collection' },
                         { value: 'export-zone', text:'Export Zone' },
                         { value: 'feedlot', text:'FeedLot' },
                         { value: 'processing', text:'Processing' }

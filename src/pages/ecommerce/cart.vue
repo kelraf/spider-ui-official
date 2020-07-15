@@ -13,7 +13,7 @@
 
               <div 
                 class="col-sm-6 offset-md-3 empty-cart-cls text-center pt-5 mt-5 pb-5 mb-5"  
-                v-if="Object.keys(cart_data.livestock_container).length <= 0 && Object.keys(cart_data.products_container).length <= 0 && Object.keys(cart_data.produce_container).length <= 0"
+                v-if="!cart_data.livestock_container.livestock_orders.length"
               >
 
                   <!-- <img :src='getImgUrl("ecommerce/icon-empty-cart.png")' class="img-fluid mb-4"> -->
@@ -26,7 +26,7 @@
               </div>
 
 
-              <div class="order-history table-responsive wishlist" v-if="Object.keys(cart_data.livestock_container).length > 0">
+              <div class="order-history table-responsive wishlist" v-if="cart_data.livestock_container.livestock_orders.length">
                 <table class="table table-bordernone">
                   <thead>
                     <tr>
@@ -118,7 +118,7 @@ export default {
     }),
     total_cost: function() {
 
-      if(!this.cart_data) return 
+      if(!this.cart_data) return
 
       if(!this.cart_data.livestock_container) return
 
@@ -137,7 +137,7 @@ export default {
     }
   },
   mounted() {
-    console.log("All Cart Data", this.cart_data)
+    console.log("All Cart Data ------>>>>>>", this.cart_data_)
   },
   methods: {
     getImgUrl(path) {

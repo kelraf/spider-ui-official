@@ -12,7 +12,7 @@
                                     <form class="theme-form">
                                         <h5 class="f-16 mb-3 f-w-600">UPDATE YOUR PASSWORD</h5>
                                         <div class="form-group">
-                                            <label class="col-form-label">Currency Password</label>
+                                            <label class="col-form-label">Current Password</label>
                                             <input v-model="form.current_password.value" :class=" form.current_password.error !== ''  ? 'form-error' : '' " class="form-control" type="password" placeholder="*****">
                                         </div>
                                         <div class="form-group">

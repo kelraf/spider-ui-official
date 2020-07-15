@@ -59,6 +59,7 @@
 // import Userauth from '../auth/js/index'
 
 import axios from "axios"
+import { mapState } from "vuex";
 import { ApiUrl } from "../api/apiurl"
 
 import Auth from "../auth/js/spider_auth"
@@ -82,6 +83,12 @@ export default {
 
             }
         }
+    },
+    computed: {
+        ...mapState({
+            userProfile: state => state.userProfile.userProfile,
+            businessData: state => state.businessData.businessData
+        })
     },
     methods: {
         login: function () {
@@ -189,7 +196,28 @@ export default {
                         let respo = Auth.localAuthLogin(resp.data.token)
 
                         if(respo) {
+
+                            self.$store.dispatch('userProfile/updateUserProfile', resp.data.data)
+                            
+                            if(resp.data.data.business !== null) {
+
+                                let business_data = resp.data.data.business
+
+                                let user = resp.data.data
+
+                                delete user.business
+
+                                business_data = {
+                                    ...business_data,
+                                    user
+                                }
+
+                                self.$store.dispatch('businessData/updateBusinessData', business_data)
+
+                            }
+
                             self.$router.replace("/dashboard")
+                            
                         } else {
                             self.$toasted.show(" Oops!! Something Went Wrong. Please Try Again", {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
                         }

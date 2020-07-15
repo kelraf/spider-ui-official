@@ -19,21 +19,14 @@
 								<ul>
 
 									<li>
-										<span  @click="selected('spider-buyer-001')" class="time digits">
+										<span  @click="selected('spider-client')" class="time digits">
 											<i class="icon-shopping-cart icon-h"></i>
 										</span>
 										<span class="title">BUYER</span>
 									</li>
 
 									<li>
-										<span  @click="selected('spider-trader-001')" class="time digits">
-											<i class="icon-briefcase icon-h"></i>
-										</span>
-										<span class="title">TRADER</span>
-									</li>
-
-									<li>
-										<span @click="selected('spider-business-member')" class="time digits">
+										<span @click="selected('spider-member')" class="time digits">
 											<i id="icon-h" class="fa fa-users"></i>
 										</span>
 										<span class="title">MEMBER</span>

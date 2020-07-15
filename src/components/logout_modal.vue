@@ -46,6 +46,9 @@ export default {
 
       setTimeout(function() {
 
+        self.$store.dispatch('businessData/updateBusinessData', {}) 
+        self.$store.dispatch('userProfile/updateUserProfile', {})
+
         if(Auth.logOut()) {
 
           self.loading = false

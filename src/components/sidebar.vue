@@ -18,8 +18,8 @@
             </router-link>
           </div>
         </div>
-        <h6 class="mt-3 f-14"> {{ user_profile.first_name }} </h6>
-        <p>general manager.</p>
+        <h6 class="mt-3 f-14"> {{ userProfile.first_name }} </h6>
+        <p>Spider</p>
       </div>
       <ul
         class="sidebar-menu"
@@ -238,7 +238,8 @@ export default {
       hideLeftArrow: true,
       menuWidth: 0,
       avatar_url: "",
-      user_id: parseInt(Auth.isAuthenticatedUser().sub)
+      user_id: parseInt(Auth.isAuthenticatedUser().sub),
+      business_path_object: {}
     };
   },
   computed: {
@@ -246,35 +247,38 @@ export default {
       menuItems: state => state.menu.data,
       layout: state => state.layout.layout,
       sidebar: state => state.layout.sidebarType,
-      userProfile: state => state.userProfile.userProfile
+      userProfile: state => state.userProfile.userProfile,
+      businessData: state => state.businessData.businessData
     })
   },
   watch: {
-    userProfile: function(data) {
+    userProfile: function() {
 
-     if(Object.keys(data.avatar).length > 0) {
+     if(this.userProfile.avatar !== null && this.userProfile.avatar !== undefined && Object.keys(this.userProfile).length > 0) {
 
        this.user_profile = this.userProfile
 
-        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${data.avatar.avatar.file_name}`
+    }
 
-      } else {
-
-        this.avatar_url =  ""
-        
-      }
     },
-    "userProfile.avatar": function(data) {
+    "userProfile.avatar": function() {
 
-     if(Object.keys(this.userProfile.avatar).length > 0) {
+      if(this.userProfile.avatar !== null && Object.keys(this.userProfile.avatar).length > 0) {
 
-        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.userProfile.avatar.avatar.file_name}`
+          this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.userProfile.avatar.avatar.file_name}`
 
-      } else {
+        } else {
 
-        this.avatar_url = ""
-        
-      }
+          this.avatar_url = ""
+          
+        }
+    },
+    businessData: function() {
+
+      this.setBusinessPath()
+      this.processDLivestockPath()
+      this.processMenu()
+
     }
   },
   created() { 
@@ -284,6 +288,16 @@ export default {
 
     if (this.width < 991) {
       this.layout.settings.sidebar.type = "default";
+    }
+
+    if(this.userProfile.avatar !== null && Object.keys(this.userProfile.avatar).length > 0) {
+
+      this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.userProfile.avatar.avatar.file_name}`
+
+    } else {
+
+      this.avatar_url = ""
+      
     }
 
     const val  = this.sidebar
@@ -305,7 +319,7 @@ export default {
       setTimeout(()=> {
         const elmnt = document.getElementById("myDIV");
         this.menuWidth = elmnt.offsetWidth;   
-        this.menuWidth > window.innerWidth  ? (this.hideRightArrow = false,this.hideLeftArrowRTL = false) : (this.hideRightArrow = true,this.hideLeftArrowRTL = true)
+        this.menuWidth > window.innerWidth  ? (this.hideRightArrow = false, this.hideLeftArrowRTL = false) : (this.hideRightArrow = true, this.hideLeftArrowRTL = true)
       }, 500)
 
   },
@@ -314,53 +328,115 @@ export default {
   },
   mounted() { 
     
-    let self = this
+    this.processMenu()
 
-    this.menuItems.filter(items => {
+  },
+  methods: {
+    processMenu() {
 
-      if (items.path === this.$route.path)
+      let self = this
 
-        this.$store.dispatch("menu/setActiveRoute", items);
+      this.menuItems.filter(items => {
 
-        if(items.param_type == "my_businesses") {
+        if (items.path === this.$route.path)
 
-          let is_int_param = items.path.split("/").reverse()[0]
+          this.$store.dispatch("menu/setActiveRoute", items);
 
-          if(parseInt(is_int_param)) {
+          if(items.param_type == "my_profile") {
 
-            // Do Nothing
+            let is_int_param = items.path.split("/").reverse()[0]
 
-            } else {
+            if(parseInt(is_int_param)) {
 
-            items.path = `${items.path}/${self.user_id}`
+              // Do Nothing
+
+              } else {
+
+                items.path = `${items.path}/${self.user_id}`
+
+              }
+
+          } else if(items.param_type == "my_business") {
+
+            this.business_path_object = items
+            this.setBusinessPath()
 
           }
 
-        } else {
-          console.log("Not There")
-        }
+        if (!items.children) return false;
 
-      if (!items.children) return false;
+        items.children.filter(subItems => {
 
-      items.children.filter(subItems => {
+          if (subItems.path === this.$route.path)
+            this.$store.dispatch("menu/setActiveRoute", subItems);
 
-        if (subItems.path === this.$route.path)
-          this.$store.dispatch("menu/setActiveRoute", subItems);
+          if (!subItems.children) return false;
+          subItems.children.filter(subSubItems => {
 
-        if (!subItems.children) return false;
-        subItems.children.filter(subSubItems => {
+            if (subSubItems.path === this.$route.path)
+              this.$store.dispatch("menu/setActiveRoute", subSubItems);
 
-          if (subSubItems.path === this.$route.path)
-            this.$store.dispatch("menu/setActiveRoute", subSubItems);
+          });
 
         });
 
       });
 
-    });
+      this.processDLivestockPath()
 
-  },
-  methods: {
+    },
+    processDLivestockPath() {
+
+      this.menuItems.filter(items => {
+
+        if(items.param_type == "all_d_livestock") {
+
+          if(["spider-super-instance"].includes(this.businessData.sub_category)) return items
+
+        }
+
+      })
+
+    },
+    setBusinessPath() {
+
+      if(this.businessData !== undefined || Object.keys(this.businessData).length > 0) {
+
+          let index = this.menuItems.findIndex(x => x.id == this.business_path_object.id)
+
+          let is_int_param =  this.menuItems[index].path.split("/").reverse()[0]
+
+          if(parseInt(is_int_param)) {
+
+            let pieces = this.menuItems[index].path.split("/").filter((piece) => {
+              if(!["undefined", undefined].includes(piece)) {
+                return piece
+              }
+            })
+
+            this.menuItems[index].path = "/" + pieces.join("/")
+
+            } else {
+
+                var path = `${this.business_path_object.path}/${this.businessData.id}`
+
+                this.menuItems[index].path = path
+
+                let pieces = path.split("/").filter((piece) => {
+                  if(!["undefined", undefined].includes(piece)) {
+                    return piece
+                  }
+                })
+
+                this.menuItems[index].path = "/" + pieces.join("/")
+
+            }
+
+      } else {
+        console.log("Recalled")
+        // this.setBusinessPath()
+      }
+    },
     setUserId() {
 
       let success = Auth.isAuthenticatedUser()
@@ -399,7 +475,6 @@ export default {
     scrollToLeftRTL() {
 
       // If Margin is reach between screen resolution
-      console.log("this.margin", this.margin);
       if (this.margin <= -this.width) {
 
         this.margin += -this.width;

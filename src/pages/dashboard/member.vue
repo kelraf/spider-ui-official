@@ -3,10 +3,8 @@
 
     <Breadcrumbs main="DashBoard" title="DashBoard"/>
 
-    <NoBusiness v-if="no_business && Object.keys(business_profile).length == 0" />
-
     <!-- Container-fluid starts-->
-    <div v-if="!no_business && Object.keys(business_profile).length > 0" class="container-fluid">
+    <div class="container-fluid">
 
       <div class="row">
         <div class="col-md-12">
@@ -166,7 +164,7 @@
                         <div class="row pt-4">
 
                         <div class="col-md-6">
-                            <router-link :to="'/businesses/assets/'+business_profile.id" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </router-link>
+                            <router-link to="/businesses/assets" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </router-link>
                         </div>
 
                         <!-- <div class="col-md-6">
@@ -240,45 +238,6 @@
                 </div>
             </div>
 
-            <!-- Orders -->
-
-          <div class="col-md-6">
-              <div class="card">
-                <div class="card-body">
-
-                    <div class="media feather-main">
-                    <div class="feather-icon-block"><feather type="navigation"></feather></div>
-                    <div class="media-body align-self-center">
-                        <h6>Manage Business Orders</h6>
-                        <p>8569</p>
-                    </div>
-                    </div>
-
-                    <div class="media feather-main">
-
-                    <div class="col-xl-6 xl-100">
-                        <div class="row pt-4">
-
-                        <div class="col-md-6">
-                            <router-link to="/orders" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </router-link>
-                        </div>
-
-                        <!-- <div class="col-md-6">
-                            <button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Add </button>
-                        </div> -->
-
-                        </div>
-                    </div>
-                    
-                    </div>
-
-                </div>
-
-              </div>
-            </div>
-
-          <!-- Orders End -->
-
           </div>
 
         </div>
@@ -301,7 +260,6 @@ import NoBusiness from "./no_business"
       export default {
         data() {
           return {
-            no_business: false,
             business_profile: {}
           }
        },
@@ -339,38 +297,6 @@ import NoBusiness from "./no_business"
       },
       mounted () {
 
-        axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, {
-          headers: {
-            Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-          }
-        })
-        .then( (resp) => {
-
-          if(resp.data.data.length > 0) {
-
-            this.business_profile = resp.data.data[0]
-
-          } else {
-            this.no_business = true
-          }          
-
-        } )
-        .catch( (err) => {
-
-          if(err.response) {
-
-            if(err.response.status == 401) {
-
-              this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-              this.$router.replace("/auth/login")
-
-            } else if(err.response.status == 404) {
-              this.no_business = true
-            }
-
-          }
-
-        } )
 
       }
     }

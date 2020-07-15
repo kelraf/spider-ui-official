@@ -269,6 +269,12 @@ export default {
                         self.$emit("close-modal")
                         self.$toasted.show(`Business Created Successfully`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 8000})
 
+                        setTimeout(function() {
+
+                            self.$router.go(0)
+
+                        }, 1000)
+
                     }, 2000)
                 } )
 

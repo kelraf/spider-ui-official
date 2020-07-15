@@ -9,6 +9,8 @@ import selectedRole from "./modules/selectedRole"
 import products from './modules/products'
 import livestocks from './modules/livestocks'
 import businessData from "./modules/businessData"
+import locationData from "./modules/locationData"
+import viewOrdeCreatedSuccess from "./modules/view_order_created_success"
 
 Vue.use(Vuex);
 
@@ -23,7 +25,9 @@ export const store = new Vuex.Store({
         spiderverify,
         userProfile,
         selectedRole,
-        businessData
+        businessData,
+        locationData,
+        viewOrdeCreatedSuccess
     },
     strict: false
 });

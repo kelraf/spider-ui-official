@@ -71,7 +71,7 @@
                                             MIN PRICE <b class="font-danger pl-1"><i class="icon-arrow-down"></i></b>
                                         </div> 
                                         <div class="font-secondary">
-                                            Kshs 56772
+                                            Kshs {{ min_price }}
                                         </div>
                                     </div>
                                     <div class="col-6 font-success">
@@ -79,7 +79,7 @@
                                             MAX PRICE <b class="font-danger pl-1"><i class="icon-arrow-up"></i></b>
                                         </div> 
                                         <div class="font-secondary">
-                                            Kshs 56772
+                                            Kshs {{ max_price }}
                                         </div>
                                     </div>
                                 </div>
@@ -202,15 +202,79 @@ export default {
         return {
             quick_view_d_livestock: {},
             quantity: 1,
-            price_per_animal: 8999,
             blockQuantityBtn: false,
             blockPriceBtn: false,
-            showImg: false
+            showImg: false,
+            loading: false,
+            livestocks: [],
+            prices: [],
+            price_per_animal: 0
         }
     },
     computed: {
         total_price: function() {
+
             return (this.quantity * this.price_per_animal)
+
+        },
+        max_price: function() {
+
+            if(this.prices.length <= 0) {
+
+                return 0
+
+            } else {
+
+                if(this.prices.length == 1) {
+
+                    return prices[0]
+
+                } else {
+
+                    return Math.max(...this.prices)
+                    
+                }
+
+            }
+        },
+        min_price: function() {
+
+            if(this.prices.length <= 0) {
+                return 0
+            } else {
+
+                if(this.prices.length == 1) {
+
+                    return prices[0]
+
+                } else {
+                    return Math.min(...this.prices)
+
+                }
+
+            }
+
+        },
+        min_max_avg: function() { 
+
+            if(!this.max_price && this.min_price) {
+
+                return this.min_price
+
+            } else if(this.max_price && !this.min_price) {
+
+                return this.max_price
+
+            } else if(!this.max_price && !this.min_price) {
+
+                return 1000
+                
+            } else {
+
+                return ((this.max_price + this.min_price) / 2)
+
+            }
+
         }
     },
     props: {
@@ -220,6 +284,7 @@ export default {
         quickViewDLivestock: {
             immediate: true,
             handler() {
+
                 if(this.quickViewDLivestock) this.quick_view_d_livestock = this.quickViewDLivestock
 
                 this.quantity = 1,
@@ -228,23 +293,84 @@ export default {
                 this.blockPriceBtn = false,
                 this.showImg = false
 
+                this.loadData()
+
             },
             deep: true
+        },
+        livestocks: function() {
+            this.processPrices()
+        },
+        min_max_avg: function() {
+            this.price_per_animal = this.min_max_avg
         }
     },
     methods: {
+        loadData() {
+
+            if(!Number.isInteger(this.quick_view_d_livestock.id)) return
+
+            axios.get(`${ApiUrl.url}livestocks/dlivestocks/${this.quick_view_d_livestock.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+                    }
+            })
+
+            .then( (resp) => {
+
+                this.livestocks = resp.data.data
+
+            } )
+
+            .catch( (err) => {
+
+                if(err.response) {
+
+                    if(err.response.status == 404) {
+
+                        this.$toasted.show(`Oops!! Something Went Wrong. Please Try Again. : 404`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+
+                    } else if(err.response.status == 401) {
+
+                        this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                        this.$router.replace("/auth/login")
+
+                    }
+
+                }
+
+            } )
+
+        },
+        processPrices() {
+
+            if(!this.livestocks.length) return
+
+            this.prices = []
+
+            this.livestocks.map((livestock) => {
+
+                this.prices.push(livestock.price)
+
+            })
+
+        },
         close() {
+
             Custombox.modal.close()
+
         },
         decrease() {
+            this.quantity = parseInt(this.quantity)
             if(this.quantity > 1) this.quantity-=1
         },
         increase() {
+            this.quantity = parseInt(this.quantity)
             this.quantity+=1
         },
         checkUpdate() {
 
-            this.blockQuantityBtn = true
+            // this.blockQuantityBtn = true
 
             if(this.quantity == "" || this.quantity < 1) {
                 this.$toasted.show(`Oops!! Invalid Quantity.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
@@ -252,14 +378,16 @@ export default {
 
         },
         decreasePrice() {
+            this.price_per_animal = parseInt(this.price_per_animal)
             if(this.price_per_animal > 1) this.price_per_animal-=1
         },
         increasePrice() {
+            this.price_per_animal = parseInt(this.price_per_animal)
             this.price_per_animal+=1
         },
         checkUpdatePrice() {
 
-            this.blockPriceBtn = true
+            // this.blockPriceBtn = true
 
             if(this.price_per_animal == "" || this.price_per_animal < 1) {
                 this.$toasted.show(`Oops!! Invalid Price.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
@@ -299,10 +427,6 @@ export default {
 </script>
 
 <style>
-
-    .img-container {
-        /* height: 400px; */
-    }
 
     .innitial-with-btn {
         width: 100% !important;

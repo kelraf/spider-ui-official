@@ -442,9 +442,16 @@ export default {
         },
         sendRequest() {
 
+            console.log("CCCCC", this.livestock_order_processing_stage_data)
+
             if(Object.keys(this.livestock_order_processing_stage_data).length <= 0) return false
 
+
             else if(!this.checkDates()[0]) return false
+
+            else
+
+            console.log("XXXXXX")
 
             let {livestock_order_id, livestock_order_stage_id, id} = this.livestock_order_processing_stage_data
 

@@ -40,8 +40,7 @@ export default {
                 "trains",
                 "products",
                 "produce",
-                "livestocks",
-                "dlivestocks"
+                "livestocks"
             ]
 		}
     },

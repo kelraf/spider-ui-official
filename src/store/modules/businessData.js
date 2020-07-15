@@ -1,13 +1,13 @@
 
 const state = {
-    businessData: {
-    
-    }
+    businessData: {}
 }
 
 // getters
 const getters = {
-   
+   getBusinessData: function(state) {
+    return state.businessData
+   }
 }
 
 // mutations
