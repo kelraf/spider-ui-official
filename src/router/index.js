@@ -160,6 +160,9 @@ const routes = [
 {
   path: '/account-pending',
   component: Auth,
+  meta: {
+    requiresAuth: true
+  },
   children: [
     {
       path: '',

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="page-wrapper" :class="layout.settings.sidebar.type">
+    <div 
+      class="page-wrapper" 
+      :class="layout.settings.sidebar.type"
+      v-if="businessLoadSuccess && userLoadSuccess"
+    >
       <Header @clicked="sidebar_toggle" @mobileclicked="mobiletoggle_toggle" />
       <div class="page-body-wrapper" :class="layout.settings.sidebar.body_type">
         <div class="page-sidebar" :class="[{ open : sidebar_toggle_var }, layout.settings.sidebar_backround]" :sidebar-layout="layout.settings.sidebar_setting">
@@ -39,6 +43,9 @@ export default {
       resized:false,
       avatar_url: "",
       user_profile: {},
+      businessLoadSuccess: null,
+      userLoadSuccess: null,
+      processingComplete: null
     }
   },
   // props:['sidebar_toggle_var'],
@@ -64,12 +71,19 @@ export default {
   },
   mounted() {
     
-    // this.loadUserProfile()
-    // this.loadBusinessData()
-    // this.getCurrentLocation()
+    this.confirmAuth()
 
   },
   watch:{
+    userProfile: function(current, innitial) {
+
+      if(!Object.keys(innitial).length && Object.keys(current).length) {
+
+        this.loadBusinessData()
+
+      }
+
+    },
     '$route' (){
       this.menuItems.filter(items => {
         if (items.path === this.$route.path)
@@ -91,88 +105,107 @@ export default {
     }
   },
   methods:{
-    getCurrentLocation() {
+    confirmAuth() {
 
-      // "https://json.geoiplookup.io/api"
+      if(Auth.isAuthenticatedUser().bool)  {
 
-      axios.get("http://geoplugin.net/json.gp")
+        if(Object.keys(this.userProfile).length) return
 
-      .then((resp) => {
-        console.log(resp)
-      })
-      
-      .catch((err) => {
-        console.log("Error Here", err)
-      })
+        this.loadUserProfile()
+
+      } else {
+
+        this.userLoadSuccess = false
+        this.processingComplete = false
+        this.businessLoadSuccess = false
+
+        this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+        this.$router.replace("/auth/login")
+
+      }
 
     },
-    // loadUserProfile: function() {
+    loadUserProfile: function() {
 
-    //   let headers = {
-    //       headers: {
-    //           Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-    //       }
-    //   }
+      let headers = {
+          headers: {
+              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+          }
+      }
 
-    //   axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
-    //   .then( (resp) => {
+      axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
+      .then( (resp) => {
 
-    //       this.user_profile = resp.data.data
-    //       this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar == null ? null : this.user_profile.avatar.avatar.file_name}`          
-    //       this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+          this.user_profile = resp.data.data
+          this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
 
-    //   } )
-    //   .catch( (err) => {
+      } )
+      .catch( (err) => {
 
-    //     if(err.response) {
+        if(err.response) {
 
-    //       if (err.response.status == 401) {
+          if (err.response.status == 401) {
             
-    //         this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-    //         this.$router.replace("/auth/login")
+            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+            this.$router.replace("/auth/login")
 
-    //       }
+          }
 
-    //     }
+        }
 
-    //   } )
+      } )
 
-    // },
-    // loadBusinessData() {
+    },
+    loadBusinessData() {
 
-    //     let headers = {
-    //         headers: {
-    //             Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-    //         }
-    //     }
+      let headers = {
+          headers: {
+              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+          }
+      }
 
-    //     axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
-    //       .then( (resp) => {
+      axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
+        .then( (resp) => {
 
-    //         if(resp.data.data.length <= 0) return false
+          if(resp.data.data.length <= 0) {
 
-    //         this.business = resp.data.data[0]
-            
-    //         this.$store.dispatch('businessData/updateBusinessData', this.business)  
+            this.businessLoadSuccess = false
+
+            if(this.userProfile.role == "spider-member" || this.userProfile.role == "spider-client") {
+
+              this.$router.push({path: "/account-pending"})
+
+            }
+
+          } else {
+
+            this.businessLoadSuccess = true
+            this.processingComplete = true
+            this.business = resp.data.data[0]
+            this.$store.dispatch("menu/processMenuFor", this.business.sub_category)
+            this.$store.dispatch('businessData/updateBusinessData', this.business) 
+            this.$router.push({path: "/dashboard"})
+
+          } 
 
 
-    //       } )
-    //       .catch( (err) => {
+        } )
+        .catch((err) => {
 
-    //         if(err.response) {
+          if(err.response) {
 
-    //           if (err.response.status == 401) {
-                
-    //             this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-    //             this.$router.replace("/auth/login")
+            if (err.response.status == 401) {
+              
+              this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+              this.$router.replace("/auth/login")
 
-    //           }
+            }
 
-    //         }
+          }
 
-    //       } )
+        })
 
-    // },
+    },
     sidebar_toggle(value) {
       this.sidebar_toggle_var = !value
     },

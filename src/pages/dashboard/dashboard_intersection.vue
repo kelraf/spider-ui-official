@@ -24,6 +24,8 @@ export default {
     },
     mounted() {
         this.goToDashboard()
+        console.log("Business", this.business_data)
+        console.log("GOT HERE ------------>>>>>>>>>>>>>")
     },
     methods: {
         goToDashboard() {
