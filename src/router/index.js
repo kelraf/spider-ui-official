@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from "vue-router";
-import Body from '../components/body'
+import Body from '../components/body' // Taken
 import Authentic from "../auth/js/spider_auth"
 
 // Businesses Create
@@ -15,7 +15,7 @@ import VerifyCode from '../auth/verify_code'
 import NotVerified from "../auth/not_verified"
 
 // Profile
-import EditProfile from "../pages/users/user_profile"
+import EditProfile from "../pages/users/user_profile" // Taken
 import ViewVehicle from "../pages/business/business_assets/profiles/vehicle"
 import ViewTrain from "../pages/business/business_assets/profiles/train"
 import ViewFlight from "../pages/business/business_assets/profiles/flight"
@@ -78,7 +78,7 @@ import MarketIndex from "../pages/market/market"
 import CenterOrderMarket from "../pages/market/center_order_market"
 
 
-// Dashboards
+// Dashboards Taken
 import DashboardIntersection from "../pages/dashboard/dashboard_intersection"
 import Member from "../pages/dashboard/member"
 import SuperInstance from "../pages/dashboard/super_instance"

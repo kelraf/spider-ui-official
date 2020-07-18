@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="page-wrapper" :class="layout.settings.sidebar.type">
+    <div 
+      v-if="loadBusinessComplete && loadUserComplete"
+      class="page-wrapper" 
+      :class="layout.settings.sidebar.type">
       <Header @clicked="sidebar_toggle" @mobileclicked="mobiletoggle_toggle" />
       <div class="page-body-wrapper" :class="layout.settings.sidebar.body_type">
         <div class="page-sidebar" :class="[{ open : sidebar_toggle_var }, layout.settings.sidebar_backround]" :sidebar-layout="layout.settings.sidebar_setting">
@@ -10,7 +13,6 @@
           <transition name="fadeIn" enter-active-class="animated fadeIn">
             <router-view class="view"></router-view>
           </transition>
-          <!-- <button @click="getCurrentLocation">HHHHHH</button> -->
         </div>
         <Footer/>
       </div>
@@ -39,6 +41,8 @@ export default {
       resized:false,
       avatar_url: "",
       user_profile: {},
+      loadBusinessComplete: false,
+      loadUserComplete: false
     }
   },
   // props:['sidebar_toggle_var'],
@@ -67,6 +71,19 @@ export default {
     // this.loadUserProfile()
     // this.loadBusinessData()
     // this.getCurrentLocation()
+
+    if(Auth.isAuthenticatedUser().bool)  {
+
+        if(Object.keys(this.userProfile).length) return
+
+        this.loadUserProfile()
+
+      } else {
+
+        this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+        this.$router.replace("/auth/login")
+
+      }
 
   },
   watch:{
@@ -106,73 +123,98 @@ export default {
       })
 
     },
-    // loadUserProfile: function() {
+    loadBusinessData() {
 
-    //   let headers = {
-    //       headers: {
-    //           Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-    //       }
-    //   }
+      let headers = {
+          headers: {
+              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+          }
+      }
 
-    //   axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
-    //   .then( (resp) => {
+      axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
+        .then( (resp) => {
 
-    //       this.user_profile = resp.data.data
-    //       this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar == null ? null : this.user_profile.avatar.avatar.file_name}`          
-    //       this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+          if(resp.data.data.length <= 0) {
 
-    //   } )
-    //   .catch( (err) => {
+            if(this.userProfile.role == "spider-member" || this.userProfile.role == "spider-client") {
 
-    //     if(err.response) {
+              this.$router.push({path: "/account-pending"})
 
-    //       if (err.response.status == 401) {
+            }
+
+          } else {
+
+            loadBusinessComplete = true
+            this.business = resp.data.data[0]
+            this.$store.dispatch("menu/processMenuFor", this.business.sub_category);
+            this.$store.dispatch('businessData/updateBusinessData', this.business) 
+            this.$router.push({path: "/dashboard"})
+
+          } 
+
+
+        } )
+        .catch( (err) => {
+
+          if(err.response) {
+
+            if (err.response.status == 401) {
+              
+              this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+              this.$router.replace("/auth/login")
+
+            }
+
+          }
+
+        } )
+
+  },
+  loadUserProfile: function() {
+
+      let headers = {
+          headers: {
+              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+          }
+      }
+
+      axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
+      .then( (resp) => {
+
+          this.user_profile = resp.data.data
+          this.loadUserComplete = true
+          this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
+
+          this.waitLoadBusiness()
+
+      } )
+      .catch( (err) => {
+
+        if(err.response) {
+
+          if (err.response.status == 401) {
             
-    //         this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-    //         this.$router.replace("/auth/login")
+            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+            this.$router.replace("/auth/login")
 
-    //       }
+          }
 
-    //     }
+        }
 
-    //   } )
+      } )
 
-    // },
-    // loadBusinessData() {
+    },
+    waitLoadBusiness() {
 
-    //     let headers = {
-    //         headers: {
-    //             Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-    //         }
-    //     }
+      let self = this
 
-    //     axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
-    //       .then( (resp) => {
+      setTimeout(() => {
 
-    //         if(resp.data.data.length <= 0) return false
+        self.loadBusinessData()
 
-    //         this.business = resp.data.data[0]
-            
-    //         this.$store.dispatch('businessData/updateBusinessData', this.business)  
+      }, 3000)
 
-
-    //       } )
-    //       .catch( (err) => {
-
-    //         if(err.response) {
-
-    //           if (err.response.status == 401) {
-                
-    //             this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-    //             this.$router.replace("/auth/login")
-
-    //           }
-
-    //         }
-
-    //       } )
-
-    // },
+    },
     sidebar_toggle(value) {
       this.sidebar_toggle_var = !value
     },

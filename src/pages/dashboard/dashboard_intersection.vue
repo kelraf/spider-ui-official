@@ -23,11 +23,18 @@ export default {
         }
     },
     mounted() {
+        console.log("In Mounted")
         this.goToDashboard()
     },
     methods: {
         goToDashboard() {
+
+            console.log("Got Here 1")
+
             if(this.business_data) {
+
+                console.log("Got Here 2")
+
                 let home = [
                     "producer-chain-groups",
                     "processer-chain-groups",
@@ -62,12 +69,13 @@ export default {
 
                 } else if(server.includes(this.business_data.category)) {
                     
+                    console.log("Got Here 3")
                     this.$router.replace({path: `/dashboard/server`})
 
                 } else {
 
                     console.log("Going To NoWhere")
-                    
+
                 }
             }
         }
