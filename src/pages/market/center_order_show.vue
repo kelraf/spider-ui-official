@@ -23,7 +23,7 @@
             <ul class="search-info">
 
                 <li>
-                    <i class="fa fa-arrows-alt"></i>
+                    <i class="icon-crown"></i>
                 </li>
 
                 <li>
@@ -48,7 +48,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 offset-md-3 pt-2">
-                        <router-link :to="'/market/center-order-market/' + center_order.id " id="default-outline-secondary" type="button" class="btn btn-sm btn-pill btn-outline-secondary btn-block">
+                        <router-link :to="'/dashboard/center-order-market/' + center_order.id " id="default-outline-secondary" type="button" class="btn btn-sm btn-pill btn-outline-secondary btn-block">
                             more
                         </router-link >
                     </div>

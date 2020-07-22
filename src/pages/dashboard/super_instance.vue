@@ -48,7 +48,7 @@
 
                   </div>
                   
-                  <router-link to="/orders/livestocks-orders" disabled class="btn btn-sm btn-pill btn-outline-primary mt-2 mb-2">VIEW</router-link>
+                  <router-link to="/dashboard/livestocks-orders" disabled class="btn btn-sm btn-pill btn-outline-primary mt-2 mb-2">VIEW</router-link>
 
                 </div>
               </div>

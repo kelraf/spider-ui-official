@@ -21,7 +21,7 @@
                                     </div>
 
                                     <div class="mb-2">
-                                        <div class="col-form-label"> Vehicle Role </div>
+                                        <div class="col-form-label"> Vehicle Status </div>
                                         <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.status.error ? 'form-error' : ''" v-model="form.status.value" :options="form.status.options"></b-form-select>
                                     </div>
 

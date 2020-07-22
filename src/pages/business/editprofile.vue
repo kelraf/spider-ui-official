@@ -182,6 +182,8 @@
 import EditProfile from "./edit_profile"
 import ShowMap from "./show_map"
 
+import { mapState } from "vuex";
+
 import axios from "axios"
 import { ApiUrl } from "../../api/apiurl"
 import Auth from "../../auth/js/spider_auth"
@@ -196,34 +198,52 @@ export default {
     EditProfile,
     ShowMap
   },
+  computed: {
+    ...mapState({
+      userProfile: state => state.userProfile.userProfile,
+      businessData: state => state.businessData.businessData
+    })
+  },
   created() {
 
-    axios.get(`${ApiUrl.url}businesses/${this.$route.params.id}`, {
-      headers: {
-        Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-      }
-    })
-    .then( (resp) => {
+    if(Auth.isAuthenticatedUser().bool && Object.keys(this.businessData).length) {
 
-      this.business_profile = resp.data.data
-      
-    } )
+      axios.get(`${ApiUrl.url}businesses/${this.businessData.id}`, {
+        headers: {
+          Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+        }
+      })
+      .then( (resp) => {
 
-    .catch( (err) => {
-      console.log(err.response)
-      if(err.response) {
+        this.business_profile = resp.data.data
+        
+      } )
 
-        if(err.response.status == 404) {
-          console.log("Error 404")
-        } else if(err.response.status == 401) {
+      .catch( (err) => {
 
-          this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-          this.$router.replace("/auth/login")
+        if(err.response) {
+
+          if(err.response.status == 404) {
+            console.log("Error 404")
+          } else if(err.response.status == 401) {
+
+            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+            this.$router.replace("/auth/login")
+
+          }
 
         }
 
-      }
-    } )
+      }) 
+
+    } else if(!Auth.isAuthenticatedUser().bool) {
+
+      this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+      this.$router.replace("/auth/login")
+
+    } else {
+      this.$router.go(0)
+    }
 
   },
   methods: {

@@ -27,7 +27,14 @@ export default {
         }
     },
     mounted() {
-        this.process_chart_data() 
+        
+        if(Object.keys(this.livestockData).length) {
+
+            this.livestock = this.livestockData
+            this.process_chart_data()
+            
+        }
+
     },
     props: {
         livestockData: Object
@@ -37,9 +44,7 @@ export default {
             immediate: true,
             handler() {
 
-                if(Object.keys(this.livestockData).length <= 0) {
-                    this.livestock = {}
-                } else {
+                if(Object.keys(this.livestockData).length) {
                     this.livestock = this.livestockData
                     this.process_chart_data()
                 }

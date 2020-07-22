@@ -86,7 +86,7 @@
 									<td>{{ row.age }}</td>
 									<td>{{ row.startdate }}</td> -->
 									<td>
-										<router-link id="default-outline-primary" :to="'/businesses/flight-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+										<router-link id="default-outline-primary" :to="'/dashboard/flights/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
 										</router-link>
 									</td>
@@ -135,6 +135,7 @@ import { ApiUrl } from "../../../../api/apiurl"
 import Auth from "../../../../auth/js/spider_auth"
 import CreatePlane from "../assets_forms/plane/create"
 import UpdatePlane from "../assets_forms/plane/update"
+import { mapState } from "vuex"
 
 export default {
 	data(){
@@ -164,44 +165,21 @@ export default {
 		CreatePlane,
 		UpdatePlane
 	},
+	computed: {
+		...mapState({
+			businessData: state => state.businessData.businessData
+		})
+	},
 	created() {
 
+		this.businessProfile = this.businessData
 		this.get_all_business_flights()	
-		this.get_business_profile()	
 
 	},
 	methods: {
-		get_business_profile: function() {
-
-			axios.get(`${ApiUrl.url}businesses/${this.$route.params.id}`, {
-				headers: {
-					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-				}
-			})
-			.then( (resp) => {
-
-				this.businessProfile = resp.data.data
-
-			} )
-			.catch( (err) => {
-
-			if(err.response) {
-
-				if(err.response.status == 401) {
-
-				this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-				this.$router.replace("/auth/login")
-
-				}
-
-			}
-
-			} )
-
-		},
 		get_all_business_flights: function() {
 
-			axios.get(`${ApiUrl.url}flights/business/${this.$route.params.id}`, {
+			axios.get(`${ApiUrl.url}flights/business/${this.businessData.id}`, {
 				headers: {
 					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
 				}

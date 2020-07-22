@@ -79,7 +79,7 @@
 									<td>{{ row.category }}</td>
 									<td>{{ row.type }}</td>
 									<td>
-										<router-link id="default-outline-primary" :to="'/businesses/dlivestock-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+										<router-link id="default-outline-primary" :to="'/dashboard/d-livestocks/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
 										</router-link>
 									</td>

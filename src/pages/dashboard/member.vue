@@ -102,49 +102,80 @@
 
           </carousel>
         </div>
-        <!-- <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <h5>Total Sale</h5>
-            </div>
-            <div class="card-body charts-box">
-              <div class="flot-chart-container">
-                  <Salechart class="flot-chart-placeholder" id="graph123"/>
-              </div>
-            </div>
-          </div>
-        </div> -->
+        
       </div>
 
       <div class="row">
 
         <div class="col-xl-6 xl-100">
           <div class="row">
-
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body progress-media">
-                        <div class="media">
-                            <div class="media-body">
-                                <h5> Profile Status </h5><span class="mb-0 d-block">Feedback</span>
-                            </div><feather type="message-circle" />
-                        </div>
-                        <div class="progress-bar-showcase">
-                            <div class="progress sm-progress-bar">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 85%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="progress-change">
-                          <span>
-                            <router-link :to="'/businesses/profile/'+business_profile.id" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mb-2"> Edit </router-link>
-                          </span>
-                          <span class="pull-right">
-                            85%
-                          </span>
-                        </div>
-                    </div>
+            <div class="col-xl-6 col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="media">
+                    <h6 class="mb-0 font-success"> <b>Live Animal Market</b> </h6>
+                  </div>
+                  <div class="project-widgets text-center">
+                    <h1 class="font-primary counter"><b>45 <span class="font-danger">+</span></b></h1>
+                  </div>
                 </div>
+                <div class="card-footer project-footer text-center">
+                  <router-link to="/dashboard/market" id="default-outline-primary" type="button" class="btn btn-sm btn-pill btn-outline-primary"> VISIT MARKET </router-link>
+                </div>
+              </div>
             </div>
+            <div class="col-xl-6 col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="media">
+                    <h6 class="mb-0 font-secondary"> <b>Produce Market</b> </h6>
+                  </div>
+                  <div class="project-widgets text-center">
+                    <h1 class="font-primary counter"> <b>45 +</b> </h1>
+                  </div>
+                </div>
+                <div class="card-footer project-footer text-center">
+                  <router-link to="/dashboard/market" id="default-outline-primary" type="button" class="btn btn-sm btn-pill btn-outline-primary"> VISIT MARKET </router-link>
+                </div>
+              </div>
+            </div>
+								<div class="col-xl-3 col-sm-6">
+									<div class="card">
+										<div class="card-body">
+											<div class="media">
+												<h6 class="mb-0 font-success"><b>Live Animal Sales</b></h6>
+											</div>
+											<div class="project-widgets text-center">
+												<h1 class="font-primary counter"><b>34</b></h1>
+											</div>
+										</div>
+										<div class="card-footer project-footer">
+											<router-link to="/dashboard/livestock-sales" id="default-outline-primary" type="button" class="btn btn-sm btn-pill btn-outline-primary btn-block"> VIEW </router-link>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-sm-6">
+									<div class="card">
+										<div class="card-body">
+											<div class="media">
+												<h6 class="mb-0 font-secondary"><b>Total Payment Made</b></h6>
+											</div>
+											<div class="project-widgets text-center">
+												<h2 class="font-primary counter"><b>$ 450 </b></h2>
+											</div>
+										</div>
+										<div class="card-footer project-footer">
+											<h6 style="font-size: 15px;" class="mb-0"> <span class="font-success">Completed Payment</span> : <span class="counter">10</span> </h6>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+        </div>
+
+        <div class="col-xl-6 xl-100">
+          <div class="row">
 
             <div class="col-md-6">
               <div class="card">
@@ -154,7 +185,6 @@
                     <div class="feather-icon-block"><feather type="navigation"></feather></div>
                     <div class="media-body align-self-center">
                         <h6>Manage Business Assets</h6>
-                        <p>8569</p>
                     </div>
                     </div>
 
@@ -162,15 +192,9 @@
 
                     <div class="col-xl-6 xl-100">
                         <div class="row pt-4">
-
-                        <div class="col-md-6">
-                            <router-link to="/businesses/assets" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </router-link>
-                        </div>
-
-                        <!-- <div class="col-md-6">
-                            <button id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Add </button>
-                        </div> -->
-
+                          <div class="col-md-6">
+                              <router-link to="/dashboard/assets" id="default-outline-primary" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block"> Manage </router-link>
+                          </div>
                         </div>
                     </div>
                     
@@ -181,65 +205,7 @@
               </div>
             </div>
 
-            <!-- <Manage /> -->
-
           </div>
-        </div>
-
-        <div class="col-xl-6 xl-100">
-          <div class="row">
-
-            <!-- Can Be Used If Business Type in association group ranch or co-oparative to show group join request -->
-            <div class="col-xl-6">
-                <div class="card">
-                    <div class="card-header card-header-border">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h5>Join Request</h5>
-                            </div>
-                            <!-- <div class="col-sm-6">
-                                <div class="pull-right right-header"><span>Month</span><span>
-                        <button class="btn btn-primary btn-pill">Today</button></span></div>
-                            </div> -->
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="new-users">
-                            <div class="media"><img class="rounded-circle image-radius m-r-15" :src='"../../assets/images/user/2.png"' alt="">
-                                <div class="media-body">
-                                    <h6 class="mb-0 f-w-700">Nick Stone</h6>
-                                    <p>Visual Designer, Github Inc</p>
-                                </div><span class="pull-right">
-                      <button class="btn btn-pill btn-outline-light">Follow</button></span>
-                            </div>
-                            <div class="media"><img class="rounded-circle image-radius m-r-15" :src='"../../assets/images/user/5.jpg"' alt="">
-                                <div class="media-body">
-                                    <h6 class="mb-0 f-w-700">Milano Esco</h6>
-                                    <p>Visual Designer, Github Inc</p>
-                                </div><span class="pull-right">
-                      <button class="btn btn-pill btn-outline-light">Follow</button></span>
-                            </div>
-                            <div class="media"><img class="rounded-circle image-radius m-r-15" :src='"../../assets/images/user/3.jpg"' alt="">
-                                <div class="media-body">
-                                    <h6 class="mb-0 f-w-700">Wiltor Noice</h6>
-                                    <p>Visual Designer, Github Inc</p>
-                                </div><span class="pull-right">
-                      <button class="btn btn-pill btn-outline-light">Follow</button></span>
-                            </div>
-                            <div class="media"><img class="rounded-circle image-radius m-r-15" :src='"../../assets/images/user/4.jpg"' alt="">
-                                <div class="media-body">
-                                    <h6 class="mb-0 f-w-700">Anna Strong</h6>
-                                    <p>Visual Designer, Github Inc</p>
-                                </div><span class="pull-right">
-                      <button class="btn btn-pill btn-outline-light">Follow</button></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-          </div>
-
         </div>
       
     </div>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Breadcrumbs main="Dashboard" title="Project"/>
+		<Breadcrumbs main="Dashboard" title="Client"/>
 		<!-- Container-fluid starts-->
 		<div class="container-fluid">
 			<div class="row">
@@ -16,23 +16,14 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="media">
-												<div class="select2-drpdwn-project select-options">
-													<select class="form-control form-control-primary btn-square" name="select">
-														<option value="opt1">Today</option>
-														<option value="opt2">Yesterday</option>
-														<option value="opt3">Tomorrow</option>
-														<option value="opt4">Monthly</option>
-														<option value="opt5">Weekly</option>
-													</select>
-												</div>
+												<h6 class="mb-0 font-success"> <b>Live Animal Orders</b> </h6>
 											</div>
 											<div class="project-widgets text-center">
-												<h1 class="font-primary counter">45</h1>
-												<h6 class="mb-0">Due Tasks</h6>
+												<h1 class="font-primary counter"><b>45</b></h1>
 											</div>
 										</div>
 										<div class="card-footer project-footer">
-											<h6 class="mb-0">Completed: <span class="counter">14</span></h6>
+											<h6 style="font-size: 15px;" class="mb-0">In Progress: <span class="counter">14</span></h6>
 										</div>
 									</div>
 								</div>
@@ -40,15 +31,14 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="media">
-												<h5 class="mb-0">Features</h5>
+												<h6 class="mb-0 font-secondary"> <b>Produce Orders</b> </h6>
 											</div>
 											<div class="project-widgets text-center">
-												<h1 class="font-primary counter">80</h1>
-												<h6 class="mb-0">Proposals</h6>
+												<h1 class="font-primary counter"> <b>45</b> </h1>
 											</div>
 										</div>
 										<div class="card-footer project-footer">
-											<h6 class="mb-0">Implemented: <span class="counter">14</span></h6>
+											<h6 style="font-size: 15px;" class="mb-0">In Progress: <span class="counter">14</span></h6>
 										</div>
 									</div>
 								</div>
@@ -56,15 +46,14 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="media">
-												<h5 class="mb-0">Issues</h5>
+												<h6 class="mb-0 font-success"><b>Payed Orders</b></h6>
 											</div>
 											<div class="project-widgets text-center">
-												<h1 class="font-primary counter">34</h1>
-												<h6 class="mb-0">Open</h6>
+												<h1 class="font-primary counter"><b>34</b></h1>
 											</div>
 										</div>
 										<div class="card-footer project-footer">
-											<h6 class="mb-0">Closed today: <span class="counter">10</span></h6>
+											<h6 style="font-size: 15px;" class="mb-0"> <span class="font-success">Completed Payment</span> : <span class="counter">10</span> </h6>
 										</div>
 									</div>
 								</div>
@@ -72,15 +61,14 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="media">
-												<h5 class="mb-0">Overdue</h5>
+												<h6 class="mb-0 font-secondary"><b>Total Payment Made</b></h6>
 											</div>
 											<div class="project-widgets text-center">
-												<h1 class="font-primary counter">7</h1>
-												<h6 class="mb-0">Tasks</h6>
+												<h2 class="font-primary counter"><b>$ 450 </b></h2>
 											</div>
 										</div>
 										<div class="card-footer project-footer">
-											<h6 class="mb-0">Task Solved: <span class="counter">4</span></h6>
+											<h6 style="font-size: 15px;" class="mb-0"> <span class="font-success">Completed Payment</span> : <span class="counter">10</span> </h6>
 										</div>
 									</div>
 								</div>
@@ -88,19 +76,8 @@
 									<div class="card">
 										<div class="card-header project-header">
 											<div class="row">
-												<div class="col-sm-8">
-													<h5>Task Distribution</h5>
-												</div>
-												<div class="col-sm-4">
-													<div class="select2-drpdwn-project select-options">
-														<select class="form-control form-control-primary btn-square" name="select">
-															<option value="opt1">Today</option>
-															<option value="opt2">Yesterday</option>
-															<option value="opt3">Tomorrow</option>
-															<option value="opt4">Monthly</option>
-															<option value="opt5">Weekly</option>
-														</select>
-													</div>
+												<div class="col-sm-12">
+													<h5 class="font-secondary">Live Animal Orders Summary</h5>
 												</div>
 											</div>
 										</div>
@@ -109,193 +86,27 @@
 										</div>
 									</div>
 								</div>
+
 								<div class="col-xl-6">
 									<div class="card">
 										<div class="card-header project-header">
 											<div class="row">
-												<div class="col-sm-8">
-													<h5>Schedule</h5>
-												</div>
-												<div class="col-sm-4">
-													<div class="select2-drpdwn-project select-options">
-														<select class="form-control form-control-primary btn-square" name="select">
-															<option value="opt1">Today</option>
-															<option value="opt2">Yesterday</option>
-															<option value="opt3">Tomorrow</option>
-															<option value="opt4">Monthly</option>
-															<option value="opt5">Weekly</option>
-														</select>
-													</div>
+												<div class="col-sm-12">
+													<h5 class="font-success">Produce Orders Summary</h5>
 												</div>
 											</div>
 										</div>
-										<div class="card-body">
-											<div class="schedule">
-												<div class="media">
-													<div class="media-body">
-														<h6>Group Meeting</h6>
-														<p>30 minutes</p>
-													</div>
-													<div class="dropdown schedule-dropdown">
-														<b-dropdown variant="link" size="lg" right text="Right align" caret>
-															<template slot="button-content"><feather type="more-horizontal"></feather></template>
+										<div class="card-body chart-vertical-center project-charts">
+											<TaskChart :width="530" :height="265" />
+										</div>
+									</div>
+								</div>
 
-															<b-dropdown-item href="#">Project</b-dropdown-item>
-															<b-dropdown-item href="#">Requirements</b-dropdown-item>
-															<b-dropdown-item href="#">Discussion</b-dropdown-item>
-															<b-dropdown-item href="#">Planning</b-dropdown-item>
-														</b-dropdown>
-													</div>
-												</div>
-												<div class="media">
-													<div class="media-body">
-														<h6>Public Beta Release</h6>
-														<p>10:00 PM</p>
-													</div><feather type="more-horizontal"></feather>
-												</div>
-												<div class="media">
-													<div class="media-body">
-														<h6>Lunch</h6>
-														<p>12:30 PM</p>
-													</div><feather type="more-horizontal"></feather>
-												</div>
-												<div class="media">
-													<div class="media-body">
-														<h6>Clients Timing</h6>
-														<p>2:00 PM to 6:00 PM</p>
-													</div><feather type="more-horizontal"></feather>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="card">
-										<div class="card-header">
-											<h5>Github Isuues</h5>
-										</div>
-										<div class="card-body">
-											<div class="row">
-												<div class="col-xl-6 xl-100">
-													<div class="row more-projects">
-														<div class="col-sm-6 xl-4">
-															<div class="projects-main">
-																<div class="project-content">
-																	<h6>Created</h6>
-																	<h5 class="counter mb-0">27</h5>
-																</div>
-																<chartist
-																		class="project-small-chart-1 project-small"
-																		type="Line"
-																		:data="chart1.data"
-																		:options="chart1.options"
-																		:event-handlers="chart1.eventHandlers" />
-															</div>
-														</div>
-														<div class="col-sm-6 xl-4">
-															<div class="projects-main">
-																<div class="project-content">
-																	<h6>Fixed</h6>
-																	<h5 class="counter mb-0">8</h5>
-																</div>
-																<chartist
-																		class="project-small-chart-2 project-small"
-																		type="Line"
-																		:data="chart2.data"
-																		:options="chart2.options"
-																		:event-handlers="chart2.eventHandlers" >
-																</chartist>
-															</div>
-														</div>
-														<div class="col-sm-6 xl-4">
-															<div class="projects-main">
-																<div class="project-content">
-																	<h6>Re-opened</h6>
-																	<h5 class="counter mb-0">2</h5>
-																</div>
-																<chartist
-																		class="project-small-chart-3 project-small"
-																		type="Line"
-																		:data="chart3.data"
-																		:options="chart3.options"
-																		:event-handlers="chart3.eventHandlers" >
-																</chartist>
-															</div>
-														</div>
-														<div class="col-sm-6 xl-4">
-															<div class="projects-main">
-																<div class="project-content">
-																	<h6>Closed</h6>
-																	<h5 class="counter mb-0">10</h5>
-																</div>
-																<chartist
-																		class="project-small-chart-4 project-small"
-																		type="Line"
-																		:data="chart4.data"
-																		:options="chart4.options"
-																		:event-handlers="chart4.eventHandlers" >
-																</chartist>
-															</div>
-														</div>
-														<div class="col-sm-6 xl-4">
-															<div class="projects-main">
-																<div class="project-content">
-																	<h6>Wont'fix</h6>
-																	<h5 class="counter mb-0">25</h5>
-																</div>
-																<chartist
-																		class="project-small-chart-5 project-small"
-																		type="Line"
-																		:data="chart5.data"
-																		:options="chart5.options"
-																		:event-handlers="chart5.eventHandlers" >
-																</chartist>
-															</div>
-														</div>
-														<div class="col-sm-6 xl-4">
-															<div class="projects-main">
-																<div class="project-content">
-																	<h6>Need's test</h6>
-																	<h5 class="counter mb-0">5</h5>
-																</div>
-																<chartist
-																		class="project-small-chart-6 project-small"
-																		type="Line"
-																		:data="chart6.data"
-																		:options="chart6.options"
-																		:event-handlers="chart6.eventHandlers" >
-																</chartist>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-xl-6 xl-100 github-lg">
-													<div class="show-value-top d-flex">
-														<div class="value-left d-inline-block">
-															<div class="square bg-primary d-inline-block"></div><span>Closed Issues</span>
-														</div>
-														<div class="value-right d-inline-block">
-															<div class="square d-inline-block bg-secondary"></div><span>Issues</span>
-														</div>
-													</div>
-													<div class="bar-chart-project">
-														<chartist
-																class="bar-square"
-																type="Bar"
-																:data="chart7.data"
-																:options="chart7.options">
-														</chartist>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 						</b-tab>
 						<b-tab title="Profile">
 							<template slot="title">
-								<feather type="activity"></feather>Budget Summary
+								<feather type="shopping-cart"></feather>My Orders
 							</template>
 							<div class="row">
 								<div class="col-sm-12">
@@ -311,13 +122,22 @@
 														<td>
 															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/1.jpg" alt="">
 																<div class="d-inline-block">
-																	<h6>Web application</h6>
-																	<p>Design & development</p>
+																	<h6>Jane Kaesha</h6>
+																	<p>Agent</p>
 																</div>
 															</div>
 														</td>
 														<td>
-															<div class="d-inline-block align-middle"><span>Latest Updated Today at 1:30 PM</span><span class="ml-current"><i class="fa fa-clock-o"></i>10:32</span><span class="ml-current"><i class="fa fa-comment"></i>540</span></div>
+															
+															<div style="font-size: 10px;" class="d-inline-block align-middle">
+																<!-- <span class="mt-2 mb-2">  -->
+																	<span class="mt-4 mb-4">Payment Status</span> <span><b-badge variant="info">PENDING</b-badge></span> 
+																	<span class="mt-4 mb-4">Total Amount</span> <span> $ 345 </span> 
+																<!-- </span> -->
+																<span class="mt-4 mb-4"> <button class="btn btn-xs btn-pill btn-outline-primary"> QUICK VIEW </button> </span>
+																<span class="mt-4 mb-4"> <button class="btn btn-xs btn-pill btn-outline-primary ml-4">MORE</button> </span>
+															</div>
+
 														</td>
 														<td>
 															<div class="progress sm-progress-bar">
@@ -329,13 +149,22 @@
 														<td>
 															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/4.jpg" alt="">
 																<div class="d-inline-block">
-																	<h6>Login module</h6>
-																	<p>Development</p>
+																	<h6>Kim Ludavy</h6>
+																	<p>Agent</p>
 																</div>
 															</div>
 														</td>
 														<td>
-															<div class="d-inline-block align-middle"><span>Latest Updated Today at 4:00 PM</span><span class="ml-current"><i class="fa fa-clock-o"></i>1:32</span><span class="ml-current"><i class="fa fa-comment"></i>700</span></div>
+															
+															<div style="font-size: 10px;" class="d-inline-block align-middle">
+																<!-- <span class="mt-2 mb-2">  -->
+																	<span class="mt-4 mb-4">Payment Status</span> <span><b-badge variant="info">PENDING</b-badge></span> 
+																	<span class="mt-4 mb-4">Total Amount</span> <span> $ 345 </span> 
+																<!-- </span> -->
+																<span class="mt-4 mb-4"> <button class="btn btn-xs btn-pill btn-outline-primary"> QUICK VIEW </button> </span>
+																<span class="mt-4 mb-4"> <button class="btn btn-xs btn-pill btn-outline-primary ml-4">MORE</button> </span>
+															</div>
+
 														</td>
 														<td>
 															<div class="progress sm-progress-bar">
@@ -347,13 +176,22 @@
 														<td>
 															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/7.jpg" alt="">
 																<div class="d-inline-block">
-																	<h6>Module testing</h6>
-																	<p>Testing</p>
+																	<h6>Steven Leto</h6>
+																	<p>Agent</p>
 																</div>
 															</div>
 														</td>
 														<td>
-															<div class="d-inline-block align-middle"><span>Latest Updated Today at 5:45 PM</span><span class="ml-current"><i class="fa fa-clock-o"></i>11:40</span><span class="ml-current"><i class="fa fa-comment"></i>425</span></div>
+
+															<div style="font-size: 10px;" class="d-inline-block align-middle">
+																<!-- <span class="mt-2 mb-2">  -->
+																	<span class="mt-4 mb-4">Payment Status</span> <span><b-badge variant="info">PENDING</b-badge></span> 
+																	<span class="mt-4 mb-4">Total Amount</span> <span> $ 345 </span> 
+																<!-- </span> -->
+																<span class="mt-4 mb-4"> <button class="btn btn-xs btn-pill btn-outline-primary"> QUICK VIEW </button> </span>
+																<span class="mt-4 mb-4"> <button class="btn btn-xs btn-pill btn-outline-primary ml-4">MORE</button> </span>
+															</div>
+
 														</td>
 														<td>
 															<div class="progress sm-progress-bar">
@@ -377,120 +215,41 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-xl-6 xl-100">
-									<div class="card">
-										<div class="card-header project-header">
-											<div class="row">
-												<div class="col-sm-8">
-													<h5>Spent</h5>
-												</div>
-												<div class="col-sm-4">
-													<div class="select2-drpdwn-project select-options">
-														<select class="form-control form-control-primary btn-square" name="select">
-															<option value="opt1">Today</option>
-															<option value="opt2">Yesterday</option>
-															<option value="opt3">Tomorrow</option>
-															<option value="opt4">Monthly</option>
-															<option value="opt5">Weekly</option>
-														</select>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="card-body spent">
-											<div class="spent-graph">
-												<div class="d-flex">
-													<div class="project-budget">
-														<h6>Weekly spent</h6>
-														<h2 class="mb-0"><span><feather type="dollar-sign"></feather>12,5000</span></h2>
-													</div>
-													<div class="projects-main mb-0">
-														<chartist class="xm-mb-peity" type="Bar" :data="spent1.data" :options="spent1.options" />
-													</div>
-												</div>
-											</div>
-										</div>
-											<div class="card-body spent">
-												<div class="spent-graph">
-													<div class="d-flex">
-														<div class="project-budget">
-															<h6>Total spent</h6>
-															<h2 class="mb-0"><span><feather type="dollar-sign"></feather>15,7452</span></h2>
-														</div>
-														<div class="projects-main mb-0">
-															<chartist class="xm-mb-peity" type="Bar" :data="spent2.data" :options="spent2.options" />
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="card-body spent">
-												<div class="spent-graph">
-													<div class="d-flex">
-														<div class="project-budget">
-															<h6>Remaining</h6>
-															<h2 class="mb-0"><span><feather type="dollar-sign"></feather>18,5438</span></h2>
-														</div>
-														<div class="projects-main mb-0">
-															<div class="xm-mb-peity"><span class="bar-colours-3"></span></div>
-															<chartist class="xm-mb-peity" type="Bar" :data="spent3.data" :options="spent3.options" />
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="card-footer spent">
-												<div class="spent-graph">
-													<div class="d-flex">
-														<div class="project-budget m-0">
-															<h6>Total Budget</h6>
-															<h2 class="mb-0"><span><feather type="dollar-sign"></feather>34,5812</span></h2>
-														</div>
-													</div>
-												</div>
-											</div>
-									</div>
-								</div>
+
 							</div>
 						</b-tab>
 						<b-tab title="Contact">
 							<template slot="title">
-								<feather type="users"></feather>Team Members
+								<feather type="dollar-sign"></feather> My Wallet
 							</template>
 
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="card">
 										<div class="card-header">
-											<h5>Team Members</h5>
+											<h5>Wallet Transactions</h5>
 										</div>
 										<div class="card-body">
 											<div class="table-responsive sellers team-members">
 												<table class="table table-bordernone">
 													<thead>
 													<tr>
-														<th scope="col">Name</th>
-														<th scope="col">Position</th>
-														<th scope="col">Office</th>
-														<th scope="col">E-Mail</th>
+														<th scope="col">Amount</th>
+														<th scope="col">Channel</th>
+														<th scope="col">Bank Name</th>
 														<th scope="col">Phone</th>
 													</tr>
 													</thead>
 													<tbody>
 													<tr>
 														<td>
-															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/6.jpg" alt="">
-																<div class="d-inline-block">
-																	<p>Jerry Patterson</p>
-																</div>
-															</div>
+															<p>$ 560</p>
 														</td>
 														<td>
-															<p>Design Manager</p>
+															<p>Paypal</p>
 														</td>
 														<td>
-															<p>Integer</p>
-														</td>
-														<td>
-															<p>jerry13@gmail.com</p>
+															<p>Susan Bank</p>
 														</td>
 														<td>
 															<p>+91 264 570 4611</p>
@@ -498,20 +257,13 @@
 													</tr>
 													<tr>
 														<td>
-															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/2.png" alt="">
-																<div class="d-inline-block">
-																	<p>Rosa Matthews</p>
-																</div>
-															</div>
+															<p>$ 340</p>
 														</td>
 														<td>
-															<p>Director of Sales</p>
+															<p>Mpesa</p>
 														</td>
 														<td>
-															<p>Ipsum</p>
-														</td>
-														<td>
-															<p>ros456@gmail.com</p>
+															<p>Unknown</p>
 														</td>
 														<td>
 															<p>+01 967 487 1873</p>
@@ -519,20 +271,13 @@
 													</tr>
 													<tr>
 														<td>
-															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/3.jpg" alt="">
-																<div class="d-inline-block">
-																	<p>Alvaro Aguirre</p>
-																</div>
-															</div>
+															<p>$ 709</p>
 														</td>
 														<td>
-															<p>Office Assistant</p>
+															<p>Checki</p>
 														</td>
 														<td>
-															<p>Praesent</p>
-														</td>
-														<td>
-															<p>alvar76@gmail.com</p>
+															<p>Checki</p>
 														</td>
 														<td>
 															<p>+48 724 585 0012</p>
@@ -540,33 +285,19 @@
 													</tr>
 													<tr>
 														<td>
-															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/15.png" alt="">
-																<div class="d-inline-block">
-																	<p>Jerry Patterson</p>
-																</div>
-															</div>
+															<p>$ 6000</p>
 														</td>
 														<td>
-															<p>Programmer Analyst</p>
+															<p>Equity Bank</p>
 														</td>
 														<td>
-															<p>Ipsum</p>
-														</td>
-														<td>
-															<p>jerry13@gmail.com</p>
+															<p>Equity Bank</p>
 														</td>
 														<td>
 															<p>+91 264 570 4611</p>
 														</td>
 													</tr>
 													<tr>
-														<td>
-															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/4.jpg" alt="">
-																<div class="d-inline-block">
-																	<p>Anne Snyder</p>
-																</div>
-															</div>
-														</td>
 														<td>
 															<p>Social Worker</p>
 														</td>
@@ -581,13 +312,6 @@
 														</td>
 													</tr>
 													<tr>
-														<td>
-															<div class="d-inline-block align-middle"><img class="img-radius img-50 align-top m-r-15 rounded-circle" src="../../assets/images/user/5.jpg" alt="">
-																<div class="d-inline-block">
-																	<p>Alana Slacker</p>
-																</div>
-															</div>
-														</td>
 														<td>
 															<p>Systems Engineer</p>
 														</td>

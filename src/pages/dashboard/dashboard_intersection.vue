@@ -20,6 +20,7 @@ export default {
     watch: {
         business_data: function() {
             this.goToDashboard()
+            console.log("Business Data Changed")
         }
     },
     mounted() {
@@ -43,7 +44,7 @@ export default {
                 ]
 
                 let client = [
-                    "client"
+                    "spider-client"
                 ]
 
                 let server = [
@@ -60,7 +61,7 @@ export default {
 
                 } else if(client.includes(this.business_data.category)) {
                     
-                    this.$router.replace({path: `/dashboard/clients`})
+                    this.$router.replace({path: `/dashboard/client`})
 
                 } else if(server.includes(this.business_data.category)) {
                     

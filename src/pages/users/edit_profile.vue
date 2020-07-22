@@ -495,6 +495,8 @@ export default {
                     setTimeout(function() {
 
                         self.loading = false
+                        self.$store.dispatch('userProfile/updateUserProfile', resp.data.data)
+
                         self.$toasted.show(`Profile Updated Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 4000})
 
                         self.$emit('close-modal', {

@@ -6,37 +6,7 @@
             <div class="edit-profile">
               <div class="row">
 
-                  <div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
-                    <div class="card custom-card">
-
-                      <div class="card-header"><img class="img-fluid" src="../../assets/images/user-card/1.jpg" alt=""></div>
-
-                      <div class="card-profile">
-
-                        <img @click="profile_image" v-if="avatar_url == ''" title="Click To Update The Image." class="rounded-circle profile-image" src="../../assets/images/default_avatars/default_avatar.svg" alt="Profile Image Placeholder" />
-                        <img @click="profile_image" v-if="avatar_url !== ''" title="Click To Update The Image." class="rounded-circle profile-image" :src="avatar_url" alt="Profile Image" />
-
-                        <div class="profile-edit">
-                          <feather @click="profile_image" class="edit-image" type="edit"></feather>
-                        </div>
-
-                      </div>
-
-                      <div class="text-center profile-details">
-                        <h4> {{ user_profile.first_name }} {{ user_profile.last_name }} </h4>
-                        <h6>Manager</h6>
-                      </div>
-
-                      <div>
-                          <span class="pass-update">
-                            <button id="default-outline-primary" type="button" @click="editPassword" class="btn btn-pill btn-outline-primary">Edit Password</button>
-                          </span>
-                      </div>
-
-                    </div>
-                  </div>
-
-                <div class="col-xl-8 col-md-8 col-sm-8">
+                <div class="col-xl-12">
 
                   <form class="card">
 
@@ -45,6 +15,34 @@
                       <div class="card-options"><a class="card-options-collapse" href="#" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-toggle="card-remove"><i class="fe fe-x"></i></a></div>
                     </div>
                     <div class="card-body">
+
+                      <div class="row mt-5 mb-5">
+                        <div class="col-12 text-center">
+
+                          <!-- Avatars -->
+                          <img @click="profile_image" v-if="avatar_url == ''" title="Click To Update The Image." class="img-90 rounded-circle profile-image" src="../../assets/images/default_avatars/default_avatar.svg" alt="Profile Image Placeholder" />
+                          <img @click="profile_image" v-if="avatar_url !== ''" title="Click To Update The Image." class="img-90 rounded-circle profile-image" :src="avatar_url" alt="Profile Image" />
+                          <!-- Avatars End -->
+
+                          <!-- Names -->
+                          <div class="text-center profile-details mt-3 mb-3">
+                            <h4> <span class="font-secondary"> <b>{{ user_profile.first_name | convToUpperCase() }} </b>   </span> <span class="font-success">   <b> {{ user_profile.last_name | convToUpperCase() }} </b> </span> </h4>
+                          </div>
+                          <!-- Names End -->
+
+                          <!-- Buttons -->
+                            <div class="mt-3 mb-3">
+                              <b-button-group class="btn-group-pill">
+                                <b-button class="btn-sm" @click="editPassword" variant="outline-warning">UPDATE PASSWORD</b-button>
+                                <b-button class="btn-sm" @click="profile_image" variant="outline-warning"> UPDATE IMAGE </b-button>
+                                <b-button class="btn-sm" @click="edit" variant="outline-warning"> UPDATE PROFILE </b-button>
+                              </b-button-group>
+                            </div>
+                          <!-- Buttons End -->
+
+                        </div>
+                      </div>
+
                       <div class="row">
 
                         <!-- Names -->
@@ -95,7 +93,7 @@
                         </div>
                         <!-- Confidential Infor End -->
 
-                        <div class="group-btn">
+                        <div class="group-btn text-center">
 
                           <div class="location-title">
                             <h5 class="text-center">My Location</h5>
@@ -143,22 +141,16 @@
                         
                       </div>
                     </div>
-                    <div class="card-footer text-right">
-
-                      <button id="default-outline-primary" type="button" @click="edit" class="btn btn-pill btn-outline-primary mt-2 mb-2">Update Profile</button>
-
-                    </div>
+                    
                   </form>
 
                 </div>
 
                 <!-- Model Starts -->
-
                 <EditProfile :userProfile="user_profile" v-on:close-modal="close_model" style="display: none;" id="model-edit-profile" />
                 <ShowMap v-on:close-modal="close_model" style="display: none;" id="model-show-map" />
                 <EditPassword  :userProfile="user_profile" v-on:close-modal="close_model" style="display: none;" id="model-edit-password" />
                 <ProfileImageEditor v-on:avatar-changed="profile_image_changed" :userProfileProp="user_profile" id="model-profile-image" style="display: none;" />
-
                 <!-- Model Ends -->
                 
               </div>
@@ -178,6 +170,7 @@ import ProfileImageEditor from "./profile_image"
 import axios from "axios"
 import { ApiUrl } from "../../api/apiurl"
 import Auth from "../../auth/js/spider_auth"
+import { mapState } from "vuex"
 
 export default {
   data() {
@@ -188,46 +181,13 @@ export default {
   },
   created() {
         
-    let headers = {
-        headers: {
-            Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-        }
-    }
+    this.loadUserData()
 
-    axios.get(`${ApiUrl.url}users/${this.$route.params.id}`, headers)
-
-    .then( (resp) => {
-
-      this.user_profile = resp.data.data
-
-      console.log(this.user_profile)
-
-      if(Object.keys(this.user_profile.avatar).length > 0) {
-
-        this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
-
-      } else {
-
-        this.avatar_url = ""
-
-      }
-
-    } )
-    .catch( (err) => {
-
-      if(err.response) {
-
-        if (err.response.status == 401) {
-          
-          this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-          this.$router.replace("/auth/login")
-
-        }
-
-      }
-
-    } )
-
+  },
+  computed: {
+    ...mapState({
+      userProfile: state => state.userProfile.userProfile
+    })
   },
   components: {
     EditProfile,
@@ -237,6 +197,47 @@ export default {
     ProfileImageEditor
   },
   methods: {
+    loadUserData() {
+
+      let headers = {
+          headers: {
+              Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+          }
+      }
+
+      axios.get(`${ApiUrl.url}users/${this.userProfile.id}`, headers)
+
+      .then( (resp) => {
+
+        this.user_profile = resp.data.data
+
+        if(Object.keys(this.user_profile.avatar).length > 0) {
+
+          this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar.avatar.file_name}`
+
+        } else {
+
+          this.avatar_url = ""
+
+        }
+
+      } )
+      .catch( (err) => {
+
+        if(err.response) {
+
+          if (err.response.status == 401) {
+            
+            this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+            this.$router.replace("/auth/login")
+
+          }
+
+        }
+
+      } )
+
+    },
     profile_image_changed(data) {
 
       if(Object.keys(data).length > 0) {
@@ -311,6 +312,13 @@ export default {
       })
 
       modal.open()
+
+    }
+  },
+  filters: {
+    convToUpperCase(name) {
+
+      if(name !== undefined) return name.toUpperCase()
 
     }
   }

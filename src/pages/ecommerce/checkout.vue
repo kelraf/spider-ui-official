@@ -372,9 +372,7 @@ export default {
                     self.$toasted.show(`Order Sent Successfully.`, {theme: 'outline', position: "top-right", icon : 'check', type: 'success', duration: 8000})
                     self.$store.dispatch("livestocks/checkoutSuccess", []);
 
-                    console.log(resp.data)
-
-                    self.$router.push("/shop/success")
+                    self.$router.push("/dashboard/checkout-success")
                     
 
                 }, 2000)
@@ -386,8 +384,6 @@ export default {
                 if(err.response) {
 
                     setTimeout(function() {
-
-                      console.log(err.response)
 
                         self.loading = false
 

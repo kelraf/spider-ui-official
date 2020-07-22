@@ -109,94 +109,98 @@ export default{
 		},
 		settingUp() {
 
-			if(!Object.keys(this.userProfile).length && this.userProfile.role !== "spider-client") return
+			if(Object.keys(this.userProfile).length && this.userProfile.role == "spider-client") {
+			
+				let data = {
+					business : {
+						business_name : "spider-client",
+						business_type: "spider-client",
+						category: "spider-client",
+						sub_category: "spider-client",
+						user_id: this.userProfile.id
+					}
+				}                
 
-			let data = {
-				business : {
-					business_name : "spider-client",
-					registration_number : 9999,
-					business_type: "spider-client",
-					category: "spider-client",
-					sub_category: "spider-client",
-					user_id: this.userProfile.id
+				let self = this
+					
+				let headers = {
+					headers: {
+						Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+					}
 				}
-			}                
 
-			let self = this
-				
-			let headers = {
-				headers: {
-					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-				}
-			}
+				this.message = "Almost There. Setting Up Your Account..."
 
-			this.message = "Almost There. Setting Up Your Account..."
-
-			axios.post(`${ApiUrl.url}businesses`, data, headers) 
-			.then( (resp) => {
-				setTimeout(function() {
-
-					self.message = "Account SetUp Completed Successfully."
-					self.$toasted.show(`${self.message}`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 8000})
-
+				axios.post(`${ApiUrl.url}businesses`, data, headers) 
+				.then( (resp) => {
 					setTimeout(function() {
 
-						self.$router.go(0)
+						self.message = "Account SetUp Completed Successfully."
+						self.$toasted.show(`${self.message}`, {theme: 'outline', position: "top-right", icon : 'info', type: 'info', duration: 8000})
 
-					}, 1000)
+						self.business = resp.data.data
 
-				}, 4000)
-			} )
+						console.log("Created Business Data", self.business)
 
-			.catch( (err) => {
+						self.$store.dispatch("menu/processMenuFor", self.business.sub_category)
+                    	self.$store.dispatch('businessData/updateBusinessData', self.business) 
 
-				console.log(err)
-
-				if(err.response) {
-
-					setTimeout(function() {
-
-						if(err.response.status == 422) {
-
-							for (const key of Object.keys(err.response.data.errors)) {
-
-								if(key == "business_name") {
-									self.form.business_name.error = err.response.data.errors.business_name[0]
-									self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.business_name[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-								} else if(key == "registration_number") {
-									self.form.registration_number.error = err.response.data.errors.registration_number[0]
-									self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.registration_number[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-								} else if(key == "sub_category") {
-									self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-								} else if(key == "business_type") {
-									self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-								} else if(key == "category") {
-									self.form.business_category.error = err.response.data.errors.category[0]
-									self.$toasted.show(`${key} : ${err.response.data.errors.category[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-								} else if(key == "user_id") {
-									self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 002-002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-								}  else {
-									console.log("Oops!! Error Occured")
-								}
-							}
-
-						} else if(err.response.status == 401) {
-
-							Custombox.modal.close()
-							self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-							self.$router.replace("/auth/login")
-
-						} else if(err.response.status == 500) {
-
-							console.log("500 Error")
-
-						}
+						self.$router.replace({path: "/dashboard"})
 
 					}, 4000)
+				} )
 
-				}
+				.catch( (err) => {
 
-			} )
+					console.log("XXXX", err.response)
+
+					if(err.response) {
+
+						setTimeout(function() {
+
+							if(err.response.status == 422) {
+
+								for (const key of Object.keys(err.response.data.errors)) {
+
+									if(key == "business_name") {
+										self.form.business_name.error = err.response.data.errors.business_name[0]
+										self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.business_name[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+									} else if(key == "registration_number") {
+										self.form.registration_number.error = err.response.data.errors.registration_number[0]
+										self.$toasted.show(`${key.split('_').join(' ')} : ${err.response.data.errors.registration_number[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+									} else if(key == "sub_category") {
+										self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 003-003`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+									} else if(key == "business_type") {
+										self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 001-001`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+									} else if(key == "category") {
+										self.form.business_category.error = err.response.data.errors.category[0]
+										self.$toasted.show(`${key} : ${err.response.data.errors.category[0]}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+									} else if(key == "user_id") {
+										self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 002-002`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+									}  else {
+										console.log("Oops!! Error Occured")
+									}
+								}
+
+							} else if(err.response.status == 401) {
+
+								Custombox.modal.close()
+								self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+								self.$router.replace("/auth/login")
+
+							} else if(err.response.status == 500) {
+
+								console.log("500 Error")
+
+							}
+
+						}, 4000)
+
+					}
+
+				} )
+
+			}
 
 		}
 	}

@@ -338,30 +338,10 @@ export default {
 
       this.menuItems.filter(items => {
 
-        if (items.path === this.$route.path)
-
+        if (items.path === this.$route.path) {
+          console.log("GGGGGGGGG")
           this.$store.dispatch("menu/setActiveRoute", items);
-
-          if(items.param_type == "my_profile") {
-
-            let is_int_param = items.path.split("/").reverse()[0]
-
-            if(parseInt(is_int_param)) {
-
-              // Do Nothing
-
-              } else {
-
-                items.path = `${items.path}/${self.user_id}`
-
-              }
-
-          } else if(items.param_type == "my_business") {
-
-            this.business_path_object = items
-            this.setBusinessPath()
-
-          }
+        }
 
         if (!items.children) return false;
 

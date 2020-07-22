@@ -14,6 +14,7 @@ const mutations = {
     updateUserProfile: (state, user_profile) => {
 
       state.userProfile = user_profile;
+      console.log("state.userProfile", state.userProfile)
 
     }
    

@@ -59,6 +59,11 @@
             </ul>
           </li>
 
+          <li title="Your Businesses Location is Required" class="onhover-dropdown" >
+              <feather class="font-danger" type="navigation-2"></feather>
+              <!-- <span class="dot"></span> -->
+          </li>
+
           <li class="onhover-dropdown">
             <feather type="bell"></feather>
             <!-- <span class="dot"></span> -->
@@ -92,7 +97,7 @@
             </ul>
           </li>
           <li class="onhover-dropdown">
-            <router-link to="/shop/cart">
+            <router-link to="/dashboard/cart">
 
               <feather type="shopping-cart"></feather>
 
@@ -107,9 +112,8 @@
               >
                 <li>
                   <router-link 
-                    to="/shop/cart"
+                    to="/dashboard/cart"
                     v-if="cart_data.livestock_container.livestock_orders.length"
-                    href="javascript:void(0)" 
                     data-lng="en"
                   > Live Animals <b-badge variant="primary" class="counter digits"> {{ cart_data.livestock_container.livestock_orders | calcQuantity }} </b-badge> </router-link >
                 </li>
@@ -133,7 +137,7 @@
               <div class="dotted-animation"><span class="animate-circle"></span><span class="main-circle"></span></div>
             </div>
             <ul class="profile-dropdown onhover-show-div p-20">
-              <li><a href="#"><feather type="user"></feather> Edit Profile</a></li>
+              <li><router-link to="/dashboard/user-profile"><feather type="user"></feather> Edit Profile </router-link></li>
               <li><a href="#"><feather type="mail"></feather> Inbox</a></li>
               <li><a href="#"><feather type="lock"></feather> Lock Screen</a></li>
               <li><a href="#"><feather type="settings"></feather> Settings</a></li>

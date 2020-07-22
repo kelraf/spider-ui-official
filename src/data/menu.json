@@ -10,7 +10,7 @@
           "id": 1
         },
         {
-          "path": "/businesses/profile", 
+          "path": "/dashboard/business", 
           "title": "My Business",
           "icon": "briefcase", 
           "type": "link",
@@ -19,7 +19,7 @@
           "id": 4
         },
         {
-          "path": "/users/profile", 
+          "path": "/dashboard/user-profile", 
           "title": "My Profile",
           "icon": "user", 
           "type": "link",
@@ -28,7 +28,7 @@
           "id": 5
         },
         {
-          "path": "/businesses/all-d-livestock", 
+          "path": "/dashboard/d-livestocks", 
           "title": "Defined Livestocks",
           "icon": "hash", 
           "type": "link",

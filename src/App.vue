@@ -9,13 +9,12 @@
   <!-- Loader ends-->
 
     <!--<Main/>-->
+    
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
-import { mapState } from "vuex";
 
 import axios from "axios"
 import { ApiUrl } from "./api/apiurl"
@@ -32,21 +31,10 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      userProfile: state => state.userProfile.userProfile,
-      businessData: state => state.businessData.businessData
-    })
+    
   },
   watch: {
-    userProfile: function(current, innitial) {
-
-      if(!Object.keys(innitial).length && Object.keys(current).length) {
-
-        // this.loadBusinessData()
-
-      }
-
-    }    
+       
   },
   mounted() {
 
@@ -68,11 +56,10 @@ export default {
 
       },  
       timeOut(){
-          // this.basketAddSuccess = true;
-            var self = this;
-            setTimeout(function(){
-                self.show = false;
-            }, 1000);
+          var self = this;
+          setTimeout(function(){
+              self.show = false;
+          }, 1000);
       }
     }
   }
@@ -81,5 +68,8 @@ export default {
 <style lang="scss" scoped>
 .loader-wrapper.loderhide {
   display: none;
+}
+.btt {
+  z-index: 200;
 }
 </style>
