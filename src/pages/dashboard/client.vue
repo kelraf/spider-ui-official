@@ -19,7 +19,7 @@
 												<h6 class="mb-0 font-success"> <b>Live Animal Orders</b> </h6>
 											</div>
 											<div class="project-widgets text-center">
-												<h1 class="font-primary counter"><b>45</b></h1>
+												<h1 class="font-primary counter"><b>0</b></h1>
 											</div>
 										</div>
 										<div class="card-footer project-footer">
@@ -34,7 +34,7 @@
 												<h6 class="mb-0 font-secondary"> <b>Produce Orders</b> </h6>
 											</div>
 											<div class="project-widgets text-center">
-												<h1 class="font-primary counter"> <b>45</b> </h1>
+												<h1 class="font-primary counter"> <b>0</b> </h1>
 											</div>
 										</div>
 										<div class="card-footer project-footer">

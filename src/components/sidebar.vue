@@ -2,7 +2,7 @@
   <div>
     <div class="main-header-left d-none d-lg-block">
       <div class="logo-wrapper">
-        <router-link to="/">
+        <router-link to="/dashboard">
           <img src="../assets/images/endless-logo.png" alt />
         </router-link>
       </div>
@@ -13,7 +13,7 @@
           <img v-if="avatar_url == ''" class="img-60 rounded-circle" src="../assets/images/default_avatars/default_avatar.svg" alt="#" />
           <img v-if="avatar_url !== ''" class="img-60 rounded-circle" :src="avatar_url" alt="#" />
           <div class="profile-edit">
-            <router-link :to="'/users/profile/'+user_id">
+            <router-link to="/dashboard/user-profile">
               <feather type="edit"></feather>
             </router-link>
           </div>
@@ -339,8 +339,9 @@ export default {
       this.menuItems.filter(items => {
 
         if (items.path === this.$route.path) {
-          console.log("GGGGGGGGG")
+
           this.$store.dispatch("menu/setActiveRoute", items);
+
         }
 
         if (!items.children) return false;

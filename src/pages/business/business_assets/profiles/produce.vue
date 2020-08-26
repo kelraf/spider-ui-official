@@ -20,12 +20,12 @@
                           <div class="row">
                             <div class="col-md-6">
                               <div class="ttl-info text-left">
-                                <h6>Reference</h6><span> {{ produce.reference }} </span>
+                                <h6>Ref Animal</h6><span> {{ produce.referenced_animal }} </span>
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="ttl-info text-left">
-                                <h6>Category</h6><span> {{ produce.category }} </span>
+                                <h6>Produce Name</h6><span> {{ produce.produce_name }} </span>
                               </div>
                             </div>
                           </div>
@@ -56,19 +56,7 @@
                           </div>
                         </div>
                       </div>
-                      <hr>
-                      <div class="follow">
-                        <div class="row">
-                          <div class="col-6 pt-2 text-md-right border-right">
-                            <span>Roles</span>
-                          </div>
-                          <div class="col-6  border-right">
-                            <!-- <button id="default-outline-primary" @click="produce_roles" type="button" class="btn btn-pill btn-outline-primary float-left ml-3">
-                              <i class="icon-pencil-alt"></i>
-                            </button> -->
-                          </div>
-                        </div>
-                      </div>
+                    
                       <hr>
                       <div class="follow">
                         <div class="row">

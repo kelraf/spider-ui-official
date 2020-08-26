@@ -10,7 +10,7 @@
 
     <!--<Main/>-->
     
-    <router-view></router-view>
+    <router-view class="animated fadeIn"></router-view>
   </div>
 </template>
 

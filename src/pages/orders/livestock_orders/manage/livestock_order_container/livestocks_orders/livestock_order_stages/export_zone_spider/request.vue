@@ -7,8 +7,14 @@
                     <tab-content :before-change="checkSelected" class="p-0" title="Select Who To Send To Or Leave It">
                         <div class="setup-content p-0" id="step-2">
                             <div class="col-md-12 p-0">
+
+                                <div v-if="!export_zones.length" class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="font-danger"> <b>No Export Zone Available</b> </h5>
+                                    </div>
+                                </div>
                                 
-                                <div class="row p-0">
+                                <div v-if="export_zones.length" class="row p-0">
                                     <div class="col-md-12 p-0">
                                         <div class="card">
                                             <div class="card-body p-0">
@@ -145,7 +151,7 @@
 
 <script>
 
-import {ApiUrl} from "../../../../../../../../api/apiurl"
+import { ApiUrl } from "../../../../../../../../api/apiurl"
 import Auth from "../../../../../../../../auth/js/spider_auth"
 import axios from "axios"
 

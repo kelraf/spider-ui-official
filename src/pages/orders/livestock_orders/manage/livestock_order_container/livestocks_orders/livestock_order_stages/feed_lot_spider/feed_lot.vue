@@ -58,7 +58,7 @@
 
 <script>
 
-import {ApiUrl} from "../../../../../../../../api/apiurl"
+import { ApiUrl } from "../../../../../../../../api/apiurl"
 import Auth from "../../../../../../../../auth/js/spider_auth"
 import axios from "axios"
 

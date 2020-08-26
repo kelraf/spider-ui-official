@@ -20,13 +20,10 @@ export default {
     watch: {
         business_data: function() {
             this.goToDashboard()
-            console.log("Business Data Changed")
         }
     },
     mounted() {
         this.goToDashboard()
-        console.log("Business", this.business_data)
-        console.log("GOT HERE ------------>>>>>>>>>>>>>")
     },
     methods: {
         goToDashboard() {

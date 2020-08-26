@@ -15,7 +15,7 @@
                                         v-model="form.produce_value.value" 
                                         placeholder="Select Produce To Add" 
                                         label="reference" 
-                                        track-by="['reference', 'type', 'breed']" 
+                                        track-by="['referenced_animal', 'produce_name', 'units']" 
                                         :options="form.produce.options" 
                                         :option-height="104" 
                                         :show-labels="false"
@@ -23,15 +23,15 @@
                                         
                                         <template slot="singleLabel" slot-scope="props">
                                             
-                                            <img class="img-fluid img-50" :src="getImgUrl(props.option.img)" alt="#">
+                                            <!-- <img class="img-fluid img-50" :src="getImgUrl(props.option.img)" alt="#"> -->
                                             
                                             <div class="option__desc">
                                                 
                                                 <div class="container-fluid">
                                                     <div class="row">
-                                                        <div class="col-4 text-center"> {{ props.option.reference }} </div>
-                                                        <div v-if="props.option.type != null" class="col-4"> {{ props.option.type }} </div>
-                                                        <div v-if="props.option.breed != null" class="col-4"> {{ props.option.breed }} </div>
+                                                        <div class="col-4 text-center"> {{ props.option.referenced_animal }} </div>
+                                                        <div class="col-4"> {{ props.option.produce_name }} </div>
+                                                        <div class="col-4"> {{ props.option.units }} </div>
                                                     </div>
                                                 </div>
 
@@ -41,15 +41,15 @@
 
                                         <template slot="option" slot-scope="props">
 
-                                            <img class="img-fluid img-50" :src="getImgUrl(props.option.img)" alt="#">
+                                            <!-- <img class="img-fluid img-50" :src="getImgUrl(props.option.img)" alt="#"> -->
                                             
                                             <div class="option__desc">
 
                                                 <div class="container-fluid">
                                                     <div class="row">
-                                                        <div class="col-4 text-center"> {{ props.option.reference }} </div>
-                                                        <div v-if="props.option.type != null" class="col-4"> {{ props.option.type }} </div>
-                                                        <div v-if="props.option.breed != null" class="col-4"> {{ props.option.breed }} </div>
+                                                        <div class="col-4 text-center"> {{ props.option.referenced_animal }} </div>
+                                                        <div class="col-4"> {{ props.option.produce_name }} </div>
+                                                        <div class="col-4"> {{ props.option.units }} </div>
                                                     </div>
                                                 </div>
 

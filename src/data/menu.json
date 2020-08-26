@@ -37,13 +37,22 @@
           "id": 5
         },
         {
-          "path": "/businesses/super-instance-admins", 
+          "path": "/dashboard/super-instance-admins", 
           "title": "S I Admins",
           "icon": "command", 
           "type": "link",
           "for_": "server",
           "param_type" : "super_instance_admins",
           "id": 6
+        },
+        {
+          "path": "/dashboard/assets", 
+          "title": "Manage Assets",
+          "icon": "command", 
+          "type": "link",
+          "for_": "general",
+          "param_type" : "no",
+          "id": 7
         }
       ]
 }

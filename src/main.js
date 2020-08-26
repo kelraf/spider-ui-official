@@ -25,8 +25,6 @@ Vue.use(Toasted,{
   iconPack: 'fontawesome'
 });
 
-// AIzaSyA3GNu4uUATI-5IeNMZu4qyjzglFlrgCw0
-
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyBbYE7PNotNqHFbvzeMzunjSyUm4VnM188',

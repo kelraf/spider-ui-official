@@ -2,21 +2,16 @@
   
     <div class="info-block">
 
-        <h6 class="font-success pt-1 pb-1"> <span class="font-primary">Spider Order</span> :: Animal Required :: -->> {{ center_order.d_livestock.category }} ::-->> {{ center_order.d_livestock.type }} </h6>
+        <h6 style="font-size: 15px;" class="font-success pt-1 pb-1"> <span class="font-primary">SPIDER ORDER</span> :: ANIMAL REQUIRED :: {{ center_order.d_livestock.category.toUpperCase() }} :: {{ center_order.d_livestock.type.toUpperCase() }} </h6>
         
         <div>
-            <p style="max-height: 100px; overflow-y: hidden;">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                Cum minima iste expedita voluptas nihil omnis, quod qui veniam velit, 
-                vel ipsum unde nemo quasi nostrum officiis tenetur eos repudiandae? 
-                A fugit, cumque animi perspiciatis, molestiae quae ipsa odit magni quisquam atque in, 
-                amet repudiandae culpa exercitationem nisi modi eos tenetur iure? Harum assumenda quia 
-                odio quibusdam, quasi praesentium eum consequatur vel hic laudantium soluta totam, 
-                labore dolor facere iure accusantium voluptatum. Quia maxime veniam ratione 
-                sed non itaque corporis labore exercitationem vero facere molestias consectetur 
-                autem fugit nesciunt, at voluptas doloribus tempore 
-                eveniet repudiandae pariatur hic saepe consequuntur ea laborum?
+            <p v-if="center_order.description !== null && center_order.description.length" v-html="center_order.description" style="max-height: 100px; overflow-y: hidden;">
+                
             </p>
+
+            <h6 v-else class="font-danger text-center pt-5 pb-5">
+                No Description
+            </h6>
         </div>
 
         <div class="star-ratings mt-3">
@@ -27,15 +22,15 @@
                 </li>
 
                 <li>
-                    <b>Ordered : {{ center_order.required_animals }} </b>
+                    <b>ORDERED : {{ center_order.required_animals }} </b>
                 </li>
 
                 <li>
-                    <b>Available : {{ center_order.available_animals }} </b>
+                    <b>AVAILABLE : {{ center_order.available_animals }} </b>
                 </li>
 
                 <li>
-                    <b>Remaining : {{ center_order.required_animals - center_order.available_animals }} </b>
+                    <b>REMAINING : {{ center_order.required_animals - center_order.available_animals }} </b>
                 </li>
                 
                 <!-- <li>

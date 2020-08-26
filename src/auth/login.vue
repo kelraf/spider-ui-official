@@ -90,7 +90,16 @@ export default {
             businessData: state => state.businessData.businessData
         })
     },
+    created() {
+        window.addEventListener("keypress", this.handleKeyPress)
+    },
+    destroyed() {
+        window.addEventListener("keypress", this.handleKeyPress)
+    },
     methods: {
+        handleKeyPress(e) {
+            if(e.which == 13) this.login()
+        },
         login: function () {
             if (this.form.phone_number.value == "" && this.form.password.value == '') {
                     

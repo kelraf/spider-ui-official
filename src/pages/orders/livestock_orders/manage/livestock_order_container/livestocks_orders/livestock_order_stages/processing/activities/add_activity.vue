@@ -1,37 +1,32 @@
 <template>
   
     <div>
-        <div class="container-fluid">
+        <div class="container to-shake">
             <div class="row">
                 <div class="col-md-12 p-0">
-                    <div class="auth-innerright">
-                        <div class="authentication-box">
-                            <div class="card to-shake mt-4 p-4">
-                                <form class="theme-form">
-                                    <h5 class="f-16 mb-3 f-w-600"> Add Activity </h5>
+                    <div class="card to-shake mt-4 p-4">
+                        <form class="theme-form">
+                            <h5 class="f-16 mb-3 f-w-600 text-center"> ADD PROCESSING STAGES </h5>
 
-                                    <div class="mb-2">
-                                        <div class="col-form-label"> Select Activity </div>
-                                        <b-form-select class="form-control form-control-primary-fill btn-square" :class="form.activity_name.error ? 'form-error' : ''" v-model="form.activity_name.value" :options="form.activity_name.options"></b-form-select>
-                                    </div>
-                                    
-                                    <div class="form-group form-row mb-0">
-                                        <div class="col-md-12 btn-c">
-                                            <div class="btn-container">
-                                                <b-button-group class="btn-group-pill">
-                                                    <b-button @click="close" variant="outline-primary">Cancel</b-button>
-                                                    <b-button :class=" loading ? 'loading' : '' " @click="create" variant="outline-primary">
-                                                        <span v-if="!loading">Create</span>
-
-                                                        <Loader v-if="loading" />
-                                                    </b-button>
-                                                </b-button-group>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="row mt-4 mb-2">
+                                <a href="javascript:void(0)" :class="livestock_order_processing_stages_identify.includes('slaughter') ? 'done' : 'current'" class="u-pearl col-4 to-hover">
+                                    <div @click="create('slaughter')" class="u-pearl-icon"><i class="hovered" :class="livestock_order_processing_stages_identify.includes('slaughter') ? 'icon-check' : 'icofont icofont-plus'" aria-hidden="true"></i></div><span class="u-pearl-title"> SLAUGHTER </span>
+                                </a>
+                                <a href="javascript:void(0)" :class="livestock_order_processing_stages_identify.includes('value_addition') ? 'done' : 'current'" class="u-pearl col-4 to-hover">
+                                    <div @click="create('value_addition')" class="u-pearl-icon"><i class="hovered" :class="livestock_order_processing_stages_identify.includes('value_addition') ? 'icon-check' : 'icofont icofont-plus'" aria-hidden="true"></i></div><span class="u-pearl-title"> VALUE ADDITION </span>
+                                </a>
+                                <a href="javascript:void(0)" :class="livestock_order_processing_stages_identify.includes('branding_and_packaging') ? 'done' : 'current'" class="u-pearl col-4 to-hover">
+                                    <div @click="create('branding_and_packaging')" class="u-pearl-icon"><i class="hovered" :class="livestock_order_processing_stages_identify.includes('branding_and_packaging') ? 'icon-check' : 'icofont icofont-plus'" aria-hidden="true"></i></div><span class="u-pearl-title">BRANDING & PACKAGING</span>
+                                </a>
                             </div>
-                        </div>
+
+                            <div v-if="loading" class="row">
+                                <div class="col-12 text-center">
+                                    <img src="../../../../../../../../../assets/images/loader.gif" style="width: 20px;" />
+                                </div>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -54,19 +49,8 @@ export default {
         return {
             loading: false,
             livestock_order_stage_data: {},
-            form: {
-                activity_name: {
-                    error: '',
-                    value: '',
-                    options: [
-                        { value: '', text:'Select Activity' },
-                        { value: 'slaughter', text:'Slaughter' },
-                        { value: 'value_addition', text:'Value Addition' },
-                        { value: 'branding_and_packaging', text:'Branding And Packaging' }
-                    ]
-                },
-                user_id: parseInt(Auth.isAuthenticatedUser().sub)
-            }
+            livestock_order_processing_stages: [],
+            livestock_order_processing_stages_identify: [],
         }
     },
     components: {
@@ -82,7 +66,20 @@ export default {
         livestockOrderStageData: {
             immediate: true,
             handler() {
-                this.livestock_order_stage_data = this.livestockOrderStageData
+                if(this.livestockOrderStageData) {
+
+                    this.livestock_order_stage_data = this.livestockOrderStageData
+
+                    if(this.livestockOrderStageData.livestock_order_processing_stages !== undefined && this.livestockOrderStageData.livestock_order_processing_stages.length) {
+                        
+                        this.livestock_order_processing_stages = this.livestockOrderStageData.livestock_order_processing_stages
+                        this.livestock_order_processing_stages_identify = this.livestock_order_processing_stages.map((livestock_order_processing_stage) => {
+                            return livestock_order_processing_stage.stage_name
+                        })
+
+                    }
+                }
+
             }
         }
     },
@@ -101,28 +98,25 @@ export default {
             return /^[0-9]+$/.test(value)
 
         },
-        create: function() {
+        create: function(stage_name) {
 
-            if(this.form.activity_name.value == '') {
+            if(this.livestock_order_processing_stages_identify.includes(stage_name)) {
 
                 $(".to-shake").addClass("animated").addClass("shake");
 
-                this.form.activity_name.error = 'field can\'t be empty'
-
-                this.$toasted.show(`Stage : ${this.form.activity_name.error}`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
+                this.$toasted.show(` ${stage_name.toUpperCase().split('_').join(' ')} STAGE EXISTS. `, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 4000})
 
                 setTimeout(function() {
                     $(".to-shake").removeClass("animated").removeClass("shake");
-                }, 500)
+                }, 400)
 
             } else {
                    
-                this.form.activity_name.error = ''    
                 this.loading = true
 
                 let data = {
                     livestock_order_processing_stage : {
-                        stage_name: this.form.activity_name.value,
+                        stage_name: stage_name,
                         livestock_order_id: this.livestock_order_stage_data.livestock_order_id,
                         livestock_order_stage_id: this.livestock_order_stage_data.id
                     }
@@ -143,7 +137,11 @@ export default {
                         self.loading = false
                         self.$emit("livestock-order-processing-stage-add-success", resp.data.data)
                         self.$toasted.show(`Processing Stage Added Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
-                        Custombox.modal.close()
+                        // Custombox.modal.close()
+
+                        console.log("XXXXXXXX", resp.data.data)
+                        self.livestock_order_processing_stages.push(resp.data.data)
+                        self.livestock_order_processing_stages_identify.push(resp.data.data.stage_name)
 
                     }, 2000)
                 } )
@@ -211,7 +209,7 @@ export default {
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css">
+<style>
 
     .btn-container {
         margin: auto;
@@ -229,6 +227,14 @@ export default {
 
     .fields span {
         flex: 1 !important;
+    }
+
+    .hovered {
+        transition-duration: .5s;
+    }
+
+    .to-hover:hover .hovered {
+        transform: scale(.6) !important;
     }
 
 </style>

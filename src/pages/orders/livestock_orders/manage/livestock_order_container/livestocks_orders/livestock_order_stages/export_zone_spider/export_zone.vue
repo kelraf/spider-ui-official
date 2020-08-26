@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="col-6 offset-3">
                             <button 
-                                @click="open_request" 
+                                @click="open_request(null)" 
                                 id="default-outline-primary" 
                                 type="button" 
                                 class="btn btn-pill btn-outline-primary btn-block"

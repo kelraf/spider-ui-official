@@ -60,8 +60,8 @@
 							>
 
 							<thead slot="head">
-								<v-th sortKey="reference">Reference</v-th>
-								<v-th sortKey="type">Category</v-th>
+								<v-th sortKey="reference">Ref Animal</v-th>
+								<v-th sortKey="type">Produce Name</v-th>
 								<v-th sortKey="quantity">Quantity</v-th>
 								<v-th sortKey="units">Units</v-th>
 								<v-th sortKey="quantity"></v-th>
@@ -70,8 +70,8 @@
 							</thead>
 							<tbody slot="body" slot-scope="{displayData}">
 								<tr v-for="row in displayData" :key="row.id">
-									<td>{{ row.reference }}</td>
-									<td>{{ row.category }}</td>
+									<td>{{ row.referenced_animal }}</td>
+									<td>{{ row.produce_name }}</td>
 									<td>{{ row.quantity }}</td>
 									<td>{{ row.units }}</td>
 									<td>

@@ -77,14 +77,6 @@ import SlaughterOrder from "../pages/slaughter_orders/slaughter_order_"
 import MarketIndex from "../pages/market/market"
 import CenterOrderMarket from "../pages/market/center_order_market"
 
-
-// Dashboards
-import DashboardIntersection from "../pages/dashboard/dashboard_intersection"
-import Member from "../pages/dashboard/member"
-import SuperInstance from "../pages/dashboard/super_instance"
-import ExploreServer from "../pages/dashboard/server"
-import Client from "../pages/dashboard/client"
-
 import Manage from "../pages/business/business_assets/manage_assets"
 import SuperInstanceAdmins from "../pages/super_instance/super_instance_admins"
 import CreateBusinessPending from "../pages/dashboard/no_business"
@@ -92,6 +84,15 @@ import CreateBusinessPending from "../pages/dashboard/no_business"
 // GoogleMaps
 
 import GoogleMaps from "../pages/google_maps/google_map"
+
+// Site
+import Site from "../site/index"
+
+// Produce Orders
+import { produceOrders } from "./dashboard/produce_orders"
+
+// dashBoards
+import { dashBoards } from "./dashboard/index"
 
 
 // component
@@ -101,7 +102,16 @@ Vue.use(Router)
 let system_title = "Spider - API"
 
 const routes = [
-{ path: '', redirect: { name: 'home' }},
+
+{
+  path: '',
+  name: "site-index" ,
+  component: Site,
+  meta: {
+    title: "Site"
+  }
+},
+
 {
   path: '/auth',
   component: Auth,
@@ -191,46 +201,8 @@ const routes = [
     requiresAuth: true
   },
   children: [
-    {
-      path: '',
-      name: 'home',
-      component: DashboardIntersection,
-      meta: {
-        title: `Home | ${system_title}`,
-      }
-    },
-    {
-      path: 'super-instance',
-      name: 'super-instance',
-      component: SuperInstance,
-      meta: {
-        title: `Super Instance | ${system_title}`,
-      }
-    },
-    {
-      path: 'member',
-      name: 'member',
-      component: Member,
-      meta: {
-        title: `Member | ${system_title}`,
-      }
-    },
-    {
-      path: 'client',
-      name: 'client',
-      component: Client,
-      meta: {
-        title: `Member | ${system_title}`,
-      }
-    },
-    {
-      path: 'server',
-      name: 'server',
-      component: ExploreServer,
-      meta: {
-        title: `Member | ${system_title}`,
-      }
-    },
+    ...dashBoards,
+    ...produceOrders,
     {
       path: 'user-profile',
       name: 'user-profile',

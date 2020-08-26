@@ -84,7 +84,7 @@
                                     </div>
                                   </div>
                                   <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
-                                    <h6 class="text-center">FROM</h6> <sub v-text="dates.ending_date.day"></sub>
+                                    <h6 class="text-center">UNTILL</h6> <sub v-text="dates.ending_date.day"></sub>
                                     <div class="cal-info text-center">
                                       <h2 class="font-secondary" v-text="dates.ending_date.date"></h2>
                                       <div class="d-inline-block mt-2"><span class="b-r-dark pr-3 font-success" v-text="dates.ending_date.month">  </span><span class="pl-3 font-primary" v-text="dates.ending_date.year">  </span></div>
@@ -152,6 +152,7 @@
                                           id="default-outline-secondary" 
                                           type="button" 
                                           class="btn btn-xs btn-pill btn-outline-secondary btn-block"
+                                          :disabled="livestock_order_slaughter_order.status == 0 || livestock_order_slaughter_order.status == 1 ? true : false"
                                         >
                                           COMPLETE
                                         </button>
