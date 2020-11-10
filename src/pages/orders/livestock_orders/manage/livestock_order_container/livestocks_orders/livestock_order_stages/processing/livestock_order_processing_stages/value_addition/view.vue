@@ -1,8 +1,9 @@
 <template>
   
 
-    <div v-if="Object.keys(current_value_addition_order).length && current_value_addition_order.order_exists" class="col-12 p-0">
-        <div class="card">
+    <div class="col-12 p-0">
+        
+        <div v-if="Object.keys(current_value_addition_order).length && current_value_addition_order.order_exists" class="card">
             <div class="card-header b-l-primary">
                 <h5>Value Addition Order Details</h5>
             </div>
@@ -12,7 +13,7 @@
 
                 <b-tab title="Order Details" active>
 
-                    <!-- Container-fluid starts-->
+                    <!-- Container-fluid starts -->
                     <div class="container-fluid">
                         <div class="user-profile">
                         <div class="row">

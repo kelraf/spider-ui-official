@@ -89,6 +89,7 @@
                 v-if="current_processing_stage.exists && !livestock_order_value_addition_orders.length" 
                 :currentProcessingStage="current_processing_stage"
                 @livestock-order-slaughter-order-created-success="livestockOrderValueAdditionOrderCreatedSuccess"
+                @make-order="makeOrder"
             />
 
         </processing-stage-get-started>
@@ -193,6 +194,9 @@ export default {
                     processing_stage: this.current_processing_stage
                 })
             }
+        },
+        makeOrder() {
+            console.log("Make Order")
         }
     }
 }

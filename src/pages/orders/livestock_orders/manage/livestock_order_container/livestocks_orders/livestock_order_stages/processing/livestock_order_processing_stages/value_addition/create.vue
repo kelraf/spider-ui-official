@@ -73,7 +73,7 @@
 
                                                                         <div class="row">
                                                                             <div class="col-6 mt-3 offset-3">
-                                                                                <div class="avatar"><img class="img-50 rounded-circle" :src='"../../../../../../../../../../../../assets/images/user/1.jpg"' alt="#"></div>
+                                                                                <div class="avatar"><img class="img-50 rounded-circle" :src='"../../../../../../../../../../assets/images/user/1.jpg"' alt="#"></div>
                                                                             </div>
                                                                         </div>
 
@@ -243,7 +243,7 @@
                                             <div class="col-6 offset-md-3">
                                                 <button @click="sendRequest" id="default-outline-warning" type="button" class="btn btn-pill btn-outline-warning btn-block">
                                                     <span v-if="!loading">Send</span>
-                                                    <img style="width: 20px;" v-if="loading" src="../../../../../../../../../../../../assets/images/loader.gif" alt="">
+                                                    <img style="width: 20px;" v-if="loading" src="../../../../../../../../../../assets/images/loader.gif" alt="">
                                                 </button>
                                             </div>
                                         </div>
@@ -272,8 +272,8 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Datepicker from 'vuejs-datepicker';
 
-import {ApiUrl} from "../../../../../../../../../../../../api/apiurl"
-import Auth from "../../../../../../../../../../../../auth/js/spider_auth"
+import {ApiUrl} from "../../../../../../../../../../api/apiurl"
+import Auth from "../../../../../../../../../../auth/js/spider_auth"
 import axios from "axios"
 
 export default {
@@ -449,105 +449,98 @@ export default {
         },
         sendRequest() {
 
-            console.log("CCCCC", this.livestock_order_processing_stage_data)
-
             if(Object.keys(this.livestock_order_processing_stage_data).length <= 0) return
-
 
             else if(!this.checkDates()[0]) return
 
-            else
-
-            console.log("XXXXXX")
-
             let {livestock_order_id, livestock_order_stage_id, id} = this.livestock_order_processing_stage_data
 
-            // let data = {
-            //     livestock_order_slaughter_order: {
-            //         dates: this.checkDates()[1],
-            //         business_id: this.selectedSlaughterOrderBundler.business.id,
-            //         slaughter_order_bundler_id: this.selectedSlaughterOrderBundler.id,
-            //         livestock_order_id: livestock_order_id,
-            //         livestock_order_stage_id: livestock_order_stage_id,
-            //         livestock_order_processing_stage_id: id,
-            //         description: this.editorData,
-            //         livestock_order_slaughter_order_outputs: this.slaughter_order_outputs
-            //     }
-            // }
+            let data = {
+                livestock_order_slaughter_order: {
+                    dates: this.checkDates()[1],
+                    business_id: this.selectedSlaughterOrderBundler.business.id,
+                    slaughter_order_bundler_id: this.selectedSlaughterOrderBundler.id,
+                    livestock_order_id: livestock_order_id,
+                    livestock_order_stage_id: livestock_order_stage_id,
+                    livestock_order_processing_stage_id: id,
+                    description: this.editorData,
+                    livestock_order_slaughter_order_outputs: this.slaughter_order_outputs
+                }
+            }
 
-            // let self = this
-            // this.loading = true
+            let self = this
+            this.loading = true
                     
-            // let headers = {
-            //     headers: {
-            //         Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-            //     }
-            // }
+            let headers = {
+                headers: {
+                    Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
+                }
+            }
 
-            // axios.post(`${ApiUrl.url}livestock-order-slaughter-orders`, data, headers) 
-            // .then( (resp) => {
-            //     setTimeout(function() {
+            axios.post(`${ApiUrl.url}livestock-order-slaughter-orders`, data, headers) 
+            .then( (resp) => {
+                setTimeout(function() {
 
-            //         self.loading = false
-            //         self.$emit("livestock-order-slaughter-order-created-success", resp.data.data)
-            //         self.$toasted.show(`Request Sent Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
-            //         Custombox.modal.close()
+                    self.loading = false
+                    self.$emit("livestock-order-slaughter-order-created-success", resp.data.data)
+                    self.$toasted.show(`Request Sent Successfully`, {theme: 'outline',position: "top-right", icon : 'check', type: 'success', duration: 8000})
+                    Custombox.modal.close()
 
-            //     }, 2000)
-            // } )
+                }, 2000)
+            } )
 
-            // .catch( (err) => {
+            .catch( (err) => {
 
-            //     if(err.response) {
+                if(err.response) {
 
-            //         setTimeout(function() {
+                    setTimeout(function() {
 
-            //             self.loading = false
+                        self.loading = false
 
-            //             if(err.response.status == 422) {
+                        if(err.response.status == 422) {
 
-            //                 for (const key of Object.keys(err.response.data.errors)) {
+                            for (const key of Object.keys(err.response.data.errors)) {
 
-            //                     if(key == "dates") {
-            //                         self.$toasted.show(`Oops!! Something Went Wrong: Dates`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                     } else if(key == "export_zone_bundler_id") {
-            //                         self.$toasted.show(`Oops!! Something Went Wrong: Export Zone`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                     } else if(key == "livestock_order_stage_id") {
-            //                         self.$toasted.show(`Oops!! Something Went Wrong: Livestock Order Stage`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                     }  else if(key == "description") {
-            //                         self.$toasted.show(`Oops!! Something Went Wrong: Description`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                     } else if(key == "livestock_order_id") {
-            //                         self.$toasted.show(`Oops!! Something Went Wrong: Livestock Order`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                     } else if(key == "slaughter_order_bundler_id") {
-            //                         self.$toasted.show(`Oops!! Something Went Wrong.`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                     }  else {
-            //                         console.log("Oops!! Error Occured")
-            //                     }
-            //                 }
+                                if(key == "dates") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong: Dates`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                } else if(key == "export_zone_bundler_id") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong: Export Zone`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                } else if(key == "livestock_order_stage_id") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong: Livestock Order Stage`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                }  else if(key == "description") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong: Description`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                } else if(key == "livestock_order_id") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong: Livestock Order`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                } else if(key == "slaughter_order_bundler_id") {
+                                    self.$toasted.show(`Oops!! Something Went Wrong.`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                                }  else {
+                                    console.log("Oops!! Error Occured")
+                                }
+                            }
 
-            //             } else if(err.response.status == 401) {
+                        } else if(err.response.status == 401) {
 
-            //                 Custombox.modal.close()
-            //                 self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-            //                 self.$router.replace("/auth/login")
+                            Custombox.modal.close()
+                            self.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
+                            self.$router.replace("/auth/login")
 
-            //             } else if(err.response.status == 400) {
+                        } else if(err.response.status == 400) {
 
-            //                 self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 400`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                 Custombox.modal.close()
+                            self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 400`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                            Custombox.modal.close()
 
-            //             } else if(err.response.status == 500) {
+                        } else if(err.response.status == 500) {
 
-            //                 self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 500`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
-            //                 Custombox.modal.close()
+                            self.$toasted.show(`Oops!! An Error Occured. Please Try Again. : 500`, {theme: 'outline',position: "top-right", icon : 'times', type: 'error', duration: 8000})
+                            Custombox.modal.close()
 
-            //             }
+                        }
 
-            //         }, 2000)
+                    }, 2000)
 
-            //     }
+                }
 
-            // } ) 
+            } ) 
 
         },
         get_d_livestock_slaughter_outputs() {

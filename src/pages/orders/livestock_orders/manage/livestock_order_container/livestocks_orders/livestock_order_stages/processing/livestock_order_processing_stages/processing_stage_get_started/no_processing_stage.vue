@@ -40,7 +40,7 @@ export default {
         currentProcessingStage: {
             immediate: true,
             handler() {
-                console.log("currentProcessingStage", this.currentProcessingStage)
+                // console.log("currentProcessingStage", this.currentProcessingStage)
             },
             deep: true
         }

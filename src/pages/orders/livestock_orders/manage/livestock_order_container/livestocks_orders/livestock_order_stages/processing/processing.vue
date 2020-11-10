@@ -103,8 +103,8 @@ import { ApiUrl } from "../../../../../../../../api/apiurl"
 import Auth from "../../../../../../../../auth/js/spider_auth"
 import axios from "axios"
 
-import Activities from "./activities/activities"
-import AddActivity from "./activities/add_activity"
+// import Activities from "./activities/activities"
+// import AddActivity from "./activities/add_activity"
 import SlaughterOrderView from "./livestock_order_processing_stages/slaughter/view"
 import ValueAdditionOrderView from "./livestock_order_processing_stages/value_addition/view"
 import LivestockOrderSlaughterOrderEdit from "./livestock_order_processing_stages/slaughter/edit"
@@ -254,7 +254,7 @@ export default {
 
             this.stage.livestock_order_processing_stages.push(data)
             
-            // console.log("Data", data)
+            console.log("Data", data)
 
         }
     }

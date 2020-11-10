@@ -162,7 +162,7 @@
                     <div class="row">
                         <div class="col-12 pt-3">
                             <p class="font-success">
-                                <b>MORE DETAILS ABOUT PROCESSING STAGES APPEARS HERE</b>
+                                <b>MORE DETAILS ABOUT THIS PROCESSING STAGE APPEARS HERE</b>
                             </p>
                         </div>
                     </div>

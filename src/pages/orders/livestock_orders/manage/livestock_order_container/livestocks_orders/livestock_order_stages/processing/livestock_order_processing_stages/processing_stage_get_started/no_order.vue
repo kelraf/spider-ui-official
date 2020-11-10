@@ -15,29 +15,17 @@
             </div>
         </div>
 
-        <LivestockOrderSlaughterOrderCreate 
-            :livestockOrderProcessingStageData="current_processing_stage"
-            @livestock-order-slaughter-order-created-success="livestockOrderSlaughterOrderCreatedSuccess"
-            id="livestock-order-slaughter-order" 
-            style="display: none;"
-        />
-
     </div>
 
 </template>
 
 <script>
 
-import LivestockOrderSlaughterOrderCreate from "../slaughter/create"
-
 export default {
     data() {
         return {
             current_processing_stage: {}
         }
-    },
-    components: {
-        LivestockOrderSlaughterOrderCreate
     },
     props: {
         currentProcessingStage: Object
@@ -54,14 +42,7 @@ export default {
     },
     methods: {
         makeOrder() {
-            let modal = new Custombox.modal({
-                content: {
-                    effect: 'slip',
-                    target: '#livestock-order-slaughter-order'
-                }
-            })
-
-            modal.open()
+            this.$emit("make-order")
         },
         livestockOrderSlaughterOrderCreatedSuccess(data) {
             

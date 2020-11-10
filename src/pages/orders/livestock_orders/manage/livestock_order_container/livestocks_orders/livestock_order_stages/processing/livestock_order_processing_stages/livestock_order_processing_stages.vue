@@ -16,6 +16,7 @@
             class="animated fadeIn"
             v-if="current_processing_stage.stage_name == 'value_addition'"
             :currentProcessingStage="current_processing_stage"
+            @processing-stage-created-successfully="processingStageCreatedSuccessfully"
         />
 
         <BrandingAndPackaging

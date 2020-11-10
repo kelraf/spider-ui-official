@@ -42,7 +42,7 @@
 
                 <div v-if="rejected.length >= 1 && others.length <= 0" class="row">
                     <div class="col-8 offset-2 pt-3">
-                        <button style="text-align: center;" id="default-outline-secondary" @click="openMakeOrder" type="button" class="btn btn-sm btn-pill btn-outline-secondary btn-block">
+                        <button style="text-align: center;" id="default-outline-secondary" @click="makeOrder" type="button" class="btn btn-sm btn-pill btn-outline-secondary btn-block">
                             MAKE NEW ORDER
                         </button>
                     </div>
@@ -137,6 +137,7 @@
                 v-if="current_processing_stage.exists && !livestock_order_slaughter_orders.length" 
                 :currentProcessingStage="current_processing_stage"
                 @livestock-order-slaughter-order-created-success="livestockOrderSlaughterOrderCreatedSuccess"
+                @make-order="makeOrder"
             />
 
         </processing-stage-get-started>
@@ -302,7 +303,7 @@ export default {
             this.emitCurrentOrder()
 
         },
-        openMakeOrder() {
+        makeOrder() {
 
             let modal = new Custombox.modal({
                 content: {
