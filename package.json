@@ -12,7 +12,7 @@
     "@ckeditor/ckeditor5-vue": "^1.0.0",
     "animate.css": "^3.7.2",
     "auth0-js": "^9.11.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap-vue": "^2.0.3",
     "chart.js": "^2.8.0",
     "chartjs-plugin-streaming": "^1.8.0",
