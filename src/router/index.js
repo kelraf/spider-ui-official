@@ -77,14 +77,6 @@ import SlaughterOrder from "../pages/slaughter_orders/slaughter_order_"
 import MarketIndex from "../pages/market/market"
 import CenterOrderMarket from "../pages/market/center_order_market"
 
-
-// Dashboards
-import DashboardIntersection from "../pages/dashboard/dashboard_intersection"
-import Member from "../pages/dashboard/member"
-import SuperInstance from "../pages/dashboard/super_instance"
-import ExploreServer from "../pages/dashboard/server"
-
-
 import Manage from "../pages/business/business_assets/manage_assets"
 import SuperInstanceAdmins from "../pages/super_instance/super_instance_admins"
 import CreateBusinessPending from "../pages/dashboard/no_business"
@@ -92,6 +84,15 @@ import CreateBusinessPending from "../pages/dashboard/no_business"
 // GoogleMaps
 
 import GoogleMaps from "../pages/google_maps/google_map"
+
+// Site
+import Site from "../site/index"
+
+// Produce Orders
+import { produceOrders } from "./dashboard/produce_orders"
+
+// dashBoards
+import { dashBoards } from "./dashboard/index"
 
 
 // component
@@ -101,7 +102,16 @@ Vue.use(Router)
 let system_title = "Spider - API"
 
 const routes = [
-{ path: '', redirect: { name: 'home' }},
+
+{
+  path: '',
+  name: "site-index" ,
+  component: Site,
+  meta: {
+    title: "Site"
+  }
+},
+
 {
   path: '/auth',
   component: Auth,
@@ -160,6 +170,9 @@ const routes = [
 {
   path: '/account-pending',
   component: Auth,
+  meta: {
+    requiresAuth: true
+  },
   children: [
     {
       path: '',
@@ -188,86 +201,19 @@ const routes = [
     requiresAuth: true
   },
   children: [
+    ...dashBoards,
+    ...produceOrders,
     {
-      path: '/',
-      name: 'home',
-      component: DashboardIntersection,
-      meta: {
-        title: `Home | ${system_title}`,
-      }
-    },
-    {
-      path: 'super-instance',
-      name: 'super-instance',
-      component: SuperInstance,
-      meta: {
-        title: `Super Instance | ${system_title}`,
-      }
-    },
-    {
-      path: 'member',
-      name: 'member',
-      component: Member,
-      meta: {
-        title: `Member | ${system_title}`,
-      }
-    },
-    {
-      path: 'client',
-      name: 'client',
-      component: Member,
-      meta: {
-        title: `Member | ${system_title}`,
-      }
-    },
-    {
-      path: 'server',
-      name: 'server',
-      component: ExploreServer,
-      meta: {
-        title: `Member | ${system_title}`,
-      }
-    }
-  ]
-}, 
-{
-  path: "/users",
-  component: Body,
-  name: "user",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
-    {
-      path: 'profile/:id',
-      name: 'profile',
+      path: 'user-profile',
+      name: 'user-profile',
       component: EditProfile,
       meta: {
         title: `User Profile | ${system_title}`,
       }
-    }
-  ]
-}, 
-{
-  path: "/businesses",
-  component: Body,
-  name: "businesses",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
-    {
-      path: 'my-businesses/:id',
-      name: 'my-businesses',
-      component: MyBusinesses,
-      meta: {
-        title: `My Businesses | ${system_title}`,
-
-      }
     },
     {
-      path: 'profile/:id',
-      name: 'profile',
+      path: 'business',
+      name: 'business',
       component: EditBusinessProfile,
       meta: {
         title: `Business Profile | ${system_title}`,
@@ -282,128 +228,128 @@ const routes = [
       }
     },
     {
-      path: 'all-trains/:id',
-      name: 'all-trains',
+      path: 'trains',
+      name: 'trains',
       component: ViewTrains,
       meta: {
         title: `Business All Trains | ${system_title}`,
       }
     },
     {
-      path: 'all-flights/:id',
-      name: 'all-flights',
+      path: 'flights',
+      name: 'flights',
       component: ViewFlights,
       meta: {
         title: `Business All Flights | ${system_title}`,
       }
     },
     {
-      path: 'all-vessles/:id',
-      name: 'all-vessles',
+      path: 'vessles',
+      name: 'vessles',
       component: ViewVessles,
       meta: {
         title: `Business All Vessles | ${system_title}`,
       }
     },
     {
-      path: 'all-vehicles/:id',
-      name: 'all-vehicles',
+      path: 'vehicles',
+      name: 'vehicles',
       component: ViewVehicles,
       meta: {
         title: `Business All Vehicles | ${system_title}`,
       }
     },
     {
-      path: 'all-livestocks/:id',
-      name: 'all-livestocks',
+      path: 'livestocks',
+      name: 'livestocks',
       component: ViewLivestocks,
       meta: {
         title: `Business All Livestocks | ${system_title}`,
       }
     },
     {
-      path: 'all-produce/:id',
-      name: 'all-produce',
+      path: 'produces',
+      name: 'produces',
       component: ViewProduces,
       meta: {
         title: `Business All Produce | ${system_title}`,
       }
     },
     {
-      path: 'all-products/:id',
-      name: 'all-products',
+      path: 'products',
+      name: 'products',
       component: ViewProducts,
       meta: {
         title: `Business All Products | ${system_title}`,
       }
     },
     {
-      path: 'all-d-livestock',
-      name: 'all-d-livestock',
+      path: 'd-livestocks',
+      name: 'd-livestocks',
       component: ViewDLivestocks,
       meta: {
         title: `Business All Defined Livestocks | ${system_title}`,
       }
     },
     {
-      path: 'vehicle-profile/:id',
-      name: 'vehicle-profile',
+      path: 'vehicles/:id',
+      name: 'vehicle',
       component: ViewVehicle,
       meta: {
-        title: `Business Vehicle Profile | ${system_title}`,
+        title: `Business Vehicle | ${system_title}`,
       }
     },
     {
-      path: 'train-profile/:id',
-      name: 'train-profile',
+      path: 'trains/:id',
+      name: 'train',
       component: ViewTrain,
       meta: {
         title: `Business Train Profile | ${system_title}`,
       }
     },
     {
-      path: 'flight-profile/:id',
-      name: 'flight-profile',
+      path: 'flights/:id',
+      name: 'flight',
       component: ViewFlight,
       meta: {
         title: `Business Flight Profile | ${system_title}`,
       }
     },
     {
-      path: 'vessle-profile/:id',
-      name: 'vessle-profile',
+      path: 'vessles/:id',
+      name: 'vessle',
       component: ViewVessle,
       meta: {
         title: `Business Vessle Profile | ${system_title}`,
       }
     },
     {
-      path: 'livestock-profile/:id',
-      name: 'livestock-profile',
+      path: 'livestocks/:id',
+      name: 'livestock',
       component: ViewLivestock,
       meta: {
         title: `Business Livestock Profile | ${system_title}`,
       }
     },
     {
-      path: 'produce-profile/:id',
-      name: 'produce-profile',
+      path: 'produces/:id',
+      name: 'produce',
       component: ViewProduce,
       meta: {
         title: `Business Produce Profile | ${system_title}`,
       }
     },
     {
-      path: 'product-profile/:id',
-      name: 'product-profile',
+      path: 'products/:id',
+      name: 'product',
       component: ViewProduct,
       meta: {
         title: `Business Product Profile | ${system_title}`,
       }
     },
     {
-      path: 'dlivestock-profile/:id',
-      name: 'dlivestock-profile',
+      path: 'd-livestocks/:id',
+      name: 'd-livestock',
       component: ViewDLivestock,
       meta: {
         title: `DLivestock Profile | ${system_title}`,
@@ -415,33 +361,6 @@ const routes = [
       component: SuperInstanceAdmins,
       meta: {
         title: `Super Instance Admins | ${system_title}`,
-      }
-    },
-    {
-      path: 'all-tests/:id',
-      name: 'all-tests',
-      component: ViewVessles,
-      meta: {
-        title: `Business All Tests | ${system_title}`,
-      }
-    }
-  ]
-},
-{
-  path: "/orders",
-  component: Body,
-  name: "orders",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
-    {
-      path: '',
-      name: 'root',
-      component: Orders,
-      meta: {
-        title: `Orders | ${system_title}`,
-
       }
     },
     {
@@ -526,23 +445,13 @@ const routes = [
         title: `Center Order | ${system_title}`,
 
       }
-    }
-  ]
-},
-{
-  path: "/market",
-  component: Body,
-  name: "market",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
+    },
     {
-      path: '',
-      name: 'market-index',
+      path: 'market',
+      name: 'market',
       component: MarketIndex,
       meta: {
-        title: `Market Index | ${system_title}`,
+        title: `Market | ${system_title}`,
 
       }
     },
@@ -554,76 +463,35 @@ const routes = [
         title: `Market Index | ${system_title}`,
 
       }
-    }
-  ]
-},
-{
-  path: "/livestock-sales",
-  component: Body,
-  name: "livestock-sales",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
+    },
     {
-      path: '',
+      path: 'livestock-sales',
       name: 'livestock-sales',
       component: LivestockSales,
       meta: {
         title: `Livestock Sales | ${system_title}`,
-
       }
-    }
-  ]
-},
-{
-  path: "/export-zone-requests",
-  component: Body,
-  name: "export-zone-requests",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
+    },
     {
-      path: '',
+      path: 'export-zone-requests',
       name: 'export-zone-requests',
       component: ExportZoneRequests,
       meta: {
         title: `Export Zone Requests | ${system_title}`,
 
       }
-    }
-  ]
-},
-{
-  path: "/feed-lot-requests",
-  component: Body,
-  name: "feed-lot-requests",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
+    },
     {
-      path: '',
+      path: 'feed-lot-requests',
       name: 'feed-lot-requests',
       component: FeedLotRequests,
       meta: {
         title: `FeedLot Requests | ${system_title}`,
 
       }
-    }
-  ]
-},
-{
-  path: "/slaughter-orders",
-  component: Body,
-  name: "slaughter-orders",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
+    },
     {
-      path: '',
+      path: 'slaughter-orders',
       name: 'slaughter-orders',
       component: SlaughterOrders,
       meta: {
@@ -632,55 +500,16 @@ const routes = [
       }
     },
     {
-      path: ':id',
+      path: 'slaughter-orders/:id',
       name: 'slaughter-order',
       component: SlaughterOrder,
       meta: {
         title: `Slaughter Order | ${system_title}`,
 
       }
-    }
-  ]
-},
-{
-  path: "/google-maps",
-  component: Body,
-  name: "google-maps",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
-    {
-      path: '',
-      name: 'index',
-      component: GoogleMaps,
-      meta: {
-        title: `Google Maps Index | ${system_title}`,
-
-      }
-    }
-  ]
-}
-,
-{
-  path: "/shop",
-  component: Body,
-  name: "shop",
-  meta: {
-    requiresAuth: true
-  },
-  children: [
-    {
-      path: '',
-      name: 'shop-index',
-      component: LivestockOrder,
-      meta: {
-        title: `Shop Index | ${system_title}`,
-
-      }
     },
     {
-      path: 'livestocks',
+      path: 'shop-livestocks',
       name: 'livestocks',
       component: Livestocks,
       meta: {
@@ -703,28 +532,18 @@ const routes = [
       component: CheckOut,
       meta: {
         title: ` CheckOut | ${system_title}`,
-      },
-      children: [
-        {
-          path: 'success',
-          name: 'success',
-          component: OrderSuccess,
-          meta: {
-            title: ` CheckOut Success | ${system_title}`,
-          }
-        }
-      ]
+      }
     },
     {
-      path: 'success',
-      name: 'success',
+      path: 'checkout-success',
+      name: 'checkout-success',
       component: OrderSuccess,
       meta: {
         title: ` CheckOut Success | ${system_title}`,
       }
     }
   ]
-}
+},
 ];
 
 

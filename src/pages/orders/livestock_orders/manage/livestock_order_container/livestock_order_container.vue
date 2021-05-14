@@ -60,23 +60,9 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <hr> -->
-                        <Orders :livestockOrders="livestock_order_container.livestock_orders" class="mt-5" />
-                      <hr>
-                      <div class="follow">
-                        <div class="row">
-                          <div class="col-6 text-md-right border-right">
-                            
-                            
 
-                          </div>
-                          <div class="col-6 text-md-left">
-                            
-                            
-                            
-                          </div>
-                        </div>
-                      </div>
+                      <Orders :livestockOrders="livestock_order_container.livestock_orders" class="mt-5" />
+                      
                     </div>
                   </div>
                 </div>

@@ -7,11 +7,11 @@ var secondary = localStorage.getItem('secondary_color') || '#1ea6ec';
     data () {
       return {
         datacollection: {
-          labels: ["Bitcoin", "Ripple", "Invest"],
+          labels: ["OFFLINE", "ONLINE", "COMPLETED"],
           datasets: [
             {
-              label: 'Invest',
-              backgroundColor: [primary,"#f6f6f6",secondary],
+              label: 'CENTER ORDERS SUMMARY',
+              backgroundColor: ["#fb9678", "#fec107", "#00c292"],
               borderWidth: 0,
               hoverBorderWidth: 2,
               weight:1,

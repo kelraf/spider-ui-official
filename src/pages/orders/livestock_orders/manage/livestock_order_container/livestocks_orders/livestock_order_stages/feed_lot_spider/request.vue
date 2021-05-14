@@ -7,8 +7,14 @@
                     <tab-content :before-change="checkSelected" class="p-0" title="Select FeedLot">
                         <div class="setup-content p-0" id="step-2">
                             <div class="col-md-12 p-0">
+
+                                <div v-if="!feed_lots.length" class="row">
+                                    <div class="col-12 text-center">
+                                        <h5 class="font-danger"> <b>No FeedLot Available</b> </h5>
+                                    </div>
+                                </div>
                                 
-                                <div class="row p-0">
+                                <div v-if="feed_lots.length" class="row p-0">
                                     <div class="col-md-12 p-0">
                                         <div class="card">
                                             <div class="card-body p-0">
@@ -311,8 +317,6 @@ export default {
                     }
                 }
 
-                console.log(data)
-
                 let self = this
                         
                 let headers = {
@@ -388,20 +392,19 @@ export default {
 
             } else {
 
+
                 let feed_lot_livestock_order = this.feed_lot_livestock_order
                 // delete feed_lot_livestock_order.description
                 delete feed_lot_livestock_order.dates
-                delete feed_lot_livestock_order.feed_lot_bundler_id
+                delete feed_lot_livestock_order.feed_lot_bundler
 
                 let new_values = {
                     dates: this.checkDates()[1],
-                    feed_lot_bundler_id: this.selected_feed_lot.id,
-                    description: this.editorData
                 }
 
                 let data = {
                     feed_lot_livestock_order: {
-                        ...feed_lot_livestock_order, ...new_values
+                    ...new_values
                     }
                 }
 
@@ -414,7 +417,7 @@ export default {
                     }
                 }
 
-                axios.put(`${ApiUrl.url}export-zone-livestock-orders/${feed_lot_livestock_order.id}`, data, headers) 
+                axios.put(`${ApiUrl.url}feed-lot-livestock-orders/${feed_lot_livestock_order.id}`, data, headers) 
                 .then( (resp) => {
                     setTimeout(function() {
 

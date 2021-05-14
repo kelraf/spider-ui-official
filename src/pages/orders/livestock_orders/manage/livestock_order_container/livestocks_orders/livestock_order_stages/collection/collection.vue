@@ -13,9 +13,26 @@
                 <!-- Livestock Sales -->
                 <LivestockSales v-on:sale-edit-success="saleEditSuccess" :centerOrder="center_order" v-if="livestock_sales.length > 0" />
 
-                <div v-if="livestock_sales.length <= 0" class="row pt-5">
-                    <div class="col-md-6 text-center offset-md-3 mt-5 pt-5">
-                        <h2> No Sales Requests Yet </h2>
+                <div v-if="livestock_sales.length <= 0" class="row">
+                    <div class="col-md-8 text-center offset-md-2 pt-5 mt-5">
+
+                        <div class="container">
+
+                            <div class="row pt-5 font-danger">
+                                <div class="col-12 text-center">
+                                    <i class="fa fa-ellipsis-h fa-4x"></i>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 pt-3">
+                                    <p class="font-success">
+                                        <b> LIVESTOCK SALES AND SELLERS DETAILS APPEARS HERE </b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

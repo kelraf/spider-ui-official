@@ -61,7 +61,7 @@
                         </td>
                         <td> {{ new_livestock_order_container.total_cost }} </td>
                         <td>
-                            <router-link :to="'/orders/livestock-order-container/' + new_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
+                            <router-link :to="'/dashboard/livestock-order-container/' + new_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
                                 MORE
                             </router-link>
                         </td>
@@ -100,7 +100,7 @@
                         </td>
                         <td>{{ processing_livestock_order_container.total_cost }}</td>
                         <td>
-                            <router-link :to="'/orders/livestock-order-container/' + processing_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
+                            <router-link :to="'/dashboard/livestock-order-container/' + processing_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
                                 MORE
                             </router-link>
                         </td>
@@ -139,7 +139,7 @@
                         </td>
                         <td>{{ cancelled_livestock_order_container.total_cost }}</td>
                         <td>
-                            <router-link :to="'/orders/livestock-order-container/' + cancelled_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
+                            <router-link :to="'/dashboard/livestock-order-container/' + cancelled_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
                                 MORE
                             </router-link>
                         </td>
@@ -180,7 +180,7 @@
                         </td>
                         <td>{{ completed_livestock_order_container.total_cost }}</td>
                         <td>
-                            <router-link :to="'/orders/livestock-order-container/' + completed_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
+                            <router-link :to="'/dashboard/livestock-order-container/' + completed_livestock_order_container.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
                                 MORE
                             </router-link>
                         </td>

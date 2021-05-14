@@ -73,7 +73,7 @@
 									<td>{{ row.unique_number }}</td>
 									<td>{{ row.status }}</td>
 									<td>
-										<router-link id="default-outline-primary" :to="'/businesses/train-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+										<router-link id="default-outline-primary" :to="'/dashboard/trains/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
 										</router-link>
 									</td>
@@ -122,6 +122,7 @@ import { ApiUrl } from "../../../../api/apiurl"
 import Auth from "../../../../auth/js/spider_auth"
 import UpdateTrain from "../assets_forms/train/update"
 import CreateTrain from "../assets_forms/train/create"
+import { mapState } from "vuex"
 
 export default {
 	data(){
@@ -151,44 +152,21 @@ export default {
 		CreateTrain,
 		UpdateTrain
 	},
+	computed: {
+		...mapState({
+			businessData: state => state.businessData.businessData
+		})
+	},
 	created() {
 
+		this.businessProfile = this.businessData
 		this.get_all_business_trains()
-		this.get_business_profile()	
 
 	},
 	methods: {
-		get_business_profile: function() {
-
-			axios.get(`${ApiUrl.url}businesses/${this.$route.params.id}`, {
-				headers: {
-					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-				}
-			})
-			.then( (resp) => {
-
-				this.businessProfile = resp.data.data
-
-			} )
-			.catch( (err) => {
-
-			if(err.response) {
-
-				if(err.response.status == 401) {
-
-				this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-				this.$router.replace("/auth/login")
-
-				}
-
-			}
-
-			} )
-
-		},
 		get_all_business_trains: function() {
 
-			axios.get(`${ApiUrl.url}trains/business/${this.$route.params.id}`, {
+			axios.get(`${ApiUrl.url}trains/business/${this.businessData.id}`, {
 				headers: {
 					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
 				}

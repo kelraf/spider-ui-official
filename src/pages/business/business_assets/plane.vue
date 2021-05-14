@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="col-4">
-                    <router-link id="default-outline-primary" :to="'/businesses/all-flights/'+businessProfile.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+                    <router-link id="default-outline-primary" to="/dashboard/flights" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
                         <i class="icon-eye"></i>
                     </router-link>
                 </div>

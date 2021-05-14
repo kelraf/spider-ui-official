@@ -124,8 +124,6 @@ export default {
                     }
                 }  
                 
-                console.log(data)
-
                 let self = this
                     
                 let headers = {

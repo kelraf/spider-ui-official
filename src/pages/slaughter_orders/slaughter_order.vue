@@ -60,7 +60,7 @@
 
                         </div>
 
-                        <div v-if="slaughter_order.status == 1" class="row mt-2">
+                        <!-- <div v-if="slaughter_order.status == 1" class="row mt-2">
                             <div class="col-md-6">
                                 <button @click="openConfirmModal('reject')" id="default-outline-danger" type="button" class="btn btn-sm btn-pill btn-outline-danger btn-block text-center">
                                     REJECT
@@ -71,7 +71,7 @@
                                     ACCEPTED
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
 
@@ -133,7 +133,7 @@
                     <div class="row">
                         
                         <div class="col-6 offset-3 pb-3">
-                            <router-link :to="'/slaughter-orders/' + slaughter_order.id" id="default-outline-secondary" type="button" class="btn btn-pill btn-outline-secondary btn-block text-center">
+                            <router-link :to="'/dashboard/slaughter-orders/' + slaughter_order.id" id="default-outline-secondary" type="button" class="btn btn-pill btn-outline-secondary btn-block text-center">
                                 More
                             </router-link >
                         </div>

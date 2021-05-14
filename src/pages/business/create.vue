@@ -269,11 +269,14 @@ export default {
                         self.$emit("close-modal")
                         self.$toasted.show(`Business Created Successfully`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 8000})
 
-                        setTimeout(function() {
+                        self.business = resp.data.data
 
-                            self.$router.go(0)
+						console.log("Created Business Data", self.business)
 
-                        }, 1000)
+						self.$store.dispatch("menu/processMenuFor", self.business.sub_category)
+                    	self.$store.dispatch('businessData/updateBusinessData', self.business) 
+
+                        self.$router.replace({path: "/dashboard"})
 
                     }, 2000)
                 } )

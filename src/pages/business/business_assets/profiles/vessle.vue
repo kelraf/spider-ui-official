@@ -106,17 +106,7 @@
                           </div>
                         </div>
                       </div>
-                      <hr>
-                      <div class="follow">
-                        <div class="row">
-                          <div class="col-6 text-md-right border-right">
-                            <div class="follow-num counter">25869</div><span>Follower</span>
-                          </div>
-                          <div class="col-6 text-md-left">
-                            <div class="follow-num counter">659887</div><span>Following</span>
-                          </div>
-                        </div>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>

@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="col-4">
-                    <router-link id="default-outline-primary" :to="'/businesses/all-vessles/'+businessProfile.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+                    <router-link id="default-outline-primary" to="/dashboard/vessles" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
                         <i class="icon-eye"></i>
                     </router-link>
                 </div>
@@ -65,7 +65,7 @@ export default {
                 content: {
                     effect: 'slip',
                     target: '#create-vessle'
-                    }
+                }
             })
 
             modal.open()

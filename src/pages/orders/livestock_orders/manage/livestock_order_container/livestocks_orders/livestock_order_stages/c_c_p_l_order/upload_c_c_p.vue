@@ -5,7 +5,7 @@
             <div class="col-md-6 offset-md-3">
 
                 <div class="card-body bg-white">
-                    <form-wizard color="#4466f2" :start-index="0" title="Upload Document" subtitle="Allowed Files .pdf .png .jpg .jpeg .txt" back-button-text="Back" next-button-text="Next">
+                    <form-wizard color="#4466f2" :start-index="0" title="Upload Document" subtitle="Allowed Files .pdf Only." back-button-text="Back" next-button-text="Next">
 
                     <tab-content :before-change="beforeChange" title="Document Purpose">
                         <div class="setup-content" id="step-1">

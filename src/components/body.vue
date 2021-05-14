@@ -1,6 +1,39 @@
 <template>
   <div>
-    <div class="page-wrapper" :class="layout.settings.sidebar.type">
+
+    <!-- Loader -->
+
+      <div v-if="!businessLoadSuccess || !userLoadSuccess" class="container-fluid mt-5 pt-5">
+        <div class="row mt-5 pt-5">
+          <div class="col-12 mt-5 pt-5 text-center">
+
+          <div class="loader">
+            <div class="line bg-warning"></div>
+            <div class="line bg-warning"></div>
+            <div class="line bg-warning"></div>
+            <div class="line bg-warning"></div>
+          </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-center mt-4">
+            <p>
+              <b class="font-success"> Please Wait... </b>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    <!-- End Loader -->
+
+    <div 
+      class="page-wrapper" 
+      :class="layout.settings.sidebar.type"
+      v-if="businessLoadSuccess && userLoadSuccess"
+    >
       <Header @clicked="sidebar_toggle" @mobileclicked="mobiletoggle_toggle" />
       <div class="page-body-wrapper" :class="layout.settings.sidebar.body_type">
         <div class="page-sidebar" :class="[{ open : sidebar_toggle_var }, layout.settings.sidebar_backround]" :sidebar-layout="layout.settings.sidebar_setting">
@@ -10,12 +43,12 @@
           <transition name="fadeIn" enter-active-class="animated fadeIn">
             <router-view class="view"></router-view>
           </transition>
-          <!-- <button @click="getCurrentLocation">HHHHHH</button> -->
         </div>
         <Footer/>
       </div>
       <Customizer/>
     </div>
+    
   </div>
 </template>
 
@@ -25,20 +58,16 @@ import Header from './header'
 import Sidebar from './sidebar'
 import Footer from './footer'
 import Customizer from './customizer'
-
-import axios from "axios"
-import { ApiUrl } from "../api/apiurl"
-import Auth from "../auth/js/spider_auth"
+import accountLoader from "../mixins/accountLoader"
 
 export default {
+  mixins: [accountLoader],
   name: 'mainpage',
   data(){
     return{
       mobileheader_toggle_var: false,
       sidebar_toggle_var: false,
-      resized:false,
-      avatar_url: "",
-      user_profile: {},
+      resized: false
     }
   },
   // props:['sidebar_toggle_var'],
@@ -52,25 +81,20 @@ export default {
     ...mapState({
       menuItems: state => state.menu.data,
       layout: state => state.layout.layout,
-      userProfile: state => state.userProfile.userProfile,
-      businessData: state => state.businessData.businessData
     })
   },
   created(){
+
     window.addEventListener('resize', this.handleResize)
     this.handleResize();
     this.resized = this.sidebar_toggle_var;
     this.$store.dispatch('layout/set')
-  },
-  mounted() {
-    
-    // this.loadUserProfile()
-    // this.loadBusinessData()
-    // this.getCurrentLocation()
 
   },
-  watch:{
-    '$route' (){
+  
+  watch: {
+    '$router' (){
+
       this.menuItems.filter(items => {
         if (items.path === this.$route.path)
           this.$store.dispatch('menu/setActiveRoute', items)
@@ -88,91 +112,15 @@ export default {
     },
     sidebar_toggle_var: function (){
       this.resized = (this.width <= 991) ? !this.sidebar_toggle_var : this.sidebar_toggle_var      
+    },
+    businessLoadSuccess: function(current, innitial) {
+      // console.log(`BusinessLoadSuccess ========= current ${current} =========== innitial ${innitial}`)
+    },
+    userLoadSuccess: function(current, innitial) {
+      // console.log(`UserLoadSuccess ========= current ${current} =========== innitial ${innitial}`)
     }
   },
   methods:{
-    getCurrentLocation() {
-
-      // "https://json.geoiplookup.io/api"
-
-      axios.get("http://geoplugin.net/json.gp")
-
-      .then((resp) => {
-        console.log(resp)
-      })
-      
-      .catch((err) => {
-        console.log("Error Here", err)
-      })
-
-    },
-    // loadUserProfile: function() {
-
-    //   let headers = {
-    //       headers: {
-    //           Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-    //       }
-    //   }
-
-    //   axios.get(`${ApiUrl.url}users/${Auth.isAuthenticatedUser().sub}`, headers)
-    //   .then( (resp) => {
-
-    //       this.user_profile = resp.data.data
-    //       this.avatar_url = `${ApiUrl.url}uploads/user/avatars/${this.user_profile.avatar == null ? null : this.user_profile.avatar.avatar.file_name}`          
-    //       this.$store.dispatch('userProfile/updateUserProfile', this.user_profile)
-
-    //   } )
-    //   .catch( (err) => {
-
-    //     if(err.response) {
-
-    //       if (err.response.status == 401) {
-            
-    //         this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-    //         this.$router.replace("/auth/login")
-
-    //       }
-
-    //     }
-
-    //   } )
-
-    // },
-    // loadBusinessData() {
-
-    //     let headers = {
-    //         headers: {
-    //             Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-    //         }
-    //     }
-
-    //     axios.get(`${ApiUrl.url}businesses/user/${Auth.isAuthenticatedUser().sub}`, headers)
-    //       .then( (resp) => {
-
-    //         if(resp.data.data.length <= 0) return false
-
-    //         this.business = resp.data.data[0]
-            
-    //         this.$store.dispatch('businessData/updateBusinessData', this.business)  
-
-
-    //       } )
-    //       .catch( (err) => {
-
-    //         if(err.response) {
-
-    //           if (err.response.status == 401) {
-                
-    //             this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-    //             this.$router.replace("/auth/login")
-
-    //           }
-
-    //         }
-
-    //       } )
-
-    // },
     sidebar_toggle(value) {
       this.sidebar_toggle_var = !value
     },

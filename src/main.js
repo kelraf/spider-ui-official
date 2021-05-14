@@ -18,12 +18,12 @@ import VueGeoLocation from "vue-browser-geolocation"
 // Import Theme scss
 import './assets/scss/app.scss'
 
+import i18n from './i18n'
+
 
 Vue.use(Toasted,{
   iconPack: 'fontawesome'
 });
-
-// AIzaSyA3GNu4uUATI-5IeNMZu4qyjzglFlrgCw0
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -45,5 +45,6 @@ Vue.component('Breadcrumbs', Breadcrumbs)
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

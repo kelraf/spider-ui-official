@@ -75,7 +75,7 @@
 									<td>{{ row.breed }}</td>
 									<td>{{ row.quantity }}</td>
 									<td>
-										<router-link id="default-outline-primary" :to="'/businesses/livestock-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+										<router-link id="default-outline-primary" :to="'/dashboard/livestocks/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
 										</router-link>
 									</td>
@@ -120,6 +120,7 @@
 
 import users from '../../../../data/users' 
 import axios from "axios"
+import {mapState} from "vuex"
 import { ApiUrl } from "../../../../api/apiurl"
 import Auth from "../../../../auth/js/spider_auth"
 import UpdateLivestock from "../assets_forms/livestock/update"
@@ -155,44 +156,19 @@ export default {
 		CreateLivestock,
 		UpdateLivestock
 	},
+	computed: {
+		...mapState({
+			businessData: state => state.businessData.businessData
+		})
+	},
 	created() {
-
+		this.businessProfile = this.businessData
 		this.get_all_business_livestock()
-		this.get_business_profile()
-
 	},
 	methods: {
-		get_business_profile: function() {
-
-			axios.get(`${ApiUrl.url}businesses/${this.$route.params.id}`, {
-				headers: {
-					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-				}
-			})
-			.then( (resp) => {
-
-				this.businessProfile = resp.data.data
-
-			} )
-			.catch( (err) => {
-
-			if(err.response) {
-
-				if(err.response.status == 401) {
-
-				this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-				this.$router.replace("/auth/login")
-
-				}
-
-			}
-
-			} )
-
-		},
 		get_all_business_livestock: function() {
 
-			axios.get(`${ApiUrl.url}livestocks/business/${this.$route.params.id}`, {
+			axios.get(`${ApiUrl.url}livestocks/business/${this.businessProfile.id}`, {
 				headers: {
 					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
 				}

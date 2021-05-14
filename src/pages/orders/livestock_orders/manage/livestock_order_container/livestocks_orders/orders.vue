@@ -4,7 +4,7 @@
     <table class="table table-bordernone">
     <thead>
         <tr>
-        <th scope="col">Reference Number</th>
+        <th scope="col">Ref No</th>
         <th scope="col">Category</th>
         <th scope="col">Type</th>
         <th scope="col">Quantity</th>
@@ -32,7 +32,7 @@
             </td>
             <td> {{ livestock_order.total_cost }} </td>
             <td>
-                <router-link :to="'/orders/livestock-order/' + livestock_order.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
+                <router-link :to="'/dashboard/livestock-order/' + livestock_order.id" id="default-outline-success" type="button" class="btn btn-pill btn-sm btn-outline-success btn-block">
                     MORE
                 </router-link>
             </td>

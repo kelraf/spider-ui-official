@@ -2,7 +2,7 @@
   <div>
     <div class="main-header-left d-none d-lg-block">
       <div class="logo-wrapper">
-        <router-link to="/">
+        <router-link to="/dashboard">
           <img src="../assets/images/endless-logo.png" alt />
         </router-link>
       </div>
@@ -13,7 +13,7 @@
           <img v-if="avatar_url == ''" class="img-60 rounded-circle" src="../assets/images/default_avatars/default_avatar.svg" alt="#" />
           <img v-if="avatar_url !== ''" class="img-60 rounded-circle" :src="avatar_url" alt="#" />
           <div class="profile-edit">
-            <router-link :to="'/users/profile/'+user_id">
+            <router-link to="/dashboard/user-profile">
               <feather type="edit"></feather>
             </router-link>
           </div>
@@ -338,30 +338,11 @@ export default {
 
       this.menuItems.filter(items => {
 
-        if (items.path === this.$route.path)
+        if (items.path === this.$route.path) {
 
           this.$store.dispatch("menu/setActiveRoute", items);
 
-          if(items.param_type == "my_profile") {
-
-            let is_int_param = items.path.split("/").reverse()[0]
-
-            if(parseInt(is_int_param)) {
-
-              // Do Nothing
-
-              } else {
-
-                items.path = `${items.path}/${self.user_id}`
-
-              }
-
-          } else if(items.param_type == "my_business") {
-
-            this.business_path_object = items
-            this.setBusinessPath()
-
-          }
+        }
 
         if (!items.children) return false;
 

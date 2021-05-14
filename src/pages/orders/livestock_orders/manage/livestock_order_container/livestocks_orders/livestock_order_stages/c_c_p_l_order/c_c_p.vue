@@ -5,7 +5,7 @@
         <div class="card-body">
 
             <div class="media feather-main">
-            <div class="feather-icon-block"><feather type="navigation"></feather></div>
+            <div class="feather-icon-block"><feather type="file"></feather></div>
             <div class="media-body text-left align-self-center">
                 <h6> {{ c_c_p_l_order_data.purpose }} </h6>
             </div>
@@ -15,10 +15,11 @@
 
                 <div class="container-fluid mt-3">
                     <div class="row">
-                        <div class="col-md-6 offset-md-3">
+                        <div class="col-md-12">
                             <b-button-group class="btn-group-pill">
-                                <b-button variant="outline-secondary">View</b-button>
-                                <b-button @click="delete_it" variant="outline-secondary">Delete</b-button>
+                                <b-button class="btn-sm" variant="outline-secondary"><i class="fa fa-eye"></i></b-button>
+                                <b-button class="btn-sm" @click="delete_it" variant="outline-danger"><i class="fa fa-trash-o"></i></b-button>
+                                <b-button class="btn-sm" variant="outline-secondary"><i class="fa fa-cloud-download"></i></b-button>
                             </b-button-group>
                         </div>
                     </div>

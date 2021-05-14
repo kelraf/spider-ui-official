@@ -308,7 +308,13 @@
           </div>
         <!-- Container-fluid Ends-->
 
-        <SellNow v-on:sale-made-success="saleRequestMadeSuccess" :centerOrder="center_order" :animalToSell="animal_to_sell" style="display: none;" id="sell-now" />
+        <SellNow 
+          v-on:sale-made-success="saleRequestMadeSuccess" 
+          :centerOrder="center_order" 
+          :animalToSell="animal_to_sell" 
+          style="display: none;" 
+          id="sell-now" 
+        />
 
     </div>
 </template>
@@ -445,13 +451,30 @@ export default {
 
               this.livestocks = resp.data.data
 
-              this.livestocks.map((livestock) => {
+              // this.livestocks.map((livestock) => {
 
-                  if(livestock.d_livestock_id == this.center_order.d_livestock_id) this.animal_to_sell = livestock
+              //     if(livestock.d_livestock_id == this.center_order.d_livestock_id) {
+              //       console.log("livestock", livestock, "center_order", this.center_order)
+              //       this.animal_to_sell = livestock
+              //     }
 
-              })
+              // })
+
+              console.log("Current Center Order", this.center_order)
+              console.log("Livestocks", this.livestocks)
+
+              for (const livestock of this.livestocks) {
+
+                if(livestock.d_livestock_id == this.center_order.d_livestock_id) {
+                    console.log("livestock", livestock, "center_order", this.center_order)
+                    this.animal_to_sell = livestock
+                  }
+                
+              }
 
               if(Object.keys(this.animal_to_sell).length <= 0) {
+
+                console.log("this.businessData", this.businessData)
 
                 this.$toasted.show(`You Done Have This Type Of Animal.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 8000})
                 this.$toasted.show(`Please Add Then Try Again.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 8000})
@@ -561,8 +584,8 @@ export default {
   mounted() {
 
     this.windowResizeHandler()
-    this.getLivestocksUsingBusinessId()
     this.getCenterOrder()
+    this.getLivestocksUsingBusinessId()
     
   },
   filters: {

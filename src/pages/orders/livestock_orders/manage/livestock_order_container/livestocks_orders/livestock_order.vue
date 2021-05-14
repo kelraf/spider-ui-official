@@ -72,7 +72,7 @@
                         <div
                           v-for="(stage, index) in stages" 
                           :key="index" 
-                          class="u-pearl done"
+                          class="u-pearl current"
                           :class="[stages.length == 1 ? 'col-6 offset-3' : stages.length == 2 ? 'col-4' : stages.length == 3 ? 'col-4' : stages.length == 4 ? 'col-3' : 'col-2'  ]"
                           @click="goToStage(stage)"
                           >
@@ -186,22 +186,18 @@ export default {
     },
     goToStage(stage) {
       
-      if(stage.stage_name == "collection") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-collection/${stage.id}`})
+      if(stage.stage_name == "collection") this.$router.replace({path: `/dashboard/livestock-order/${this.livestock_order.id}/stages-collection/${stage.id}`})
 
-      if(stage.stage_name == "ccp") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-c-c-p-l-order/${stage.id}`})
+      if(stage.stage_name == "ccp") this.$router.replace({path: `/dashboard/livestock-order/${this.livestock_order.id}/stages-c-c-p-l-order/${stage.id}`})
 
-      if(stage.stage_name == "export-zone") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-export-zone-spider/${stage.id}`})
+      if(stage.stage_name == "export-zone") this.$router.replace({path: `/dashboard/livestock-order/${this.livestock_order.id}/stages-export-zone-spider/${stage.id}`})
 
-      if(stage.stage_name == "processing") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-processing/${stage.id}`})
+      if(stage.stage_name == "processing") this.$router.replace({path: `/dashboard/livestock-order/${this.livestock_order.id}/stages-processing/${stage.id}`})
 
-      if(stage.stage_name == "feedlot") this.$router.push({path: `/orders/livestock-order/${this.livestock_order.id}/stages-feedlot/${stage.id}`})
+      if(stage.stage_name == "feedlot") this.$router.replace({path: `/dashboard/livestock-order/${this.livestock_order.id}/stages-feedlot/${stage.id}`})
 
     },
     process_data() {
-
-      // this.center_order = this.livestock_order.center_order
-
-      console.log("GGGGGGGGGGGGGG", this.livestock_order) 
 
       if(this.livestock_order.livestock_order_stages.length > 0) {
 
@@ -211,8 +207,6 @@ export default {
 
         this.indexStage()
 
-        console.log("this.stages", this.stages)
-
       }
 
     },
@@ -220,7 +214,7 @@ export default {
 
       let stage = this.stages[0]
 
-      if(stage.stage_name == "collection") this.$router.replace({path: `/orders/livestock-order/${this.livestock_order.id}/stages-collection/${stage.id}`})
+      if(stage.stage_name == "collection") this.$router.replace({path: `/dashboard/livestock-order/${this.livestock_order.id}/stages-collection/${stage.id}`})
     },
     addStage() {
       let modal = new Custombox.modal({

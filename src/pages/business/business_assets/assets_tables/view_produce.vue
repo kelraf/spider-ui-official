@@ -60,8 +60,8 @@
 							>
 
 							<thead slot="head">
-								<v-th sortKey="reference">Reference</v-th>
-								<v-th sortKey="type">Category</v-th>
+								<v-th sortKey="reference">Ref Animal</v-th>
+								<v-th sortKey="type">Produce Name</v-th>
 								<v-th sortKey="quantity">Quantity</v-th>
 								<v-th sortKey="units">Units</v-th>
 								<v-th sortKey="quantity"></v-th>
@@ -70,12 +70,12 @@
 							</thead>
 							<tbody slot="body" slot-scope="{displayData}">
 								<tr v-for="row in displayData" :key="row.id">
-									<td>{{ row.reference }}</td>
-									<td>{{ row.category }}</td>
+									<td>{{ row.referenced_animal }}</td>
+									<td>{{ row.produce_name }}</td>
 									<td>{{ row.quantity }}</td>
 									<td>{{ row.units }}</td>
 									<td>
-										<router-link id="default-outline-primary" :to="'/businesses/produce-profile/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
+										<router-link id="default-outline-primary" :to="'/dashboard/produces/'+row.id" type="button" class="btn btn-pill btn-outline-primary mt-2 mb-2 btn-block">
 											<i class="icon-eye"></i>
 										</router-link>
 									</td>
@@ -125,6 +125,7 @@ import Auth from "../../../../auth/js/spider_auth"
 import UpdateProduce from "../assets_forms/produce/update"
 import CreateProduce from "../assets_forms/produce/create"
 import { DProduceProcessor } from "../../../../helpers/produce"
+import { mapState } from "vuex"
 
 export default {
 	data(){
@@ -152,44 +153,21 @@ export default {
 		CreateProduce,
 		UpdateProduce
 	},
+	computed: {
+		...mapState({
+			businessData: state => state.businessData.businessData
+		})
+	},
 	created() {
 
+		this.businessProfile = this.businessData
 		this.get_all_business_produce()
-		this.get_business_profile()
 
 	},
 	methods: {
-		get_business_profile: function() {
-
-			axios.get(`${ApiUrl.url}businesses/${this.$route.params.id}`, {
-				headers: {
-					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
-				}
-			})
-			.then( (resp) => {
-
-				this.businessProfile = resp.data.data
-
-			} )
-			.catch( (err) => {
-
-			if(err.response) {
-
-				if(err.response.status == 401) {
-
-				this.$toasted.show(`Authentication Required. Please Login.`, {theme: 'outline',position: "top-right", icon : 'info', type: 'info', duration: 4000})
-				this.$router.replace("/auth/login")
-
-				}
-
-			}
-
-			} )
-
-		},
 		get_all_business_produce: function() {
 
-			axios.get(`${ApiUrl.url}produces/business/${this.$route.params.id}`, {
+			axios.get(`${ApiUrl.url}produces/business/${this.businessData.id}`, {
 				headers: {
 					Authorization: `Bearer ${Auth.isAuthenticatedUser().token}`
 				}

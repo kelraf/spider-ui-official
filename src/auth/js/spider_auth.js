@@ -20,6 +20,7 @@ class Auth {
 
         if(unsetIt == undefined || unsetIt) {
 
+            console.log(this.isAuthenticatedUser())
             return true
 
         } else {

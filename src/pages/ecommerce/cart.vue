@@ -21,7 +21,7 @@
                   <h4 class="font-success">
                     <b>Add something to make me happy :)</b>
                   </h4>
-                  <router-link to="/shop/livestocks" class="btn btn-sm btn-pill btn-outline-success m-t-15">SHOP NOW</router-link>
+                  <router-link to="/dashboard/shop-livestocks" class="btn btn-sm btn-pill btn-outline-success m-t-15">SHOP NOW</router-link>
 
               </div>
 
@@ -83,10 +83,10 @@
                     </tr>
                     <tr>
                       <td colspan="6">
-                        <router-link :to="'/shop/livestocks'" class="btn btn-pill btn-outline-success btn-block">continue shopping</router-link>
+                        <router-link :to="'/dashboard/shop-livestocks'" class="btn btn-pill btn-outline-success btn-block">continue shopping</router-link>
                       </td>
                       <td  colspan="6">
-                        <router-link :to="'/shop/checkout'" class="btn btn-pill btn-outline-success btn-block"> check out</router-link>
+                        <router-link :to="'/dashboard/checkout'" class="btn btn-pill btn-outline-success btn-block"> check out</router-link>
                       </td>
                     </tr>
                   </tbody>
@@ -137,7 +137,7 @@ export default {
     }
   },
   mounted() {
-    console.log("All Cart Data ------>>>>>>", this.cart_data_)
+    
   },
   methods: {
     getImgUrl(path) {
